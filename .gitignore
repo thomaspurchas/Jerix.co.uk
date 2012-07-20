@@ -2,3 +2,4 @@
 .vagrant
 jerix.co.uk/bin/
 jerix.co.uk/lib/
+*.pyc
