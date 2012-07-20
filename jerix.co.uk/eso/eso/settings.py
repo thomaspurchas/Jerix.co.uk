@@ -1,3 +1,4 @@
+import os
 # Django settings for eso project.
 
 DEBUG = True
@@ -169,8 +170,8 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
-        'console':{
+        },
+        'console': {
             'level':'DEBUG',
             'class':'logging.StreamHandler',
             'formatter': 'verbose'
