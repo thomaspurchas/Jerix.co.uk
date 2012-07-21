@@ -21,6 +21,10 @@ DATABASES = {
     }
 }
 
+# Haystack
+HAYSTACK_SITECONF = 'eso.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'dummy'
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -32,7 +36,7 @@ TIME_ZONE = 'Europe/London'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-uk'
+LANGUAGE_CODE = 'en-GB'
 
 SITE_ID = 1
 
@@ -113,7 +117,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '%s/src/templates' % SITE_ROOT,
+    '%s/eso/templates' % SITE_ROOT,
 )
 
 # Use the BCrypt password hash
@@ -142,6 +146,12 @@ INSTALLED_APPS = (
     'tastypie',
     'gunicorn',
     'celery_haystack',
+    
+    # My Apps
+    'modules',
+    'search',
+    'store',
+    'users',
 )
 
 # A sample logging configuration. The only tangible logging
