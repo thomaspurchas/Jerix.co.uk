@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}The New ESO{% endblock title %}</title>
+	<link rel="stylesheet" href="screen.css" title="Screen" type="text/css" media="screen" charset="utf-8">
+</head>
+
+<body id="base" onload="">
+	<div id="barBg"></div>
+	<div id="container">
+		<div id="header">
+			<div id="topBar">
+				<div id="homelink">
+					Jerix
+				</div>
+				<div id="userLinks">
+					<ul>
+					{% if user.is_aunthenticated %}
+						<li>
+							Thomas<a href="." title="Lectures">Lectures</a>
+						</li>
+						<li>
+							Account
+						</li>
+						<li>
+							Stuff
+						</li>
+					{% else %}
+						<li>
+							<a href="." title="Login">Login</a>
+						</li>
+					{% endif %}
+					</ul>
+				</div>
+			</div>
+			{% block headerstack %}
+			{% endblock headerstack %}
+		</div>
+		<div id="content">
+			{% block content %}
+			{% endblock content %}
+		</div>
+	</div>
+</body>
