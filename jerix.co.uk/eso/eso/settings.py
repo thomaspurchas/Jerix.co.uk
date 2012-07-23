@@ -67,17 +67,20 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = '%s/static/' % SITE_ROOT
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+STATIC_DOC_ROOT = '%s/static/' % SITE_ROOT
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    '%s/core_static/' % SITE_ROOT,
 )
 
 # List of finder classes that know how to find static files in
@@ -126,6 +129,9 @@ PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 )
 
+# Set user profile model
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -146,12 +152,12 @@ INSTALLED_APPS = (
     'tastypie',
     'gunicorn',
     'celery_haystack',
-    
+
     # My Apps
     'modules',
     'search',
     'store',
-    'users',
+    'accounts',
 )
 
 # A sample logging configuration. The only tangible logging
