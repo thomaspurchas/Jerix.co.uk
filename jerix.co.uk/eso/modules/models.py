@@ -20,15 +20,74 @@ class Module(models.Model):
     def __unicode__(self):
         return unicode(self.title)
 
-class Lecture(models.Model):
+class Post(models.Model):
+    """(BasicPost description)"""
+
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+
+    post_date = models.DateTimeField(default=datetime.datetime.now)
+
+    author = models.ForeignKey(User)
+
+    def sorted_materials(self):
+        return self.materials.order_by('index')
+
+    class Admin:
+        list_display = ('',)
+        search_fields = ('',)
+
+    def __unicode__(self):
+        try:
+            name = self.parentpost
+        except:
+            try:
+                name = self.subpost
+            except:
+                name = u'BasicPost'
+        return unicode(name)
+
+
+class ParentPost(Post):
+    """(Post description)"""
+
+    module = models.ForeignKey(Module, related_name='posts')
+
+    class Admin:
+        list_display = ('',)
+        search_fields = ('',)
+
+    def __unicode__(self):
+        return u"%s - %s" % (self.module.title, self.title)
+
+class SubPost(Post):
+    """(SubPost description)"""
+
+    parent = models.ForeignKey(ParentPost, related_name='sub_posts')
+
+    class Admin:
+        list_display = ('',)
+        search_fields = ('',)
+
+    def __unicode__(self):
+        return u"%s - %s - %s" % (
+            self.parent.module.title,
+            self.parent.title,
+            self.title
+        )
+
+class Material(models.Model):
     """Represents a lecture"""
 
     title = models.CharField(blank=False, max_length=100)
     index = models.IntegerField(blank=False, null=False)
-    module = models.ForeignKey(Module, related_name='lectures')
 
-    presentation_datetime = models.DateTimeField(blank=False, default=datetime.datetime.now)
-    lecturer = models.ForeignKey(User)
+    post = models.ForeignKey(Post, related_name='materials')
+
+    #file = models.ForeignKey(RELATED_MODEL)
+
+    class Meta:
+        unique_together = ('index', 'post')
 
     class Admin:
         list_display = ('',)

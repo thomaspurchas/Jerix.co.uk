@@ -20,12 +20,35 @@
 {% endblock headerstack %}
 
 {% block content %}
-<div id="lectures">
-	{% for lecture in module.lectures.all %}
-		<div class="lecture">
-			<h1>{{ lecture.title }}</h1>
-			<h2>{{ lecture.presentation_datetime }}</h2>
-			<h2>{{ lecture.lecturer }}</h2>
+<div id="posts">
+	{% for post in module.posts.all %}
+		<div class="post">
+			<h1>{{ post.title }}</h1>
+			<h2>{{ post.post_date }}</h2>
+			<h2>{{ post.author }}</h2>
+			<div class="description">
+				<p>{{ post.description }}</p>
+			</div>
+			{% for material in post.sorted_materials  %}
+				<div class="material">
+					{{ material.title }}
+				</div>
+			{% endfor %}
+			{% for sub_post in post.sub_posts.all %}
+				<div class="post">
+					<h1>{{ sub_post.title }}</h1>
+					<h2>{{ post.post_date }}</h2>
+					<h2>{{ post.author }}</h2>
+					<div class="description">
+						<p>{{ sub_post.description }}</p>
+					</div>
+					{% for material in sub_post.sorted_materials %}
+						<div class="material">
+							{{ material.title }}
+						</div>
+					{% endfor %}
+				</div>
+			{% endfor %}
 		</div>
 	{% endfor %}
 </div>
