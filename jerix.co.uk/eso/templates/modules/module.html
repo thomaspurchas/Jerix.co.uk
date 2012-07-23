@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block headerstack %}
+<div class="stack">
+	<div class="moduleTitle">
+		<h1 class="shortcode">{{ module.short_code }}</h1>
+		<h2 class="moduleName">{{ module.title }}</h2>
+	</div>
+	<div class="moduleDescription">
+		{{ module.description }}
+	</div>
+</div>
+<div class="stack bottom" id="sectionNav">
+	<a href="" class="fLeft navButton" id="navBack">Back</a>
+	<a href="" class="fRight navButton" id="navForward">Forward</a>
+	<div id="topSearch">
+		<input type="text" name="search" value="" id="search" autocomplete="no" />
+	</div>
+</div>
+{% endblock headerstack %}
+
+{% block content %}
+<div id="lectures">
+	{% for lecture in module.lectures.all %}
+		<div class="lecture">
+			<h1>{{ lecture.title }}</h1>
+			<h2>{{ lecture.presentation_datetime }}</h2>
+			<h2>{{ lecture.lecturer }}</h2>
+		</div>
+	{% endfor %}
+</div>
+{% endblock content %}

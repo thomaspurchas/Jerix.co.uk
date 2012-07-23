@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>{% block title %}The New ESO{% endblock title %}</title>
-	<link rel="stylesheet" href="screen.css" title="Screen" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="{{ STATIC_URL }}screen.css" title="Screen" type="text/css" media="screen" charset="utf-8">
 </head>
 
 <body id="base" onload="">
@@ -10,17 +10,20 @@
 	<div id="container">
 		<div id="header">
 			<div id="topBar">
-				<div id="homelink">
+				<div id="homeLink">
 					Jerix
 				</div>
 				<div id="userLinks">
 					<ul>
-					{% if user.is_aunthenticated %}
+					{% if user.is_authenticated %}
 						<li>
-							Thomas<a href="." title="Lectures">Lectures</a>
+							{{ user.username }}
 						</li>
 						<li>
-							Account
+							<a href="." title="Lectures">Lectures</a>
+						</li>
+						<li>
+							<a href="." title="Account">Account</a>
 						</li>
 						<li>
 							Stuff
