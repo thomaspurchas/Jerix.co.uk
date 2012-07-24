@@ -29,7 +29,12 @@ class LecturerProfile(models.Model):
         search_fields = ('',)
 
     def __unicode__(self):
-        return u"LecturerProfile"
+        try:
+            name = self.userprofile.user.username
+        except:
+            name = u"LecturerProfile"
+        return name
+
 
 class UserProfile(models.Model):
     """Represents a user"""
