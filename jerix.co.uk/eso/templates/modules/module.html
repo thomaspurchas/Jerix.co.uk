@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}{{ module.title }}{% endblock title %}
+
 {% block headerstack %}
 <div class="stack">
 	<div class="moduleTitle">
@@ -25,10 +27,12 @@
 		<div class="post">
 			<h1>{{ post.title }}</h1>
 			<h2>{{ post.post_date }}</h2>
-			<h2>{{ post.author }}</h2>
-			<div class="description">
-				<p>{{ post.description }}</p>
-			</div>
+			<h2>{{ post.author_full_title }}</h2>
+			{% if post.description %}
+				<div class="description">
+					<p>{{ post.description }}</p>
+				</div>
+			{% endif %}
 			{% for material in post.sorted_materials  %}
 				<div class="material">
 					{{ material.title }}
@@ -38,10 +42,12 @@
 				<div class="post">
 					<h1>{{ sub_post.title }}</h1>
 					<h2>{{ post.post_date }}</h2>
-					<h2>{{ post.author }}</h2>
-					<div class="description">
-						<p>{{ sub_post.description }}</p>
-					</div>
+					<h2>{{ post.author_full_title }}</h2>
+					{% if sub_post.description %}
+						<div class="description">
+							<p>{{ sub_post.description }}</p>
+						</div>
+					{% endif %}
 					{% for material in sub_post.sorted_materials %}
 						<div class="material">
 							{{ material.title }}

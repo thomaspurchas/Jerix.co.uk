@@ -159,7 +159,12 @@ body {
 .post {
     background-color: #ff0bf3;
     margin-top: 20px;
-    padding: 0 10px;
+    padding: 5px 10px 5px;
+}
+
+.post .post {
+	background-color: #dd09d2;
+	margin-top: 10px;
 }
 
 .post h2 {
@@ -169,4 +174,12 @@ body {
 .post h3 {
     display: inline-block;
     margin-left: 30px;
+}
+
+.post .description {
+	margin: 10px 0 10px;
+}
+
+.post .material {
+	background-color: #000;
 }
