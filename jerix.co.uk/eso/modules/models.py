@@ -3,6 +3,8 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
+from accounts.models import AuthoredObject
+
 # Create your models here.
 class Module(models.Model):
     """Represents a course module"""
@@ -18,9 +20,9 @@ class Module(models.Model):
         search_fields = ('',)
 
     def __unicode__(self):
-        return unicode(self.title)
+        return u'%s - %s' % (self.short_code, self.title)
 
-class Post(models.Model):
+class Post(AuthoredObject):
     """(BasicPost description)"""
 
     title = models.CharField(max_length=100)
@@ -28,14 +30,8 @@ class Post(models.Model):
 
     post_date = models.DateTimeField(default=datetime.datetime.now)
 
-    author = models.ForeignKey(User)
-
     def sorted_materials(self):
         return self.materials.order_by('index')
-
-    class Admin:
-        list_display = ('',)
-        search_fields = ('',)
 
     def __unicode__(self):
         try:
@@ -52,10 +48,11 @@ class ParentPost(Post):
     """(Post description)"""
 
     module = models.ForeignKey(Module, related_name='posts')
+    index = models.IntegerField()
 
-    class Admin:
-        list_display = ('',)
-        search_fields = ('',)
+    class Meta:
+        unique_together = ('module', 'index')
+        ordering = ['index']
 
     def __unicode__(self):
         return u"%s - %s" % (self.module.title, self.title)
@@ -64,10 +61,11 @@ class SubPost(Post):
     """(SubPost description)"""
 
     parent = models.ForeignKey(ParentPost, related_name='sub_posts')
+    index = models.IntegerField()
 
-    class Admin:
-        list_display = ('',)
-        search_fields = ('',)
+    class Meta:
+        unique_together = ('parent', 'index')
+        ordering = ['parent', 'index']
 
     def __unicode__(self):
         return u"%s - %s - %s" % (
@@ -76,7 +74,7 @@ class SubPost(Post):
             self.title
         )
 
-class Material(models.Model):
+class Material(AuthoredObject):
     """Represents a lecture"""
 
     title = models.CharField(blank=False, max_length=100)
@@ -88,10 +86,7 @@ class Material(models.Model):
 
     class Meta:
         unique_together = ('index', 'post')
-
-    class Admin:
-        list_display = ('',)
-        search_fields = ('',)
+        ordering = ['index']
 
     def __unicode__(self):
         return unicode(self.title)
