@@ -6,12 +6,73 @@ from django.contrib.auth.models import User
 from accounts.models import AuthoredObject
 
 # Create your models here.
+class Subject(models.Model):
+    """(Subject description)"""
+
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+
+    def __unicode__(self):
+        return unicode(self.title)
+
+class AcademicYear(models.Model):
+    """(AcademicYear description)"""
+
+    title = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return unicode(self.title)
+
+class History(models.Model):
+    """(History description)"""
+
+    title = models.CharField(max_length=50)
+
+    start_date = models.DateField(default=datetime.datetime.today)
+    end_date = models.DateField()
+
+    class Meta:
+        ordering = ['-end_date', 'start_date']
+
+    def __unicode__(self):
+        return unicode(self.title)
+
+
+class HistoryMixIn(models.Model):
+    """(AcademicYearMixIn description)"""
+
+    def period_defualt():
+        h = History.objects.all()
+        if h:
+            return h[0]
+        else:
+            return None
+
+    historical_period = models.ForeignKey(History, null=True, default=period_defualt)
+
+    def in_range(self, today):
+        return (
+            (historical_period is None) or
+            (self.historical_period.start_date < today and
+            self.historical_period.end_date > today)
+        )
+
+    def current(self):
+        """docstring for current"""
+
+        return self.in_range(datetime.datetime.today)
+
+    class Meta:
+        abstract = True
+
 class Module(models.Model):
     """Represents a course module"""
 
     title = models.CharField(blank=False, max_length=100)
     short_code = models.CharField(blank=False, max_length=20)
     description = models.TextField(blank=True)
+    subject = models.ForeignKey(Subject)
+    year = models.ForeignKey(AcademicYear)
 
     lecturers = models.ManyToManyField(User)
 
@@ -44,15 +105,15 @@ class Post(AuthoredObject):
         return unicode(name)
 
 
-class ParentPost(Post):
+class ParentPost(Post, HistoryMixIn):
     """(Post description)"""
 
     module = models.ForeignKey(Module, related_name='posts')
     index = models.IntegerField()
 
     class Meta:
-        unique_together = ('module', 'index')
-        ordering = ['index']
+        unique_together = ('module', 'index', 'historical_period')
+        ordering = ['module', 'index']
 
     def __unicode__(self):
         return u"%s - %s" % (self.module.title, self.title)

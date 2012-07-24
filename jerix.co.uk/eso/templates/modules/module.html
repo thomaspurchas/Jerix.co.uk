@@ -23,7 +23,7 @@
 
 {% block content %}
 <div id="posts">
-	{% for post in module.posts.all %}
+	{% for post in posts %}
 		<div class="post">
 			<h1>{{ post.title }}</h1>
 			<h2>{{ post.post_date }}</h2>
@@ -41,8 +41,8 @@
 			{% for sub_post in post.sub_posts.all %}
 				<div class="post">
 					<h1>{{ sub_post.title }}</h1>
-					<h2>{{ post.post_date }}</h2>
-					<h2>{{ post.author_full_title }}</h2>
+					<h2>{{ sub_post.post_date }}</h2>
+					<h2>{{ sub_post.author_full_title }}</h2>
 					{% if sub_post.description %}
 						<div class="description">
 							<p>{{ sub_post.description }}</p>

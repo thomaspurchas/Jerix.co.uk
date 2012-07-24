@@ -1,5 +1,5 @@
 from django.contrib import admin
-from modules.models import Module, ParentPost, SubPost, Material
+from modules.models import Subject, AcademicYear, Module, ParentPost, SubPost, Material, History
 
 class MaterialInline(admin.TabularInline):
     """docstring for MaterialInline"""
@@ -32,3 +32,6 @@ admin.site.register(Module)
 admin.site.register(ParentPost, ParentPostAdmin)
 admin.site.register(SubPost, SubPostAdmin)
 admin.site.register(Material)
+admin.site.register(AcademicYear)
+admin.site.register(Subject)
+admin.site.register(History)
