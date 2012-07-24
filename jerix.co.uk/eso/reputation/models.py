@@ -4,7 +4,7 @@ from django.db import models
 class UserReputation(models.Model):
     """(UserReputation description)"""
 
-    current_reputation = models.IntegerField(defualt=0, blank=False, null=False)
+    current_reputation = models.IntegerField(default=0)
 
     class Admin:
         list_display = ('',)
@@ -32,6 +32,22 @@ class EntityReputation(models.Model):
 
     def __unicode__(self):
         return u"VoteReputation"
+
+class ReputationReward(models.Model):
+    """Represents a quatity of reputation that is given as a reward"""
+
+    title = models.CharField(max_length=100)
+    description = models.TextField(default='', blank=True)
+
+    reputation_amount = models.IntegerField(default=0)
+
+    class Admin:
+        list_display = ('',)
+        search_fields = ('title',)
+
+    def __unicode__(self):
+        return u'%s - %d' % (self.title, self.reputation_amount)
+
 
 class ReputationMixIn(models.Model):
     """(ReputationMixIn description)"""
