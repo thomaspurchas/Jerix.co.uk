@@ -1,0 +1,43 @@
+Notes
+=====
+
+
+apt-get update
+
+apt-get install vim
+
+apt-get install python-pip
+
+apt-get install git mercurial
+
+apt-get install libpq-dev
+
+apt-get install ruby python
+
+apt-get install libjpeg-dev libz-dev python-dev
+
+pip install virtualenv
+
+groupadd django
+
+useradd -m -d /home/django -g django django
+
+cd /home/django
+
+# May need to setup deploy keys here
+
+git clone git@github.com:thomaspurchas/Jerix.co.uk.git
+
+cd Jerix.co.uk/jerix.co.uk
+
+virtualenv .
+
+source bin/activate
+
+pip install -r requirments.txt
+
+cd eso
+
+./manage syncdb
+
+./manage.py run_gunicorn -b 31.222.167.236:80
