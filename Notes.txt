@@ -4,17 +4,7 @@ Notes
 
 apt-get update
 
-apt-get install vim
-
-apt-get install python-pip
-
-apt-get install git mercurial
-
-apt-get install libpq-dev
-
-apt-get install ruby python
-
-apt-get install libjpeg-dev libz-dev python-dev
+apt-get install vim python-pip git mercurial libpq-dev ruby python libjpeg-dev libz-dev python-dev
 
 pip install virtualenv
 
@@ -38,6 +28,8 @@ pip install -r requirments.txt
 
 cd eso
 
-./manage syncdb
+./manage.py syncdb
+
+./mangae.py migrate
 
 ./manage.py run_gunicorn -b 31.222.167.236:80
