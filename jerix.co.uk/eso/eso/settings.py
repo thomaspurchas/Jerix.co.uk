@@ -152,6 +152,7 @@ INSTALLED_APPS = (
     'tastypie',
     'gunicorn',
     'celery_haystack',
+    'cumulus',
 
     # My Apps
     'modules',
