@@ -66,7 +66,7 @@ class UserProfile(models.Model):
 class AuthoredObject(models.Model):
     """(AuthoredObject description)"""
 
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, related_name="+")
 
     def author_full_name(self):
         """docstring for full_name"""
