@@ -1,6 +1,7 @@
 import os
 
 from django.db import models
+from django.db.models.signals import post_delete, pre_delete
 from django.contrib.auth.models import User
 from django.conf import settings
 
@@ -15,7 +16,14 @@ class Blob(models.Model):
     upload_to_url = ''
     
     def upload_to(instance, name):
-        return os.path.join(instance.upload_to_url, name)
+        parts = instance.upload_to_url.split(':')
+        if len(parts) > 1:
+            path = ':'.join(parts[1:])
+            cont = parts[0]
+        else:
+            path = ''
+            cont = ''
+        return "%s:%s" % (cont, os.path.join(path, name))
     
     file = models.FileField(upload_to=upload_to)
     
@@ -23,7 +31,7 @@ class Blob(models.Model):
         abstract = True
 
     def __unicode__(self):
-        return unicode(md5_sum)
+        return unicode(self.file.name)
 
 class ParentBlob(Blob):
     """(File description)"""
@@ -37,7 +45,7 @@ class DerivedBlob(Blob):
     
     class Meta:
         unique_together = ('upload_to_url', 'md5_sum')
-
+    
 class Document(AuthoredObject):
     title = models.CharField(max_length=200)
     file_name = models.CharField(max_length=100)
@@ -79,5 +87,20 @@ class DerivedDocument(models.Model):
         ordering = ['derived_from', 'index']
 
     def __unicode__(self):
-        return '%s derived from: ' % (self.file.name, 
-                                        self.derived_from.file.name)
+        return '%s derived from: %s' % (self.blob, 
+                                        self.derived_from)
+
+def check_blob(sender, instance, **kargs):
+    """Checks to see if a blob has become orphened"""
+    if instance.blob.documents.count() == 0:
+        instance.blob.delete()
+        
+post_delete.connect(check_blob, Document)
+post_delete.connect(check_blob, DerivedDocument)
+                                        
+def delete_file(sender, instance, **kargs):
+    """Deletes the file underlying the deleted blob"""
+    instance.file.delete(save=False)
+    
+post_delete.connect(delete_file, ParentBlob)
+post_delete.connect(delete_file, DerivedBlob)

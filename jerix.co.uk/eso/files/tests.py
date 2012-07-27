@@ -9,7 +9,7 @@ from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 
-from files.models import Document
+from files.models import Document, DerivedDocument, ParentBlob, DerivedBlob
 from files.helpers import uploaded_new_document, uploaded_new_derived_document
 
 class SimpleTest(TestCase):
@@ -62,6 +62,59 @@ class SimpleTest(TestCase):
         derived.derived_from = doc.blob
         derived.index = 0
         derived.save()
+        
+    def test_orphaned_blobs(self):
+        """Make sure that deleting a Document does not result in orphanded blobs"""
+        doc = uploaded_new_document(self.upload)
+        doc.title = 'File uploaded'
+        doc.author = self.u1
+        doc.save()
+        
+        self.upload.name = 'fake.png'
+        derived = uploaded_new_derived_document(self.upload)
+        derived.derived_from = doc.blob
+        derived.index = 0
+        derived.save()
+        
+        DerivedDocument.objects.all().delete()
+        self.assertEqual(DerivedBlob.objects.count(), 0)
+        
+        Document.objects.all().delete()
+        self.assertEqual(ParentBlob.objects.count(), 0)
+
+    def test_deleted_derived(self):
+        """
+        Make sure that derived documents are deleted when parent document and
+        blob are deleted.
+        """
+        doc = uploaded_new_document(self.upload)
+        doc.title = 'File uploaded'
+        doc.author = self.u1
+        doc.save()
+        
+        self.upload.name = 'fake.png'
+        derived = uploaded_new_derived_document(self.upload)
+        derived.derived_from = doc.blob
+        derived.index = 0
+        derived.save()
+        
+        Document.objects.all().delete()
+        self.assertEqual(DerivedBlob.objects.count(), 0)
+        
+    def test_files_are_deleted(self):
+        """Make sure file is deleted when blob is"""
+        doc = uploaded_new_document(self.upload)
+        doc.title = 'File uploaded'
+        doc.author = self.u1
+        doc.save()
+        name = doc.blob.file.name
+        
+        from django.core.files.storage import get_storage_class
+        storage = get_storage_class()()
+        
+        doc.delete()
+        self.assertFalse(storage.exists(name))
+        
 
     def tearDown(self):
         self.u1.delete()
