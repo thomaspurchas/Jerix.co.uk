@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
+from files.models import Document
 from accounts.models import AuthoredObject
 
 # Create your models here.
@@ -143,7 +144,11 @@ class Material(AuthoredObject):
 
     post = models.ForeignKey(Post, related_name='materials')
 
-    #file = models.ForeignKey(RELATED_MODEL)
+    document = models.ForeignKey('files.Document')
+
+    @property
+    def file(self):
+        return self.document.file
 
     class Meta:
         unique_together = ('index', 'post')
