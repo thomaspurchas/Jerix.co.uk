@@ -159,6 +159,7 @@ INSTALLED_APPS = (
     'search',
     'store',
     'accounts',
+    'files'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -213,7 +214,54 @@ LOGGING = {
     }
 }
 
+FILE_TYPE_MAPPINGS = {
+    "(?i).*\.pdf$": {
+        "type": "pdf",
+        "path": "DerivedPDFs:",
+    },
+    "(?i).*\.png$": {
+        "type": "png",
+        "path": "DerivedPNGs:",
+    },
+    "(?i).*\.docx?$": {
+        "type": "word",
+        "path": None,
+    },
+    "(?i).*\.(pptx?|ppts?)$": {
+        "type": "slide",
+        "path": None,
+    },
+}
+
+PARENT_BLOBS_CONTAINER = 'ParentBlobs'
+
+CUMULUS = {
+    'API_KEY': '',
+    'AUTH_URL': 'uk_authurl',
+    'CNAMES': None,
+    'CONTAINERS': {
+        'uploads': False,
+        PARENT_BLOBS_CONTAINER: False,
+        'DerivedPDFs': False,
+        'DerivedPNGs': True,
+    },
+    'DEFAULT_CONTAINER': 'uploads',
+    'SERVICENET': False,
+    'TIMEOUT': 5,
+    'TTL': 600,
+    'USE_SSL': False,
+    'USERNAME': '',
+    'STATIC_CONTAINER': None,
+    'FILTER_LIST': []
+}
+
+DEFAULT_FILE_STORAGE = 'cumulus.storage.CloudFilesStorage'
+
 try:
     from local_settings import *
+    CUMULUS.update({
+        'API_KEY': CLOUDFILES_API_KEY,
+        'USERNAME': CLOUDFILES_USERNAME
+    })
 except:
     pass
