@@ -255,7 +255,8 @@ CUMULUS = {
     'FILTER_LIST': []
 }
 
-DEFAULT_FILE_STORAGE = 'cumulus.storage.CloudFilesStorage'
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'cumulus.storage.CloudFilesStorage'
 
 try:
     from local_settings import *
