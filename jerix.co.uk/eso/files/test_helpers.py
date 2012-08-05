@@ -17,6 +17,7 @@ def uploaded_new_document(file):
     except ParentBlob.DoesNotExist:
         blob = ParentBlob.objects.create(md5_sum=md5_sum, file=file,
                                             file_type=file_type)
+        blob.save()
     document = Document()
     document.file_name = os.path.basename(file.name)
     document._blob = blob

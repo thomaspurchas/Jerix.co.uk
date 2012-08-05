@@ -30,6 +30,24 @@ class Blob(models.Model):
     file = models.FileField(upload_to=upload_to)
 
     @classmethod
+    def _new_delete(*args, **kargs):
+        pass
+
+    def _replace_delete(self):
+        if not hasattr(self.file, 'old_delete'):
+            self.file.old_delete = self.file.delete
+            self.file.delete = Blob._new_delete
+
+    def __init__(self, *args, **kargs):
+        super(Blob, self).__init__(*args, **kargs)
+        self._replace_delete()
+
+    @classmethod
+    def blob_saved(self, sender, instance, **kargs):
+        """Make sure that blob changes dont break things"""
+        instance._replace_delete()
+
+    @classmethod
     def check_blob(cls, blob):
         """Check if the blob is orphaned"""
         if blob.documents.count() == 0:
@@ -39,7 +57,7 @@ class Blob(models.Model):
     def delete_file(cls, sender, instance, **kargs):
         """Deletes the file underlying the deleted blob"""
         if instance.file.name:
-            instance.file.delete(save=False)
+            instance.file.old_delete(save=False)
 
     class Meta:
         abstract = True
@@ -156,6 +174,9 @@ pre_save.connect(BaseDocument.document_saved, DerivedDocument)
 
 post_delete.connect(BaseDocument.document_deleted, Document)
 post_delete.connect(BaseDocument.document_deleted, DerivedDocument)
+
+pre_save.connect(Blob.blob_saved, ParentBlob)
+pre_save.connect(Blob.blob_saved, DerivedBlob)
 
 post_delete.connect(Blob.delete_file, ParentBlob)
 post_delete.connect(Blob.delete_file, DerivedBlob)
