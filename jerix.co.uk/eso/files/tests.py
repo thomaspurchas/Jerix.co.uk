@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 
 from files.models import Document, DerivedDocument, ParentBlob, DerivedBlob
 from files.test_helpers import uploaded_new_document, uploaded_new_derived_document
+from files.errors import ReadOnlyFileError
 
 class SimpleTest(TestCase):
     def setUp(self):
@@ -158,6 +159,16 @@ class SimpleTest(TestCase):
 
         self.assertEqual(DerivedBlob.objects.all()[0].file.read(),
                                                         self.upload2.read())
+
+    def test_read_only_file(self):
+
+        doc = Document(title='New Doc', file_name='A File', file=self.upload,
+                                                                author=self.u1)
+        doc.save()
+
+        self.assertRaises(ReadOnlyFileError, doc.file.delete)
+        self.assertRaises(ReadOnlyFileError, doc.file.write, 'test')
+        self.assertRaises(ReadOnlyFileError, doc.file.writelines, 'test')
 
     def tearDown(self):
         self.u1.delete()

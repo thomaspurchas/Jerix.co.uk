@@ -7,7 +7,8 @@ from django.conf import settings
 
 from accounts.models import AuthoredObject
 
-from files.helpers import identify_and_md5, get_path
+from files.helpers import identify_and_md5, get_path, ReadOnlyFile
+from files.errors import ReadOnlyFileError
 
 # Create your models here.
 class Blob(models.Model):
@@ -30,22 +31,9 @@ class Blob(models.Model):
     file = models.FileField(upload_to=upload_to)
 
     @classmethod
-    def _new_delete(*args, **kargs):
-        pass
-
-    def _replace_delete(self):
-        if not hasattr(self.file, 'old_delete'):
-            self.file.old_delete = self.file.delete
-            self.file.delete = Blob._new_delete
-
-    def __init__(self, *args, **kargs):
-        super(Blob, self).__init__(*args, **kargs)
-        self._replace_delete()
-
-    @classmethod
     def blob_saved(self, sender, instance, **kargs):
         """Make sure that blob changes dont break things"""
-        instance._replace_delete()
+        pass
 
     @classmethod
     def check_blob(cls, blob):
@@ -57,7 +45,7 @@ class Blob(models.Model):
     def delete_file(cls, sender, instance, **kargs):
         """Deletes the file underlying the deleted blob"""
         if instance.file.name:
-            instance.file.old_delete(save=False)
+            instance.file.delete(save=False)
 
     class Meta:
         abstract = True
@@ -99,7 +87,8 @@ class BaseDocument(models.Model):
 
     def _get_file(self):
         """Return the file object"""
-        return self._blob.file
+        file = ReadOnlyFile(self._blob.file.file)
+        return file
 
     class Meta:
         abstract = True
@@ -174,9 +163,6 @@ pre_save.connect(BaseDocument.document_saved, DerivedDocument)
 
 post_delete.connect(BaseDocument.document_deleted, Document)
 post_delete.connect(BaseDocument.document_deleted, DerivedDocument)
-
-pre_save.connect(Blob.blob_saved, ParentBlob)
-pre_save.connect(Blob.blob_saved, DerivedBlob)
 
 post_delete.connect(Blob.delete_file, ParentBlob)
 post_delete.connect(Blob.delete_file, DerivedBlob)

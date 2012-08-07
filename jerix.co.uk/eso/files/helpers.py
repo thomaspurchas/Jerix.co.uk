@@ -3,8 +3,9 @@ import re
 import hashlib
 
 from django.conf import settings
+from django.core.files import File
 
-from files.errors import CannotIdentifyFileType
+from files.errors import CannotIdentifyFileTypeError, ReadOnlyFileError
 
 compiled_regexs = {}
 type_to_path = {}
@@ -15,7 +16,7 @@ def _compile_regexs():
         compiled = re.compile(regex)
         file_type = info['type']
         compiled_regexs[compiled] = file_type
-        
+
 def _generate_type_to_path():
     """"""
     for _, info in settings.FILE_TYPE_MAPPINGS.items():
@@ -35,15 +36,25 @@ def identify_and_md5(file):
     """docstring for identify_and_mdf"""
     file_type = identify_file_type(file.name)
     if not file_type:
-        raise CannotIdentifyFileType(file)
+        raise CannotIdentifyFileTypeError(file)
     m = hashlib.md5()
     for chunk in file.chunks():
         m.update(chunk)
     md5_sum = m.hexdigest()
     return (file_type, md5_sum)
-    
+
 def get_path(file_type):
     return type_to_path[file_type]
-    
+
+class ReadOnlyFile(File):
+    def write(self, *args, **kargs):
+        raise ReadOnlyFileError('Cannot write to file')
+    def delete(self, *args, **kargs):
+        raise ReadOnlyFileError('Cannot delete file')
+
+    write = write
+    writelines = write
+    delete = delete
+
 _compile_regexs()
 _generate_type_to_path()
