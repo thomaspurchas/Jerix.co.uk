@@ -94,8 +94,14 @@ class BaseDocument(models.Model):
 
     def _get_file(self):
         """Return the file object"""
-        file = ReadOnlyFile(self._blob.file.file)
+        file = ReadOnlyFile(self._blob.file)
         return file
+
+    @property
+    def url(self):
+        """Get a public url for the file"""
+        from django.core.files.storage import default_storage
+        return default_storage.url(self.file.name)
 
     class Meta:
         abstract = True
