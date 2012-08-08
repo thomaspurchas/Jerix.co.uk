@@ -30,9 +30,9 @@ class DocumentAdmin(admin.ModelAdmin):
     form = DocumentForm
     exclude = ['_blob']
 
-    def add_view(self, *args, **kargs):
-        self.exclude.append('file_name')
-        return super(DocumentAdmin, self).add_view(*args, **kargs)
+    # def add_view(self, *args, **kargs):
+    #     self.exclude.append('file_name')
+    #     return super(DocumentAdmin, self).add_view(*args, **kargs)
 
     def save_model(self, request, obj, form, change):
         if isinstance(form.cleaned_data['file'], UploadedFile):
