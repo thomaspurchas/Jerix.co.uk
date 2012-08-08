@@ -1,4 +1,5 @@
 import os
+import djcelery
 # Django settings for eso project.
 
 DEBUG = True
@@ -20,6 +21,10 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+# Celery
+djcelery.setup_loader()
+BROKER_URL = 'django://'
 
 # Haystack
 HAYSTACK_SITECONF = 'eso.search_sites'
@@ -147,12 +152,12 @@ INSTALLED_APPS = (
     # Utility apps
     'haystack',
     'south',
-    'djcelery',
-    'kombu.transport.django',
     'tastypie',
     'gunicorn',
     'celery_haystack',
     'cumulus',
+    'djcelery',
+    #'djcelery.transport',
 
     # My Apps
     'modules',
