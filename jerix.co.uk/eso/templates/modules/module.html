@@ -36,6 +36,8 @@
 			{% for material in post.sorted_materials  %}
 				<div class="material">
 					{{ material.title }}
+					<a href={{ material.document.url }}>
+					Download</a>
 				</div>
 			{% endfor %}
 			{% for sub_post in post.sub_posts.all %}
