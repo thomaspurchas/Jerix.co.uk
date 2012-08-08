@@ -32,15 +32,19 @@ def identify_file_type(name):
     else:
         return None
 
+def generate_md5(file):
+    m = hashlib.md5()
+    for chunk in file.chunks():
+        m.update(chunk)
+    return m.hexdigest()
+
+
 def identify_and_md5(file):
     """docstring for identify_and_mdf"""
     file_type = identify_file_type(file.name)
     if not file_type:
         raise CannotIdentifyFileTypeError(file)
-    m = hashlib.md5()
-    for chunk in file.chunks():
-        m.update(chunk)
-    md5_sum = m.hexdigest()
+    md5_sum = generate_md5(file)
     return (file_type, md5_sum)
 
 def get_path(file_type):
@@ -52,6 +56,7 @@ class ReadOnlyFile(File):
     def delete(self, *args, **kargs):
         raise ReadOnlyFileError('Cannot delete file')
 
+    save = write
     write = write
     writelines = write
     delete = delete

@@ -1,13 +1,13 @@
 import os
 
 from django.db import models
-from django.db.models.signals import post_delete, pre_save
+from django.db.models.signals import post_delete, pre_save, post_save
 from django.contrib.auth.models import User
 from django.conf import settings
 
 from accounts.models import AuthoredObject
 
-from files.helpers import identify_and_md5, get_path, ReadOnlyFile
+from files.helpers import identify_and_md5, generate_md5, get_path, ReadOnlyFile
 from files.errors import ReadOnlyFileError
 
 # Create your models here.
@@ -33,7 +33,8 @@ class Blob(models.Model):
     @classmethod
     def blob_saved(self, sender, instance, **kargs):
         """Make sure that blob changes dont break things"""
-        pass
+        if instance.md5_sum in [None, '']:
+            instance.md5_sum = generate_md5(instance.file)
 
     @classmethod
     def check_blob(cls, blob):
@@ -74,9 +75,15 @@ class BaseDocument(models.Model):
         """Checks changes to the document, and how they may affect underlying blobs"""
         if not raw:
             if instance._blob.id == None:
+                print instance._blob.id
                 instance._blob.save()
                 # We need to do this or django goes nuts
                 instance._blob = instance._blob
+
+    @classmethod
+    def document_post_save(cls, sender, instance, raw=False, **kargs):
+        """Blob check needs to happen after db modification"""
+        if not raw:
             if hasattr(instance, '_old_blob'):
                 Blob.check_blob(instance._old_blob)
                 del instance._old_blob
@@ -119,9 +126,10 @@ class Document(BaseDocument, AuthoredObject):
         path = get_path(file_type)
         try:
             blob = ParentBlob.objects.get(md5_sum=md5)
-            self._old_blob = self._blob
         except ParentBlob.DoesNotExist:
             blob = ParentBlob(md5_sum=md5, file_type=file_type, file=file)
+        if self._blob_id:
+            self._old_blob = self._blob
         self._blob = blob
 
     file = property(BaseDocument._get_file, _set_file)
@@ -161,8 +169,14 @@ class DerivedDocument(BaseDocument):
 pre_save.connect(BaseDocument.document_saved, Document)
 pre_save.connect(BaseDocument.document_saved, DerivedDocument)
 
+post_save.connect(BaseDocument.document_post_save, Document)
+post_save.connect(BaseDocument.document_post_save, DerivedDocument)
+
 post_delete.connect(BaseDocument.document_deleted, Document)
 post_delete.connect(BaseDocument.document_deleted, DerivedDocument)
+
+pre_save.connect(Blob.blob_saved, ParentBlob)
+pre_save.connect(Blob.blob_saved, DerivedBlob)
 
 post_delete.connect(Blob.delete_file, ParentBlob)
 post_delete.connect(Blob.delete_file, DerivedBlob)
