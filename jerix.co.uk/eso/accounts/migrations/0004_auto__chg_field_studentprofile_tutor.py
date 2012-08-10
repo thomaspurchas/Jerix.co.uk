@@ -8,41 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'UserProfile.about_me'
-        db.add_column('accounts_userprofile', 'about_me',
-                      self.gf('django.db.models.fields.TextField')(default='', blank=True),
-                      keep_default=False)
 
-        # Adding field 'UserProfile.picture'
-        db.add_column('accounts_userprofile', 'picture',
-                      self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True),
-                      keep_default=False)
-
-        # Deleting field 'StudentProfile.year'
-        db.delete_column('accounts_studentprofile', 'year')
-
-        # Adding M2M table for field modules on 'StudentProfile'
-        db.create_table('accounts_studentprofile_modules', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('studentprofile', models.ForeignKey(orm['accounts.studentprofile'], null=False)),
-            ('module', models.ForeignKey(orm['modules.module'], null=False))
-        ))
-        db.create_unique('accounts_studentprofile_modules', ['studentprofile_id', 'module_id'])
-
+        # Changing field 'StudentProfile.tutor'
+        db.alter_column('accounts_studentprofile', 'tutor_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.LecturerProfile']))
 
     def backwards(self, orm):
-        # Deleting field 'UserProfile.about_me'
-        db.delete_column('accounts_userprofile', 'about_me')
 
-        # Deleting field 'UserProfile.picture'
-        db.delete_column('accounts_userprofile', 'picture')
-
-
-        # User chose to not deal with backwards NULL issues for 'StudentProfile.year'
-        raise RuntimeError("Cannot reverse this migration. 'StudentProfile.year' and its values cannot be restored.")
-        # Removing M2M table for field modules on 'StudentProfile'
-        db.delete_table('accounts_studentprofile_modules')
-
+        # Changing field 'StudentProfile.tutor'
+        db.alter_column('accounts_studentprofile', 'tutor_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User']))
 
     models = {
         'accounts.lecturerprofile': {
@@ -53,7 +26,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'StudentProfile'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modules': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['modules.Module']", 'symmetrical': 'False'}),
-            'tutor': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
+            'tutor': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accounts.LecturerProfile']"}),
+            'year': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['students.Year']"})
         },
         'accounts.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
@@ -121,6 +95,12 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        'students.year': {
+            'Meta': {'object_name': 'Year'},
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '30'})
         }
     }
 

@@ -6,8 +6,8 @@ from django.db.models.signals import post_save
 class StudentProfile(models.Model):
     """(StudentProfile description)"""
 
-    year = models.CharField(blank=False, max_length=30)
-    tutor = models.ForeignKey(User)
+    year = models.ForeignKey('students.Year')
+    tutor = models.ForeignKey('accounts.LecturerProfile')
 
     modules = models.ManyToManyField('modules.Module')
 
@@ -45,7 +45,7 @@ class UserProfile(models.Model):
 
     title = models.CharField(blank=True, max_length=30)
     about_me = models.TextField(blank=True)
-    picture = models.ImageField(upload_to="profile_pics:", null=True)
+    picture = models.ImageField(upload_to="profile_pics:", null=True, blank=True)
 
     lecturer_profile = models.OneToOneField(LecturerProfile, null=True, blank=True)
     student_profile = models.OneToOneField(StudentProfile, null=True, blank=True)
