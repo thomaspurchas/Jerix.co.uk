@@ -27,8 +27,11 @@ djcelery.setup_loader()
 BROKER_URL = 'django://'
 
 # Haystack
-HAYSTACK_SITECONF = 'eso.search_sites'
-HAYSTACK_SEARCH_ENGINE = 'dummy'
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

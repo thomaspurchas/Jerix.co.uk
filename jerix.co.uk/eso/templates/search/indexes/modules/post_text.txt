@@ -1,0 +1,5 @@
+{{ object.title }}
+{{ object.description }}
+{% for material in object.materials %}
+	{{ material.title }}
+{% endfor %}
