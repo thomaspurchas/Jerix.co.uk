@@ -28,7 +28,10 @@ class ParentPostAdmin(admin.ModelAdmin):
     class Media:
         js = ['js/collapsed_stacked_inlines.js']
 
-admin.site.register(Module)
+class ModuleAdmin(admin.ModelAdmin):
+    filter_horizontal = ('lecturers',)
+
+admin.site.register(Module, ModuleAdmin)
 admin.site.register(ParentPost, ParentPostAdmin)
 admin.site.register(SubPost, SubPostAdmin)
 admin.site.register(Material)
