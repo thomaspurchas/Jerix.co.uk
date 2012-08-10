@@ -9,6 +9,8 @@ class StudentProfile(models.Model):
     year = models.CharField(blank=False, max_length=30)
     tutor = models.ForeignKey(User)
 
+    modules = models.ManyToManyField('modules.Module')
+
     class Admin:
         list_display = ('',)
         search_fields = ('',)
@@ -42,6 +44,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     title = models.CharField(blank=True, max_length=30)
+    about_me = models.TextField(blank=True)
+    picture = models.ImageField(upload_to="profile_pics:", null=True)
 
     lecturer_profile = models.OneToOneField(LecturerProfile, null=True, blank=True)
     student_profile = models.OneToOneField(StudentProfile, null=True, blank=True)
@@ -55,6 +59,12 @@ class UserProfile(models.Model):
         """docstring for full_title"""
 
         return u'%s %s' % (self.title, self.full_name())
+
+    def is_lecturer(self):
+        return True if self.lecturer_profile else False
+
+    def is_student(self):
+        return True if self.student_profile else False
 
     class Admin:
         list_display = ('',)
