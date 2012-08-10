@@ -1,0 +1,3 @@
+[submodule "jerix.co.uk/src/cumulus"]
+	path = jerix.co.uk/src/cumulus
+	url = git@github.com:thomaspurchas/django-cumulus.git
