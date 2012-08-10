@@ -75,7 +75,8 @@ class Module(models.Model):
     subject = models.ForeignKey(Subject)
     year = models.ForeignKey(AcademicYear)
 
-    lecturers = models.ManyToManyField(User)
+    lecturers = models.ManyToManyField('accounts.LecturerProfile',
+                                        related_name='modules')
 
     class Admin:
         list_display = ('',)
