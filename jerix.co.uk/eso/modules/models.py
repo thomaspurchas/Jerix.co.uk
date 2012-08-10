@@ -2,6 +2,8 @@ import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
 
 from files.models import Document
 from accounts.models import AuthoredObject
@@ -82,6 +84,10 @@ class Module(models.Model):
         list_display = ('',)
         search_fields = ('',)
 
+    def get_absolute_url(self):
+        return reverse('module-posts', kwargs={"module_id": self.id,
+                            "slug": slugify(self.title)})
+
     def __unicode__(self):
         return u'%s - %s' % (self.short_code, self.title)
 
@@ -117,6 +123,10 @@ class ParentPost(Post, HistoryMixIn):
         unique_together = ('module', 'index', 'historical_period')
         ordering = ['module', 'index']
 
+    def get_absolute_url(self):
+        module_url = self.module.get_absolute_url()
+        return "%s#%d-%s" % (module_url, self.id, slugify(self.title))
+
     def __unicode__(self):
         return u"%s - %s" % (self.module.title, self.title)
 
@@ -129,6 +139,11 @@ class SubPost(Post):
     class Meta:
         unique_together = ('parent', 'index')
         ordering = ['parent', 'index']
+
+    def get_absolute_url(self):
+        module_url = self.parent.module.get_absolute_url()
+        return "%s#%d%d-%s" % (module_url, self.parent.id, self.id,
+                                                    slugify(self.title))
 
     def __unicode__(self):
         return u"%s - %s - %s" % (
