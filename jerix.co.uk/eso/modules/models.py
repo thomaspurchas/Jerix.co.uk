@@ -118,6 +118,7 @@ class ParentPost(Post, HistoryMixIn):
 
     module = models.ForeignKey(Module, related_name='posts')
     index = models.IntegerField()
+    is_parent = True
 
     class Meta:
         unique_together = ('module', 'index', 'historical_period')
@@ -135,6 +136,7 @@ class SubPost(Post):
 
     parent = models.ForeignKey(ParentPost, related_name='sub_posts')
     index = models.IntegerField()
+    is_parent = False
 
     class Meta:
         unique_together = ('parent', 'index')
