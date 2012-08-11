@@ -1,0 +1,24 @@
+<div class="post" id="{{ post.slug }}">
+	<h1>{{ post.title }}</h1>
+	<h2>{{ post.post_date }}</h2>
+	<h2>{{ post.author_full_title }}</h2>
+	{% if post.description %}
+		<div class="description">
+			<p>{{ post.description }}</p>
+		</div>
+	{% endif %}
+	{% for material in post.sorted_materials  %}
+		<div class="material">
+			{{ material.title }}
+			<a href={{ material.document.url }}>
+			Download</a>
+		</div>
+	{% endfor %}
+	{% if post.is_parent %}
+		{% for sub_post in post.sub_posts.all %}
+			{% with template="modules/module/post.html" %}
+				{% include template with post=sub_post only %}
+			{% endwith %}
+		{% endfor %}
+	{% endif %}
+</div>
