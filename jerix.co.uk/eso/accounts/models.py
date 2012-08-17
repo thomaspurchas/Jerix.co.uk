@@ -50,6 +50,8 @@ class UserProfile(models.Model):
     lecturer_profile = models.OneToOneField(LecturerProfile, null=True, blank=True)
     student_profile = models.OneToOneField(StudentProfile, null=True, blank=True)
 
+    current_reputation = models.IntegerField(default=0)
+
     def full_name(self):
         """docstring for full_name"""
 

@@ -1,0 +1,39 @@
+{% extends "modules/module_base.html" %}
+
+{% block content %}
+<div id="questions">
+	{% for question in questions %}
+		<div class="question">
+			<div class="questionInfo">
+				<div class="votes fLeft">
+					<div class="mini-count">
+						{{ question.current_vote }}
+					</div>
+					<div class="small-text">
+						{% if question.current_vote != 1 %}
+							votes
+						{% else %}
+							vote
+						{% endif %}
+					</div>
+				</div>
+				<div class="answers fLeft">
+					<div class="mini-count">
+						{{ question.total_answers }}
+					</div>
+					<div class="small-text">
+						{% if question.totol_answers != 1 %}
+							answers
+						{% else %}
+							answer
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="questionSummary">
+				<h3>{{ question.title }}</h3>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+{% endblock content %}

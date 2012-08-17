@@ -168,7 +168,9 @@ INSTALLED_APPS = (
     'store',
     'accounts',
     'files',
-    'students'
+    'students',
+    'reputation',
+    'q_and_a',
 )
 
 # A sample logging configuration. The only tangible logging

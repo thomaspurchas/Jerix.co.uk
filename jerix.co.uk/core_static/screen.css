@@ -183,3 +183,41 @@ body {
 .post .material {
 /*	background-color: #000;*/
 }
+
+.question {
+	background-color: #ff0bf3;
+	margin-top: 20px;
+	padding: 10px 10px 10px;
+	overflow: hidden;
+	height: 50px;
+}
+
+.question .questionInfo {
+	float: left;
+}
+
+.question .votes {
+	height: 40px;
+	margin: 5px;
+	text-align: center;
+	width: 30px;
+}
+
+.question .answers {
+	height: 40px;
+	padding: 5px;
+	margin: 0 5px;
+	text-align: center;
+	width: 50px;
+	background: blue;
+}
+
+.mini-count {
+	font-size: 180%;
+	height: 26px;
+	font-weight: bold;
+}
+
+.small-text {
+	font-size: 75%;
+}

@@ -12,6 +12,8 @@ urlpatterns = patterns('',
 
     url(r'^module/(?P<module_id>\d+)/(?P<slug>.+)/posts$', 'modules.views.module_posts', name="module-posts"),
     url(r'^module/(?P<module_id>\d+)/posts$', 'modules.views.module_posts'),
+    url(r'^module/(?P<module_id>\d+)/(?P<slug>.+)/questions$', 'q_and_a.views.module_q_and_a', name="module-qa"),
+    url(r'^module/(?P<module_id>\d+)/questions$', 'q_and_a.views.module_q_and_a'),
     (r'^search/', include('haystack.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
