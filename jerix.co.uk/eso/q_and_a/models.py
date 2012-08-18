@@ -10,7 +10,7 @@ from modules.models import Module
 class Question(ReputationMixIn, AuthoredObject):
     """(Question description)"""
 
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=300)
     detail = models.TextField()
     asked = models.DateTimeField(default=datetime.datetime.now)
     module = models.ForeignKey(Module)
@@ -18,8 +18,6 @@ class Question(ReputationMixIn, AuthoredObject):
     @property
     def current_vote(self):
         """docstring for vote"""
-        print 'vote'
-        print self.reputation.current_vote()
         return self.reputation.current_vote()
 
     @property
@@ -39,8 +37,6 @@ class Answer(AuthoredObject, ReputationMixIn):
     @property
     def current_vote(self):
         """docstring for vote"""
-        print 'vote'
-        print self.reputation.current_vote()
         return self.reputation.current_vote()
 
     def __unicode__(self):
