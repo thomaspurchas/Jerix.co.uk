@@ -1,0 +1,26 @@
+{% extends "q_and_a/base.html" %}
+{% load hitcount_tags %}
+
+{% block title %}{{ question.title }}{% endblock title %}
+
+{% block content %}
+	<h2>{{ question.title }}</h2>
+	<p>{{ question.detail }}</p>
+
+	{% for answer in answers %}
+		<h2>{{ answer.title }}</h2>
+		<p>{{ answer.detail }}</p>
+	{% endfor %}
+{% endblock content %}
+
+{% block head %}
+{% include "csrf_js.html" %}
+{% endblock head %}
+
+{% block footer %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		{% get_hit_count_javascript for question %}
+	});
+</script>
+{% endblock footer %}
