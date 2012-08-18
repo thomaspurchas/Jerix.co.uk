@@ -10,11 +10,18 @@ urlpatterns = patterns('',
     # url(r'^$', 'eso.views.home', name='home'),
     # url(r'^eso/', include('eso.foo.urls')),
 
-    url(r'^module/(?P<module_id>\d+)/(?P<slug>.+)/posts$', 'modules.views.module_posts', name="module-posts"),
-    url(r'^module/(?P<module_id>\d+)/posts$', 'modules.views.module_posts'),
-    url(r'^module/(?P<module_id>\d+)/(?P<slug>.+)/questions$', 'q_and_a.views.module_q_and_a', name="module-qa"),
-    url(r'^module/(?P<module_id>\d+)/questions$', 'q_and_a.views.module_q_and_a'),
+    url(r'^module/(?P<module_id>\d+)/(?P<slug>.+)/posts/$', 'modules.views.module_posts', name="module-posts"),
+    url(r'^module/(?P<module_id>\d+)/posts/$', 'modules.views.module_posts'),
+    url(r'^module/(?P<module_id>\d+)/(?P<slug>.+)/questions/$', 'q_and_a.views.module_q_and_a', name="module-qa"),
+    url(r'^module/(?P<module_id>\d+)/questions/$', 'q_and_a.views.module_q_and_a'),
+
+    url(r'^questions/question/(?P<question_id>\d+)/(?P<slug>.+)/$', 'q_and_a.views.question', name="question"),
+    url(r'^questions/question/(?P<question_id>\d+)/$', 'q_and_a.views.question'),
+
     (r'^search/', include('haystack.urls')),
+
+    # Hitcount ajax url
+    url(r'^analytics/', include('hitcount.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
