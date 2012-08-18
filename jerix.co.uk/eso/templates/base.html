@@ -2,48 +2,53 @@
 <html lang="en">
 <head>
     <title>{% block title %}The New ESO{% endblock title %}</title>
-	<link rel="stylesheet" href="{{ STATIC_URL }}screen.css" title="Screen" type="text/css" media="screen" charset="utf-8">
-	{% block head %}{% endblock head %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}screen.css" title="Screen" type="text/css" media="screen" charset="utf-8">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    {% block head %}{% endblock head %}
 </head>
 
 <body id="base" onload="">
-	<div id="barBg"></div>
-	<div id="container">
-		<div id="header">
-			<div id="topBar">
-				<div id="homeLink">
-					Jerix
-				</div>
-				<div id="userLinks">
-					<ul>
-					{% if user.is_authenticated %}
-						<li>
-							{{ user.username }}
-						</li>
-						<li>
-							<a href="." title="Lectures">Lectures</a>
-						</li>
-						<li>
-							<a href="." title="Account">Account</a>
-						</li>
-						<li>
-							Stuff
-						</li>
-					{% else %}
-						<li>
-							<a href="." title="Login">Login</a>
-						</li>
-					{% endif %}
-					</ul>
-				</div>
-			</div>
-			{% block headerstack %}
-			{% endblock headerstack %}
-		</div>
-		<div id="content">
-			{% block content %}
-			{% endblock content %}
-		</div>
+    <div id="barBg"></div>
+    <div id="container">
+        <div id="header">
+            <div id="topBar">
+                <div id="homeLink">
+                    Jerix
+                </div>
+                <div id="userLinks">
+                    <ul>
+                    {% if user.is_authenticated %}
+                        <li>
+                            {{ user.username }}
+                        </li>
+                        <li>
+                            <a href="." title="Lectures">Lectures</a>
+                        </li>
+                        <li>
+                            <a href="." title="Account">Account</a>
+                        </li>
+                        <li>
+                            Stuff
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="." title="Login">Login</a>
+                        </li>
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>
+            {% block headerstack %}
+            {% endblock headerstack %}
+        </div>
+        <div id="content">
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </div>
+	<div id="footer">
+		{% block footer %}
+		{% endblock footer %}
+		{% include "feedback.html" %}
 	</div>
-{% include "feedback.html" %}
 </body>
