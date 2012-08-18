@@ -14,7 +14,6 @@ class EntityReputation(models.Model):
 
     def current_vote(self):
         """docstring for current_reputation"""
-        print 'thing'
         return self.up_votes.count() - self.down_votes.count()
 
     def vote_up(self, UserProfile):
