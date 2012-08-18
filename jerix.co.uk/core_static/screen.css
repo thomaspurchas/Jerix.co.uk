@@ -9,6 +9,14 @@ body {
     background-color: #f6e9f9;
 }
 
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	color: blue;
+}
+
 .clear {
     clear: both;
 }
@@ -189,11 +197,15 @@ body {
 	margin-top: 20px;
 	padding: 10px 10px 10px;
 	overflow: hidden;
-	height: 50px;
 }
 
 .question .questionInfo {
+}
+
+.question .questionSummary {
+	margin-left: 10px;
 	float: left;
+	width: 780px;
 }
 
 .question .votes {
@@ -210,6 +222,14 @@ body {
 	text-align: center;
 	width: 50px;
 	background: blue;
+	color: wheat;
+}
+
+.question .views {
+	height: 40px;
+	margin: 5px;
+	text-align: center;
+	width: 30px;
 }
 
 .mini-count {

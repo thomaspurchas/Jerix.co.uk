@@ -1,4 +1,5 @@
 {% extends "modules/module_base.html" %}
+{% load hitcount_tags %}
 
 {% block content %}
 <div id="questions">
@@ -29,9 +30,23 @@
 						{% endif %}
 					</div>
 				</div>
+				<div class="views fLeft">
+					{% get_hit_count for question as views %}
+					<div class="mini-count">
+						{{ views }}
+					</div>
+					<div class="small-text">
+						{% if views != "1" %}
+							views
+						{% else %}
+							view
+						{% endif %}
+					</div>
+
+				</div>
 			</div>
 			<div class="questionSummary">
-				<h3>{{ question.title }}</h3>
+				<h3><a href="">{{ question.title }}</a></h3>
 			</div>
 		</div>
 	{% endfor %}
