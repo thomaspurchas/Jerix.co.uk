@@ -10,34 +10,36 @@
 <body id="base" onload="">
     <div id="barBg"></div>
     <div id="container">
-        <div id="header">
-            <div id="topBar">
-                <div id="homeLink">
-                    Jerix
-                </div>
-                <div id="userLinks">
-                    <ul>
-                    {% if user.is_authenticated %}
-                        <li>
-                            {{ user.username }}
-                        </li>
-                        <li>
-                            <a href="." title="Lectures">Lectures</a>
-                        </li>
-                        <li>
-                            <a href="." title="Account">Account</a>
-                        </li>
-                        <li>
-                            Stuff
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="." title="Login">Login</a>
-                        </li>
-                    {% endif %}
-                    </ul>
-                </div>
+		<div id="topBarWrapper">
+        <div id="topBar">
+            <div id="homeLink">
+                Jerix
             </div>
+            <div id="userLinks">
+                <ul>
+                {% if user.is_authenticated %}
+                    <li>
+                        {{ user.username }}
+                    </li>
+                    <li>
+                        <a href="." title="Lectures">Lectures</a>
+                    </li>
+                    <li>
+                        <a href="." title="Account">Account</a>
+                    </li>
+                    <li>
+                        Stuff
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="." title="Login">Login</a>
+                    </li>
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+		</div>
+        <div id="header">
             {% block headerstack %}
             {% endblock headerstack %}
         </div>

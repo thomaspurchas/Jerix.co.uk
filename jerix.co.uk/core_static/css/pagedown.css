@@ -29,8 +29,9 @@
 .wmd-preview
 {
 	padding: 3px;
-	background: white;
+	border: 2px dotted #888;
 	border-radius: 5px;
+	min-height: 20px;
 }
 
 .wmd-button-row
