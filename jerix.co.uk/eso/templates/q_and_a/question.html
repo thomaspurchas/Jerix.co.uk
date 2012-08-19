@@ -3,19 +3,24 @@
 
 {% block title %}{{ question.title }}{% endblock title %}
 
-{% block content %}
-	<h2>{{ question.title }}</h2>
-	<p>{{ question.detail }}</p>
-
-	{% for answer in answers %}
-		<h2>{{ answer.title }}</h2>
-		<p>{{ answer.detail }}</p>
-	{% endfor %}
-{% endblock content %}
-
 {% block head %}
 {% include "csrf_js.html" %}
 {% endblock head %}
+
+{% block content %}
+	<div class"question">
+		<h2>{{ question.title }}</h2>
+		{% include "q_and_a/post.html" with post=question.detail %}
+	</div>
+	{% for answer in answers %}
+		<div class="answer">
+			<h2>{{ answer.title }}</h2>
+			{% include "q_and_a/post.html" with post=answer.detail %}
+		</div>
+	{% endfor %}
+	<h3>Your Answer</h3>
+   {% include "pagedown.html" %}
+{% endblock content %}
 
 {% block footer %}
 <script type="text/javascript">

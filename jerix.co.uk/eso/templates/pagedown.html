@@ -1,0 +1,26 @@
+{% block head %}
+<script src="{{ STATIC_URL }}js/pagedown/Markdown.Converter.js"></script>
+<script src="{{ STATIC_URL }}js/pagedown/Markdown.Sanitizer.js"></script>
+<script src="{{ STATIC_URL }}js/pagedown/Markdown.Editor.js"></script>
+<script src="{{ STATIC_URL }}js/textarea-resize/textarea-resize.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/pagedown.css" title="Screen" type="text/css" media="screen" charset="utf-8">
+{% endblock head %}
+
+<div id="markdownEditor">
+	<div class="wmd-panel">
+		<div id="wmd-button-bar" class="wmd-button-bar boxsizingBorder"></div>
+			<textarea class="wmd-input boxsizingBorder resizable" id="wmd-input"></textarea>
+	</div>
+	<h4>Preview:</h4>
+	<div id="wmd-preview" class="wmd-panel wmd-preview postText boxsizingBorder"></div>
+	<script type="text/javascript">
+	(function () {
+		var converter = Markdown.getSanitizingConverter();
+		var editor = new Markdown.Editor(converter);
+		editor.run();
+		$(document).ready(function() {
+		$('textarea.resizable:not(.processed)').TextAreaResizer();
+		});
+	})();
+	</script>
+ </div>

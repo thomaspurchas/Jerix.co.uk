@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     # Utility apps
+    'django.contrib.markup',
     'haystack',
     'south',
     'tastypie',
