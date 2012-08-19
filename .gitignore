@@ -6,3 +6,6 @@ jerix.co.uk/lib/
 *.bbprojectd/
 *.sqlite
 jerix.co.uk/media/
+jerix.co.uk/.Python
+jerix.co.uk/include
+jerix.co.uk/src
