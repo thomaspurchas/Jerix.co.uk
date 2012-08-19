@@ -28,10 +28,9 @@
 
 .wmd-preview
 {
-/*	border: 2px dotted #999;*/
-/*	border: 1px solid DarkGray;*/
 	padding: 3px;
 	background: white;
+	border-radius: 5px;
 }
 
 .wmd-button-row
