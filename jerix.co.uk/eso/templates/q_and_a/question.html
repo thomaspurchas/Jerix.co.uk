@@ -7,9 +7,12 @@
 {% include "csrf_js.html" %}
 {% endblock head %}
 
+{% block headerstack %}
+<h2 class="stack bottom">{{ question.title }}</h2>
+{% endblock headerstack %}
+
 {% block content %}
 	<div class"question">
-		<h2>{{ question.title }}</h2>
 		{% include "q_and_a/post.html" with post=question.detail %}
 	</div>
 	{% for answer in answers %}
