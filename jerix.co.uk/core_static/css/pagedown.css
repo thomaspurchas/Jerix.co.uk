@@ -32,6 +32,7 @@
 	border: 2px dotted #888;
 	border-radius: 5px;
 	min-height: 20px;
+	word-wrap: break-word;
 }
 
 .wmd-button-row
