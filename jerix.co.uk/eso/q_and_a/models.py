@@ -2,6 +2,9 @@ import datetime
 
 from django.db import models
 from django.db.models.signals import post_save, pre_save
+from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
+
 from accounts.models import AuthoredObject
 from reputation.models import ReputationMixIn, create_entity_reputation
 from modules.models import Module
@@ -27,6 +30,13 @@ class Question(ReputationMixIn, AuthoredObject):
 
     def __unicode__(self):
         return unicode(self.title)
+
+    def get_absolute_url(self):
+        """docstring for get_absolute_url"""
+        print 'url'
+
+        return reverse('question', kwargs={'question_id': self.pk,
+                        'slug':slugify(self.title)})
 
 class Answer(AuthoredObject, ReputationMixIn):
     """(Answer description)"""

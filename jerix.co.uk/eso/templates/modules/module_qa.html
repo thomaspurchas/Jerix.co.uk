@@ -46,7 +46,7 @@
 				</div>
 			</div>
 			<div class="questionSummary">
-				<h3><a href="">{{ question.title }}</a></h3>
+				<h3><a href="{{ question.get_absolute_url }}">{{ question.title }}</a></h3>
 			</div>
 		</div>
 	{% endfor %}
