@@ -1,3 +1,8 @@
+$blue: #27506C
+$red: #E61515
+$dark-gray: #CCC
+$light-gray: #F9F9F9
+
 *
     padding: 0
     margin: 0
@@ -5,7 +10,7 @@
     font: Verdana
 
 body
-    background-color: #f6e9f9
+    background-color: lighten($blue, 50%)
 
 a
     text-decoration: none
@@ -27,7 +32,7 @@ h1, h2, h3, h4
 pre
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
     padding: 5px
-    background-color: #CCC
+    background-color: $dark-gray
     margin-bottom: 10px
     margin: 1.5em 10px
     padding: .5em 10px
@@ -38,13 +43,13 @@ pre
 
 code
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif
-    background-color: #CCC
+    background-color: $dark-gray
 
 
 blockquote
     position: relative
-    background: #f9f9f9
-    /*border-left:10px solid #ccc*/
+    background: $light-gray
+    /*border-left:10px solid $dark-gray*/
     margin: 1.5em 10px
     padding: .5em 10px
     padding-right: 2.75em
@@ -53,7 +58,7 @@ blockquote
 
 
 blockquote:before
-    color: #ccc
+    color: $dark-gray
     content: open-quote
     font-size: 4em
     line-height: .1em
@@ -64,7 +69,7 @@ blockquote:after
     position: absolute
     right: 10px
     bottom: -.1em
-    color: #ccc
+    color: $dark-gray
     content: close-quote
     font-size: 4em
     line-height: .1em
@@ -120,6 +125,7 @@ blockquote p
     border-right: 1px solid #EEE
     border-left: 1px solid #EEE
     box-shadow: 0 0 7px 0px #666
+    border-radius: 5px
     margin-bottom: 30px
     padding: 5px 20px
     padding-top: 50px
@@ -138,19 +144,19 @@ blockquote p
     padding-top: 30px
     z-index: 20
     border: 8px solid transparent
-    border: 8px solid rgba(170, 53, 193, 0.25)
+    border: 8px solid transparentize($blue, 0.75)
     border-top: none
     background-clip: padding-box
     box-shadow: 0 0 7px 0px #666
     border-radius: 5px
-    background-color: #AA36C1
-
+    background-color: $blue
 
 #header .stack
     min-height: 30px
     position: relative
     overflow: hidden
-    background-color: #aa36c1
+    color: white
+    background-color: $blue
     border-bottom: 1px solid #591c65
     z-index: -10
 
@@ -164,7 +170,13 @@ blockquote p
     height: 30px
     position: fixed
     top: 0px
-    background-color: #c56dd6
+    background: #676868 /* Old browsers */
+    background: -moz-linear-gradient(top, #676868 0%, #212121 100%) /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#676868), color-stop(100%,#212121)) /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #676868 0%,#212121 100%) /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #676868 0%,#212121 100%) /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #676868 0%,#212121 100%) /* IE10+ */
+    background: linear-gradient(to bottom, #676868 0%,#212121 100%) /* W3C */
     z-index: 99
 
 #topBarWrapper
@@ -179,12 +191,25 @@ blockquote p
     position: fixed
     top: 0px
     z-index: 99
+    color: #DDD
 
+#userLinks a
+    color: #DDD
+
+#userLinks a:hover
+    color: white
 
 #homeLink
     float: left
     line-height: 30px
+    font-weight: bold
+    font-size: 1.5em
+    color: $red
+    text-shadow: 0px 1px 3px #888
+    cursor: pointer
 
+#homeLink:hover
+    color: white
 
 #userLinks
     float: right
