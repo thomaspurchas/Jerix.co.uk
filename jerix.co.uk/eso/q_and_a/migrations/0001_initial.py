@@ -12,9 +12,9 @@ class Migration(SchemaMigration):
         db.create_table('q_and_a_question', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', to=orm['auth.User'])),
-            ('reputation', self.gf('django.db.models.fields.related.OneToOneField')(related_name='+', unique=True, to=orm['reputation.EntityReputation'])),
+            ('reputation', self.gf('django.db.models.fields.related.OneToOneField')(related_name='+', unique=True, null=True, to=orm['reputation.EntityReputation'])),
             ('reputation_owner', self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', to=orm['auth.User'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('detail', self.gf('django.db.models.fields.TextField')()),
             ('asked', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
             ('module', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['modules.Module'])),
@@ -25,7 +25,7 @@ class Migration(SchemaMigration):
         db.create_table('q_and_a_answer', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', to=orm['auth.User'])),
-            ('reputation', self.gf('django.db.models.fields.related.OneToOneField')(related_name='+', unique=True, to=orm['reputation.EntityReputation'])),
+            ('reputation', self.gf('django.db.models.fields.related.OneToOneField')(related_name='+', unique=True, null=True, to=orm['reputation.EntityReputation'])),
             ('reputation_owner', self.gf('django.db.models.fields.related.ForeignKey')(related_name='+', to=orm['auth.User'])),
             ('question', self.gf('django.db.models.fields.related.ForeignKey')(related_name='answers', to=orm['q_and_a.Question'])),
             ('detail', self.gf('django.db.models.fields.TextField')()),
@@ -127,7 +127,7 @@ class Migration(SchemaMigration):
             'detail': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'question': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'answers'", 'to': "orm['q_and_a.Question']"}),
-            'reputation': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'+'", 'unique': 'True', 'to': "orm['reputation.EntityReputation']"}),
+            'reputation': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'+'", 'unique': 'True', 'null': 'True', 'to': "orm['reputation.EntityReputation']"}),
             'reputation_owner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['auth.User']"})
         },
         'q_and_a.question': {
@@ -137,9 +137,9 @@ class Migration(SchemaMigration):
             'detail': ('django.db.models.fields.TextField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'module': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['modules.Module']"}),
-            'reputation': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'+'", 'unique': 'True', 'to': "orm['reputation.EntityReputation']"}),
+            'reputation': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'+'", 'unique': 'True', 'null': 'True', 'to': "orm['reputation.EntityReputation']"}),
             'reputation_owner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'+'", 'to': "orm['auth.User']"}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '300'})
         },
         'reputation.entityreputation': {
             'Meta': {'object_name': 'EntityReputation'},

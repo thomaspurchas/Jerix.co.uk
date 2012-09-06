@@ -11,10 +11,18 @@ class Migration(SchemaMigration):
         # Adding model 'StudentProfile'
         db.create_table('accounts_studentprofile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('year', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('tutor', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('year', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['students.Year'])),
+            ('tutor', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.LecturerProfile'])),
         ))
         db.send_create_signal('accounts', ['StudentProfile'])
+
+        # Adding M2M table for field modules on 'StudentProfile'
+        db.create_table('accounts_studentprofile_modules', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('studentprofile', models.ForeignKey(orm['accounts.studentprofile'], null=False)),
+            ('module', models.ForeignKey(orm['modules.module'], null=False))
+        ))
+        db.create_unique('accounts_studentprofile_modules', ['studentprofile_id', 'module_id'])
 
         # Adding model 'LecturerProfile'
         db.create_table('accounts_lecturerprofile', (
@@ -27,8 +35,11 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
+            ('about_me', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('picture', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
             ('lecturer_profile', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['accounts.LecturerProfile'], unique=True, null=True, blank=True)),
             ('student_profile', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['accounts.StudentProfile'], unique=True, null=True, blank=True)),
+            ('current_reputation', self.gf('django.db.models.fields.IntegerField')(default=0)),
         ))
         db.send_create_signal('accounts', ['UserProfile'])
 
@@ -36,6 +47,9 @@ class Migration(SchemaMigration):
     def backwards(self, orm):
         # Deleting model 'StudentProfile'
         db.delete_table('accounts_studentprofile')
+
+        # Removing M2M table for field modules on 'StudentProfile'
+        db.delete_table('accounts_studentprofile_modules')
 
         # Deleting model 'LecturerProfile'
         db.delete_table('accounts_lecturerprofile')
@@ -52,13 +66,17 @@ class Migration(SchemaMigration):
         'accounts.studentprofile': {
             'Meta': {'object_name': 'StudentProfile'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'tutor': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"}),
-            'year': ('django.db.models.fields.CharField', [], {'max_length': '30'})
+            'modules': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['modules.Module']", 'symmetrical': 'False'}),
+            'tutor': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['accounts.LecturerProfile']"}),
+            'year': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['students.Year']"})
         },
         'accounts.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
+            'about_me': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'current_reputation': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'lecturer_profile': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['accounts.LecturerProfile']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'picture': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'student_profile': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['accounts.StudentProfile']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'})
@@ -98,6 +116,33 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        'modules.academicyear': {
+            'Meta': {'object_name': 'AcademicYear'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+        },
+        'modules.module': {
+            'Meta': {'object_name': 'Module'},
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'lecturers': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'modules'", 'symmetrical': 'False', 'to': "orm['accounts.LecturerProfile']"}),
+            'short_code': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'subject': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['modules.Subject']"}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'year': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['modules.AcademicYear']"})
+        },
+        'modules.subject': {
+            'Meta': {'object_name': 'Subject'},
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        'students.year': {
+            'Meta': {'object_name': 'Year'},
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '30'})
         }
     }
 
