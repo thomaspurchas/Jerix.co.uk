@@ -77,9 +77,7 @@ class Module(models.Model):
     subject = models.ForeignKey(Subject)
     year = models.ForeignKey(AcademicYear)
 
-    lecturers = models.ManyToManyField('accounts.LecturerProfile',
-                                        related_name='modules')
-
+    # There is a lectures manytomany relation on the lecture profile module.
     class Admin:
         list_display = ('',)
         search_fields = ('',)

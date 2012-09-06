@@ -43,14 +43,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('modules', ['Module'])
 
-        # Adding M2M table for field lecturers on 'Module'
-        db.create_table('modules_module_lecturers', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('module', models.ForeignKey(orm['modules.module'], null=False)),
-            ('lecturerprofile', models.ForeignKey(orm['accounts.lecturerprofile'], null=False))
-        ))
-        db.create_unique('modules_module_lecturers', ['module_id', 'lecturerprofile_id'])
-
         # Adding model 'Post'
         db.create_table('modules_post', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -121,9 +113,6 @@ class Migration(SchemaMigration):
         # Deleting model 'Module'
         db.delete_table('modules_module')
 
-        # Removing M2M table for field lecturers on 'Module'
-        db.delete_table('modules_module_lecturers')
-
         # Deleting model 'Post'
         db.delete_table('modules_post')
 
@@ -138,10 +127,6 @@ class Migration(SchemaMigration):
 
 
     models = {
-        'accounts.lecturerprofile': {
-            'Meta': {'object_name': 'LecturerProfile'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -219,7 +204,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Module'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'lecturers': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'modules'", 'symmetrical': 'False', 'to': "orm['accounts.LecturerProfile']"}),
             'short_code': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'subject': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['modules.Subject']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),

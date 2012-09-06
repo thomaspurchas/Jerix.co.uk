@@ -30,6 +30,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('accounts', ['LecturerProfile'])
 
+        # Adding M2M table for field modules on 'LecturerProfile'
+        db.create_table('accounts_lecturerprofile_modules', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('lecturerprofile', models.ForeignKey(orm['accounts.lecturerprofile'], null=False)),
+            ('module', models.ForeignKey(orm['modules.module'], null=False))
+        ))
+        db.create_unique('accounts_lecturerprofile_modules', ['lecturerprofile_id', 'module_id'])
+
         # Adding model 'UserProfile'
         db.create_table('accounts_userprofile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -54,6 +62,9 @@ class Migration(SchemaMigration):
         # Deleting model 'LecturerProfile'
         db.delete_table('accounts_lecturerprofile')
 
+        # Removing M2M table for field modules on 'LecturerProfile'
+        db.delete_table('accounts_lecturerprofile_modules')
+
         # Deleting model 'UserProfile'
         db.delete_table('accounts_userprofile')
 
@@ -61,7 +72,8 @@ class Migration(SchemaMigration):
     models = {
         'accounts.lecturerprofile': {
             'Meta': {'object_name': 'LecturerProfile'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'modules': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'lecturers'", 'symmetrical': 'False', 'to': "orm['modules.Module']"})
         },
         'accounts.studentprofile': {
             'Meta': {'object_name': 'StudentProfile'},
@@ -126,7 +138,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Module'},
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'lecturers': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'modules'", 'symmetrical': 'False', 'to': "orm['accounts.LecturerProfile']"}),
             'short_code': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'subject': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['modules.Subject']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100'}),

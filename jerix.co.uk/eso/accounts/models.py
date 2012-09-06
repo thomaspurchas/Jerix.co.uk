@@ -26,6 +26,8 @@ class StudentProfile(models.Model):
 class LecturerProfile(models.Model):
     """(LectureProfile description)"""
 
+    modules = models.ManyToManyField('modules.Module', related_name='lecturers')
+
     class Admin:
         list_display = ('',)
         search_fields = ('',)
