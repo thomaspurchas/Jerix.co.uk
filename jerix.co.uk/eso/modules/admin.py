@@ -29,7 +29,8 @@ class ParentPostAdmin(admin.ModelAdmin):
         js = ['js/collapsed_stacked_inlines.js']
 
 class ModuleAdmin(admin.ModelAdmin):
-    filter_horizontal = ('lecturers',)
+    pass
+    # filter_horizontal = ('lecturers',)
 
 admin.site.register(Module, ModuleAdmin)
 admin.site.register(ParentPost, ParentPostAdmin)
