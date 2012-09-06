@@ -1,1 +1,1 @@
-web: python jerix.co.uk/eso/manage.py runserver 0.0.0.0:$PORT --noreload
+web: python jerix.co.uk/eso/manage.py run_gunicorn -b 0.0.0.0:$PORT -k eventlet -w 4
