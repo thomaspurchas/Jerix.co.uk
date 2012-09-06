@@ -1,4 +1,5 @@
 import os
+from os.path import join as pathjoin
 import djcelery
 # Django settings for eso project.
 
@@ -72,7 +73,7 @@ SITE_ROOT = '/'.join(os.path.dirname(__file__).split('/')[0:-2])
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '%s/media/' % SITE_ROOT
+MEDIA_ROOT = pathjoin(SITE_ROOT, 'media/')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -83,20 +84,20 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '%s/static/' % SITE_ROOT
+STATIC_ROOT = pathjoin(SITE_ROOT, 'static/')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = '//static.jerix.co.uk/'
 
-STATIC_DOC_ROOT = '%s/static/' % SITE_ROOT
+STATIC_DOC_ROOT = pathjoin(SITE_ROOT, 'static/')
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '%s/core_static/' % SITE_ROOT,
+    pathjoin(SITE_ROOT, 'core_static/'),
 )
 
 # List of finder classes that know how to find static files in
@@ -167,8 +168,8 @@ INSTALLED_APPS = (
     'tastypie',
     'gunicorn',
     'celery_haystack',
-    'cumulus',
     'djcelery',
+    'storages',
     'hitcount',
     #'djcelery.transport',
 
@@ -256,28 +257,34 @@ FILE_TYPE_MAPPINGS = {
 
 PARENT_BLOBS_CONTAINER = 'ParentBlobs'
 
-CUMULUS = {
-    'API_KEY': '',
-    'AUTH_URL': 'uk_authurl',
-    'CNAMES': None,
-    'CONTAINERS': {
-        'uploads': False,
-        PARENT_BLOBS_CONTAINER: False,
-        'DerivedPDFs': False,
-        'DerivedPNGs': True,
-    },
-    'DEFAULT_CONTAINER': 'uploads',
-    'SERVICENET': False,
-    'TIMEOUT': 5,
-    'TTL': 600,
-    'USE_SSL': False,
-    'USERNAME': '',
-    'STATIC_CONTAINER': None,
-    'FILTER_LIST': []
-}
+# CUMULUS = {
+#     'API_KEY': '',
+#     'AUTH_URL': 'uk_authurl',
+#     'CNAMES': None,
+#     'CONTAINERS': {
+#         'uploads': False,
+#         PARENT_BLOBS_CONTAINER: False,
+#         'DerivedPDFs': False,
+#         'DerivedPNGs': True,
+#     },
+#     'DEFAULT_CONTAINER': 'uploads',
+#     'SERVICENET': False,
+#     'TIMEOUT': 5,
+#     'TTL': 600,
+#     'USE_SSL': False,
+#     'USERNAME': '',
+#     'STATIC_CONTAINER': None,
+#     'FILTER_LIST': []
+# }
+
+AWS_ACCESS_KEY_ID = 'AKIAIRYIKEG732EFFDLA'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'jerix-media'
+STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
 
 if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'cumulus.storage.CloudFilesStorage'
+    # DEFAULT_FILE_STORAGE = 'cumulus.storage.CloudFilesStorage'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 try:
     from local_settings import *
