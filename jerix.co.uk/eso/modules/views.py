@@ -19,10 +19,10 @@ def module_posts(request, module_id, slug=None):
                 module_id=module_id, slug=slugify(module.title),
                 permanent=False)
         posts = module.posts.filter(
-            Q(historical_period__start_date__lt=datetime.date.today()) |
+            Q(historical_period__start_date__lte=datetime.date.today()) |
             Q(historical_period=None)
         )
-        posts = posts.exclude(historical_period__end_date__lt=datetime.date.today())
+        posts = posts.exclude(historical_period__end_date__lte=datetime.date.today())
     except Module.DoesNotExist:
         raise Http404
     return render_to_response(
