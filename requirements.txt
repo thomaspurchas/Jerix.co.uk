@@ -15,6 +15,7 @@ django-celery==3.0.4
 django-celery-transactions==0.1.2
 -e git+https://github.com/toastdriven/django-haystack.git@edb3ca5c3723fde9f0e7a51762e203d899ceed58#egg=django_haystack-dev
 -e git+https://github.com/thomaspurchas/django-hitcount.git@6adc2dc5b410cd04123b994ae9012710bc37f796#egg=django_hitcount-dev
+-e git+https://github.com/thomaspurchas/django-taggit.git#egg=django-taggit
 django-storages==1.1.5
 django-tastypie==0.9.11
 eventlet==0.9.17

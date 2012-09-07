@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
+from taggit.managers import TaggableManager
+
 from files.models import Document
 from accounts.models import AuthoredObject
 
@@ -14,6 +16,7 @@ class Subject(models.Model):
 
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
+    tags = TaggableManager()
 
     def __unicode__(self):
         return unicode(self.title)
@@ -76,6 +79,7 @@ class Module(models.Model):
     description = models.TextField(blank=True)
     subject = models.ForeignKey(Subject)
     year = models.ForeignKey(AcademicYear)
+    tags = TaggableManager()
 
     # There is a lectures manytomany relation on the lecture profile module.
     class Admin:
@@ -96,6 +100,7 @@ class Post(AuthoredObject):
     description = models.TextField(blank=True)
 
     post_date = models.DateTimeField(default=datetime.datetime.now)
+    tags = TaggableManager()
 
     def sorted_materials(self):
         return self.materials.order_by('index')

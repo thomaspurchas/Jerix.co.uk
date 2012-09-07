@@ -171,6 +171,7 @@ INSTALLED_APPS = (
     'djcelery',
     'storages',
     'hitcount',
+    'taggit',
     #'djcelery.transport',
 
     # My Apps
@@ -235,6 +236,13 @@ LOGGING = {
         },
     }
 }
+
+if DEBUG:
+    LOGGING['loggers']['newrelic'] = {
+        'handers': [],
+        'level': 'DEBUG',
+        'propagate': False,
+    }
 
 FILE_TYPE_MAPPINGS = {
     "(?i).*\.pdf$": {

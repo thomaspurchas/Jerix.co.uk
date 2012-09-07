@@ -5,6 +5,8 @@ from django.db.models.signals import post_save, pre_save
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
+from taggit.managers import TaggableManager
+
 from accounts.models import AuthoredObject
 from reputation.models import ReputationMixIn, create_entity_reputation
 from modules.models import Module
@@ -16,7 +18,7 @@ class Question(ReputationMixIn, AuthoredObject):
     title = models.CharField(max_length=300)
     detail = models.TextField()
     asked = models.DateTimeField(default=datetime.datetime.now)
-    module = models.ForeignKey(Module)
+    tags = TaggableManager()
 
     @property
     def current_vote(self):
