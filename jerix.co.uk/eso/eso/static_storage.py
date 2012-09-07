@@ -5,4 +5,4 @@ from django.conf import settings
 class StaticStorage(LazyObject):
     def _setup(self):
         self._wrapped = get_storage_class(
-            'storages.backends.s3boto.S3BotoStorage')(bucket='jerix-static')
+        'storages.backends.s3boto.S3BotoStorage')(bucket='static.jerix.co.uk')
