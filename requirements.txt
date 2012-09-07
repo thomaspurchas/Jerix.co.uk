@@ -9,21 +9,15 @@ billiard==2.7.3.12
 boto==2.5.2
 celery==3.0.5
 celery-haystack==0.6.2
-certifi==0.0.8
-chardet==1.0.1
-distribute==0.6.27
 dj-database-url==0.2.1
 django-appconf==0.5
 django-celery==3.0.4
 django-celery-transactions==0.1.2
--e git+https://github.com/thomaspurchas/django-cumulus.git@dd714d050067f105c1cd48a414c24afa300e5254#egg=django_cumulus-dev
 -e git+https://github.com/toastdriven/django-haystack.git@edb3ca5c3723fde9f0e7a51762e203d899ceed58#egg=django_haystack-dev
 -e git+https://github.com/thomaspurchas/django-hitcount.git@6adc2dc5b410cd04123b994ae9012710bc37f796#egg=django_hitcount-dev
-django-statsd-mozilla==0.3.3
 django-storages==1.1.5
 django-tastypie==0.9.11
 eventlet==0.9.17
-greenlet==0.4.0
 gunicorn==0.14.6
 httplib2==0.7.4
 kombu==2.3.2
@@ -34,12 +28,10 @@ psycopg2==2.4.5
 py-bcrypt==0.2
 pyasn1==0.1.3
 pysolr==2.1.0-beta
-python-cloudfiles==1.7.10
 python-dateutil==1.5
 python-digest==1.7
 pytz==2012d
 requests==0.12.1
 rsa==3.1.1
 slumber==0.4.2
-statsd==0.5.1
 wsgiref==0.1.2
