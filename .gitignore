@@ -1,12 +1,10 @@
 .DS_Store
 .vagrant
-jerix.co.uk/bin/
-jerix.co.uk/lib/
 *.pyc
 *.bbprojectd/
 *.sqlite
 jerix.co.uk/media/
-jerix.co.uk/.Python
-jerix.co.uk/include
 jerix.co.uk/src
+jerix.co.uk/static
 .sass-cache/
+venv/
