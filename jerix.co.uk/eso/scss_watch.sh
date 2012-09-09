@@ -1,2 +1,2 @@
 #!/bin/bash
-sass --watch templates/sass/:../core_static/
+scss --watch templates/scss/:../core_static/
