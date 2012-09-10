@@ -44,6 +44,18 @@ body {
 	color: #230b28;
 }
 
+// Fix webengage widget
+
+webengagedata {
+	box-sizing: content-box;
+	* {
+		box-sizing: content-box;
+	}
+	#webklipper-publisher-widget-container-content {
+		overflow: visible !important;
+	}
+}
+
 // Fancy stuff that makes code and quotes look good.
 
 //
