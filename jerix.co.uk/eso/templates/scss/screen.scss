@@ -2,257 +2,70 @@ $blue: #27506C;
 $red: #E61515;
 $dark-gray: #CCC;
 $light-gray: #F9F9F9;
-$pad: 20px;
+$centre-width: 960px;
+//$centre-width: 90%;
 
 * {
-    padding: 0;
-    margin: 0;
-    font-family: sans-serif;
-    font: Verdana;
+	padding: 0;
+	margin: 0;
+	font-family: sans-serif;
+	font: Verdana;
 	box-sizing: border-box;
 }
 
 body {
-    background-color: lighten($blue, 50%);
+	background-color: white; // lighten($blue, 50%);
 }
 
-.grid {
-  background: white;
-  margin: 0 0 $pad 0;
-
-  &:after {
-    /* Or @extend clearfix */
-    content: "";
-    display: table;
-    clear: both;
-  }
-}
-
-[class*='col-'] {
-  float: left;
-  padding-right: $pad;
-  .grid &:last-of-type {
-    padding-right: 0;
-  }
-}
-.col-2-3 {
-  width: 66.66%;
-}
-.col-1-3 {
-  width: 33.33%;
-}
-.col-1-2 {
-  width: 50%;
-}
-.col-1-4 {
-  width: 25%;
-}
-.col-1-8 {
-  width: 12.5%;
-}
-
-/* Opt-in outside padding */
-.grid-pad {
-  padding: $pad 0 $pad $pad;
-  [class*='col-']:last-of-type {
-    padding-right: $pad;
-  }
-}
-
-a {
-    text-decoration: none;
-}
-
-a:hover {
-    color: blue;
-
-}
-
-p {
-    margin-bottom: 1em;
-    clear: both;
-}
-
-h1, h2, h3, h4 {
-    margin-bottom: 0.5em;
-}
+@import "grid";
+@import "basic";
+@import "top-bar";
+@import "code-and-quotes";
 
 #container {
-    width: 100%;
-    position: relative;
+	width: $centre-width;
+	margin: 0 auto;
+	position: relative;
 }
-
 
 #content {
-    position: relative;
-    top: -50px;
-    background: white;
-    border-right: 1px solid #EEE;
-    border-left: 1px solid #EEE;
-    box-shadow: 0 0 7px 0px #666;
-    border-radius: 5px;
-    margin-bottom: 30px;
-    padding: 5px 20px;
-    padding-top: 50px;
-    border: 8px solid transparent;
-    background-clip: padding-box;
-    width: 960px;
-    margin: 0 auto;
+	position: relative;
 }
 
-#barBg{
-    width: 100%;
-    height: 30px;
-    position: fixed;
-    top: 0px;
-    background: #676868; /* Old browsers */
-    background: -moz-linear-gradient(top, #676868 0%, #212121 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#676868), color-stop(100%,#212121)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #676868 0%,#212121 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #676868 0%,#212121 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #676868 0%,#212121 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #676868 0%,#212121 100%); /* W3C */
-    z-index: 99
-}
-
-#topBarWrapper {
-    margin: 0 auto;
-    width: 960px;
-}
-
-#topBar {
-    height: 30px;
-    width: 100%;
-    max-width: 960px;
-    position: fixed;
-    top: 0px;
-    z-index: 99;
-    color: #DDD;
-}
-
-#userLinks a {
-    color: #DDD;
-}
-
-#userLinks a:hover {
-    color: white;
-}
-
-#homeLink {
-    float: left;
-    line-height: 30px;
-    font-weight: bold;
-    font-size: 1.5em;
-    color: $red;
-    text-shadow: 0px 1px 3px #888;
-    cursor: pointer;
-}
-
-#homeLink:hover {
-    color: white;
-}
-
-#userLinks {
-    float: right;
-    line-height: 30px;
-}
-
-#userLinks ul {}
-
-#userLinks ul li {
-    display: inline;
-    float: left;
-    list-style: none;
-    margin-left: 14px;
-}
-
-#topSearch input {
-    width: 95%;
-    font-size: 25px;
-    position: relative;
-    top: 3px;
-    color: #230b28;
+#top-search input {
+	width: 95%;
+	font-size: 25px;
+	position: relative;
+	top: 3px;
+	color: #230b28;
 }
 
 
 // Fancy stuff that makes code and quotes look good.
 
-
-pre {
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-    padding: 5px;
-    background-color: $dark-gray;
-    margin-bottom: 10px;
-    margin: 1.5em 10px;
-    padding: .5em 10px;
-    border-radius: 5px;
-    max-height: 600px;
-    overflow: auto;
-}
-
-
-code {
-    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-    background-color: $dark-gray;
-}
-
-blockquote {
-    position: relative;
-    background: $light-gray;
-    /*border-left:10px solid $dark-gray*/
-    margin: 1.5em 10px;
-    padding: .5em 10px;
-    padding-right: 2.75em;
-    quotes: "\201C""\201D""\201C""\201D";
-    border-radius: 5px;
-}
-
-blockquote:before {
-    color: $dark-gray;
-    content: open-quote;
-    font-size: 4em;
-    line-height: .1em;
-    margin-right: .25em;
-    vertical-align: -.4em;
-}
-
-blockquote:after {
-    position: absolute;
-    right: 10px;
-    bottom: -.1em;
-    color: $dark-gray;
-    content: close-quote;
-    font-size: 4em;
-    line-height: .1em;
-}
-
-blockquote p {
-    display: inline;
-}
-
 //
 //.post {
-//    background-color: #ff0bf3;
-//    margin-bottom: 20px;
-//    padding: 5px 10px 5px;
+//	  background-color: #ff0bf3;
+//	  margin-bottom: 20px;
+//	  padding: 5px 10px 5px;
 //}
 //
 //.post .post {
-//    background-color: #dd09d2;
-//    margin-top: 10px;
+//	  background-color: #dd09d2;
+//	  margin-top: 10px;
 //}
 //
 //.post h2 {
-//    display: inline-block;
+//	  display: inline-block;
 //}
 //
 //.post h3 {
-//    display: inline-block;
-//    margin-left: 30px;
+//	  display: inline-block;
+//	  margin-left: 30px;
 //}
 //
 //.post .description {
-//    margin: 10px 0 10px;
+//	  margin: 10px 0 10px;
 //}
 //
 //.post .material {
@@ -261,50 +74,50 @@ blockquote p {
 //
 //
 //.question {
-//    background-color: #ff0bf3;
-//    margin-top: 20px;
-//    padding: 10px 10px 10px;
-//    overflow: hidden;
+//	  background-color: #ff0bf3;
+//	  margin-top: 20px;
+//	  padding: 10px 10px 10px;
+//	  overflow: hidden;
 //}
 //
 //.question .questionInfo {}
 //
 //.question .questionSummary {
-//    margin-left: 10px;
-//    float: left;
-//    width: 780px;
+//	  margin-left: 10px;
+//	  float: left;
+//	  width: 780px;
 //}
 //
 //.question .votes {
-//    height: 40px;
-//    margin: 5px;
-//    text-align: center;
-//    width: 30px;
+//	  height: 40px;
+//	  margin: 5px;
+//	  text-align: center;
+//	  width: 30px;
 //}
 //
 //.question .answers {
-//    height: 40px;
-//    padding: 5px;
-//    margin: 0 5px;
-//    text-align: center;
-//    width: 50px;
-//    background: blue;
-//    color: Wheat;
+//	  height: 40px;
+//	  padding: 5px;
+//	  margin: 0 5px;
+//	  text-align: center;
+//	  width: 50px;
+//	  background: blue;
+//	  color: Wheat;
 //}
 //
 //.question .views {
-//    height: 40px;
-//    margin: 5px;
-//    text-align: center;
-//    width: 30px;
+//	  height: 40px;
+//	  margin: 5px;
+//	  text-align: center;
+//	  width: 30px;
 //}
 //
 //.mini-count {
-//    font-size: 180%;
-//    height: 26px;
-//    font-weight: bold;
+//	  font-size: 180%;
+//	  height: 26px;
+//	  font-weight: bold;
 //}
 //
 //.small-text {
-//    font-size: 75%;
+//	  font-size: 75%;
 //}

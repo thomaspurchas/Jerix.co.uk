@@ -1,7 +1,7 @@
 {% extends "modules/module_base.html" %}
 {% load hitcount_tags %}
 
-{% block content %}
+{% block sub-content %}
 <div id="questions">
 	{% for question in questions %}
 		<div class="question">
@@ -51,4 +51,4 @@
 		</div>
 	{% endfor %}
 </div>
-{% endblock content %}
+{% endblock sub-content %}

@@ -8,14 +8,14 @@
 </head>
 
 <body id="base" onload="">
-    <div id="barBg"></div>
+    <div id="bar-bg"></div>
     <div id="container">
-		<div id="topBarWrapper">
-        <div id="topBar">
-            <div id="homeLink">
+		<div id="top-bar-wrapper">
+        <div id="top-bar">
+            <div id="home-link">
                 Jerix
             </div>
-            <div id="userLinks">
+            <div id="user-links">
                 <ul>
                 {% if user.is_authenticated %}
                     <li>
@@ -40,25 +40,12 @@
         </div>
 		</div>
         <div id="header">
-			<div class="stack">
-				<div id="logo">
-					Jerix
-				</div>
-				<div class="sectionButton">
-					Questions
-				</div>
-				<div class="sectionButton">
-					Tags
-				</div>
-				<div class="sectionButton">
-					Modules
-				</div>
-
+			<div id="top-search">
 			</div>
-            {% block headerstack %}
-            {% endblock headerstack %}
+            {% block header %}
+            {% endblock header %}
         </div>
-        <div id="content">
+        <div id="content" class="grid">
             {% block content %}
             {% endblock content %}
         </div>

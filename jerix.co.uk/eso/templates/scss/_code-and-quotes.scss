@@ -1,0 +1,53 @@
+/* Stuff to make code and quotes look good */
+
+pre {
+	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+	padding: 5px;
+	background-color: $dark-gray;
+	margin-bottom: 10px;
+	margin: 1.5em 10px;
+	padding: .5em 10px;
+	border-radius: 5px;
+	max-height: 600px;
+	overflow: auto;
+}
+
+
+code {
+	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+	background-color: $dark-gray;
+}
+
+blockquote {
+	position: relative;
+	background: $light-gray;
+	/*border-left:10px solid $dark-gray*/
+	margin: 1.5em 10px;
+	padding: .5em 10px;
+	padding-right: 2.75em;
+	quotes: "\201C""\201D""\201C""\201D";
+	border-radius: 5px;
+}
+
+blockquote:before {
+	color: $dark-gray;
+	content: open-quote;
+	font-size: 4em;
+	line-height: .1em;
+	margin-right: .25em;
+	vertical-align: -.4em;
+}
+
+blockquote:after {
+	position: absolute;
+	right: 10px;
+	bottom: -.1em;
+	color: $dark-gray;
+	content: close-quote;
+	font-size: 4em;
+	line-height: .1em;
+}
+
+blockquote p {
+	display: inline;
+}

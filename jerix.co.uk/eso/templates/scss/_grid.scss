@@ -1,0 +1,69 @@
+/* Grid stuff */
+
+$gutter: 20px;
+$gutter-outside: 20px;
+$module-padding: 20px;
+
+$grid-colour: Blue;
+$col-2-3-colour: Pink;
+$col-1-3-colour: Red;
+$col-1-2-colour: Purple;
+$col-1-4-colour: Orange;
+$col-1-8-colour: Magenta;
+$module-colour: #EEE;
+
+.grid {
+	background: white;
+	background-color: $grid-colour;
+
+	&:after {
+		/* Or @extend clearfix */
+		content: "";
+		display: table;
+		clear: both;
+	}
+}
+
+[class*='col-'] {
+	float: left;
+	padding-right: $gutter;
+	.grid &:last-of-type {
+		padding-right: 0;
+	}
+}
+.col-2-3 {
+	width: 66.66%;
+	background-color: $col-2-3-colour;
+}
+.col-1-3 {
+	width: 33.33%;
+	background-color: $col-1-3-colour;
+}
+.col-1-2 {
+	width: 50%;
+	background-color: $col-1-2-colour;
+}
+.col-1-4 {
+	width: 25%;
+	background-color: $col-1-4-colour;
+}
+.col-1-8 {
+	width: 12.5%;
+	background-color: $col-1-8-colour;
+}
+
+.module {
+	background-color: $module-colour;
+	padding: $module-padding;
+	& &:last-of-type {
+		padding-bottom: 0px;
+	}
+}
+
+/* Opt-in outside padding */
+.grid-pad {
+	padding: $gutter-outside 0 $gutter-outside $gutter-outside;
+	[class*='col-']:last-of-type {
+		padding-right: $gutter-outside;
+	}
+}
