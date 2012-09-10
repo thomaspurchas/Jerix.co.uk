@@ -4,8 +4,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
+from django.db.models.signals import pre_save
 
 from taggit.managers import TaggableManager
+from taggit.models import Tag
 
 from files.models import Document
 from accounts.models import AuthoredObject
@@ -16,7 +18,24 @@ class Subject(models.Model):
 
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
+    primary_tag = models.ForeignKey(Tag, related_name='+')
     tags = TaggableManager(blank=True)
+
+    def save(self, *args, **kwargs):
+        """
+        Before calling the real save make sure that our `primary_tag` is in
+        `tags`.
+        """
+        # Check to see if the current primary tag is different to the old one, if it
+        # is then remove the old tag and put the new one on.
+        old_tag = primary_tag_changed(self)
+        if old_tag:
+            self.tags.remove(old_tag)
+            self.tags.add(self.primary_tag)
+        elif old_tag == None:
+            self.tags.add(self.primary_tag)
+
+        super(Subject, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return unicode(self.title)
@@ -79,12 +98,24 @@ class Module(models.Model):
     description = models.TextField(blank=True)
     subject = models.ForeignKey(Subject)
     year = models.ForeignKey(AcademicYear)
+    primary_tag = models.ForeignKey(Tag, related_name='+')
     tags = TaggableManager(blank=True)
 
     # There is a lectures manytomany relation on the lecture profile module.
-    class Admin:
-        list_display = ('',)
-        search_fields = ('',)
+    def save(self, *args, **kwargs):
+        """
+        Before calling the real save make sure that our `primary_tag` is in
+        `tags`.
+        """
+        # Check to see if the current primary tag is different to the old one, if it
+        # is then remove the old tag and put the new one on
+        old_tag = primary_tag_changed(self)
+
+        if old_tag:
+            self.tags.remove(old_tag)
+            self.tags.add(self.primary_tag)
+
+        super(Module, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('module-posts', kwargs={"module_id": self.id,
@@ -177,3 +208,37 @@ class Material(AuthoredObject):
 
     def __unicode__(self):
         return unicode(self.title)
+
+def primary_tag_changed(instance):
+    klass = instance.__class__
+    if instance.id:
+        old_instance = klass.objects.get(pk=instance.pk)
+        if old_instance.primary_tag != instance.primary_tag:
+            return old_instance.primary_tag
+        return False
+    else:
+        return None
+
+def add_parent_primary_to_tags(sender, instance, raw, **kwargs):
+    if raw:
+        return
+
+    if isinstance(sender, ParentPost):
+        parents = [instance.module, instance.module.subject]
+
+    elif isinstance(sender, SubPost):
+        parents = [instance.parent.module, instance.parent.module.subject]
+
+    remove = []
+    add = []
+    old_tag = primary_tag_changed(Module, parents[0])
+    if old_tag:
+        remove.append(old_tag)
+        add.append(parents[0].primary_tag)
+    old_tag = primary_tag_changed(Module, parents[0])
+    if old_tag:
+        remove.append(old_tag)
+        add.append(parents[1].primary_tag)
+
+    self.tags.remove(remove)
+    self.tags.add(add)
