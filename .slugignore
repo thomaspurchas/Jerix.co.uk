@@ -3,4 +3,5 @@ Lectures.html
 Notes.txt
 screen.css
 Vagrantfile
-sass_watch.sh
+*.sh
+*.scss
