@@ -1,4 +1,4 @@
--e git+https://github.com/thomaspurchas/django.git@e99293250ed9d0ae471faff240bc2e9910a1ec6f#egg=Django-dev
+django
 Markdown==2.2.0
 PIL==1.1.7
 South==0.7.6

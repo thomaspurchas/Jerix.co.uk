@@ -5,3 +5,5 @@ screen.css
 Vagrantfile
 *.sh
 *.scss
+*.css
+*.js
