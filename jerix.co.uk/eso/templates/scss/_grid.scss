@@ -13,7 +13,6 @@ $col-1-8-colour: Magenta;
 $module-colour: #EEE;
 
 .grid {
-	background: white;
 	background-color: $grid-colour;
 
 	&:after {
@@ -55,8 +54,12 @@ $module-colour: #EEE;
 .module {
 	background-color: $module-colour;
 	padding: $module-padding;
-	& &:last-of-type {
+	margin-bottom: 10px;
+	& > & {
 		padding-bottom: 0px;
+	}
+	& > &:last-of-type {
+		margin-bottom: 0px;
 	}
 }
 

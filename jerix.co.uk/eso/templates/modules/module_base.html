@@ -3,12 +3,14 @@
 {% block title %}{{ module.title }}{% endblock title %}
 
 {% block header %}
-	<div class="moduleTitle">
-		<h1 class="shortcode">{{ module.short_code }}</h1>
-		<h2 class="moduleName">{{ module.title }}</h2>
-	</div>
-	<div class="moduleDescription">
-		{{ module.description }}
+	<div class="grid">
+		<div class="col-1-3 module-title">
+			<h1 class="shortcode">{{ module.short_code }}</h1>
+			<h2 class="module-name">{{ module.title }}</h2>
+		</div>
+		<div class="col-2-3 module-description">
+			{{ module.description }}
+		</div>
 	</div>
 {% endblock header %}
 
@@ -19,7 +21,7 @@
 	</div>
 	<div class="col-1-3">
 		<div class="module">
-			Sidebar
+			Top Questions
 		</div>
 	</div>
 {% endblock content %}
