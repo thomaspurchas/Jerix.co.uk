@@ -16,7 +16,7 @@ class Subject(models.Model):
 
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def __unicode__(self):
         return unicode(self.title)
@@ -79,7 +79,7 @@ class Module(models.Model):
     description = models.TextField(blank=True)
     subject = models.ForeignKey(Subject)
     year = models.ForeignKey(AcademicYear)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     # There is a lectures manytomany relation on the lecture profile module.
     class Admin:
@@ -100,7 +100,7 @@ class Post(AuthoredObject):
     description = models.TextField(blank=True)
 
     post_date = models.DateTimeField(default=datetime.datetime.now)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def sorted_materials(self):
         return self.materials.order_by('index')
