@@ -21,22 +21,6 @@ class Subject(models.Model):
     primary_tag = models.ForeignKey(Tag, related_name='+')
     tags = TaggableManager(blank=True)
 
-    def save(self, *args, **kwargs):
-        """
-        Before calling the real save make sure that our `primary_tag` is in
-        `tags`.
-        """
-        # Check to see if the current primary tag is different to the old one, if it
-        # is then remove the old tag and put the new one on.
-        old_tag = primary_tag_changed(self)
-        if old_tag:
-            self.tags.remove(old_tag)
-            self.tags.add(self.primary_tag)
-        elif old_tag == None:
-            self.tags.add(self.primary_tag)
-
-        super(Subject, self).save(*args, **kwargs)
-
     def __unicode__(self):
         return unicode(self.title)
 
@@ -102,20 +86,6 @@ class Module(models.Model):
     tags = TaggableManager(blank=True)
 
     # There is a lectures manytomany relation on the lecture profile module.
-    def save(self, *args, **kwargs):
-        """
-        Before calling the real save make sure that our `primary_tag` is in
-        `tags`.
-        """
-        # Check to see if the current primary tag is different to the old one, if it
-        # is then remove the old tag and put the new one on
-        old_tag = primary_tag_changed(self)
-
-        if old_tag:
-            self.tags.remove(old_tag)
-            self.tags.add(self.primary_tag)
-
-        super(Module, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('module-posts', kwargs={"module_id": self.id,
