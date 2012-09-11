@@ -1,13 +1,29 @@
 {% extends "modules/module_base.html" %}
 
-{% block sub-content %}
-	{% if posts %}
-		{% for post in posts %}
-			{% include "modules/module/post.html" with post=post only %}
-		{% endfor %}
-	{% else %}
-		<div class="module">
-			No Posts
-		</div>
-	{% endif %}
-{% endblock sub-content %}
+{% block content %}
+    <div class="col-2-3">
+        {% if posts %}
+            {% for post in posts %}
+                {% include "modules/module/post.html" with post=post only %}
+            {% endfor %}
+        {% else %}
+            <div class="module">
+                No Posts
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-1-3">
+        {% if questions %}
+        <div class="module">
+            <h3>Recent Questions</h3>
+            {% for question in questions %}
+                <div class="module">
+                    <a href="{% url question question.id question.slug %}">
+                        {{ question.title }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+{% endblock content %}

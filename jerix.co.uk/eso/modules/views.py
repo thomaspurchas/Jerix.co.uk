@@ -7,12 +7,11 @@ from django.db.models import Q
 from django.template.defaultfilters import slugify
 
 from modules.models import Module
+from q_and_a.models import Question
 # Create your views here.
 def module_posts(request, module_id, slug=None):
     try:
         module = Module.objects.get(pk=module_id)
-        print slugify(module.title)
-        print slug
         if slug != slugify(module.title):
             print 'redirect'
             return redirect('module-posts',
@@ -22,7 +21,12 @@ def module_posts(request, module_id, slug=None):
             Q(historical_period__start_date__lte=datetime.date.today()) |
             Q(historical_period=None)
         )
-        posts = posts.exclude(historical_period__end_date__lte=datetime.date.today())
+        posts = posts.exclude(
+                        historical_period__end_date__lte=datetime.date.today())
+
+        # Get related questions by looking up the modules `primary_tag`
+        questions = Question.objects.filter(tags=module.primary_tag).distinct()
+        questions = questions.order_by('asked')[:10]
     except Module.DoesNotExist:
         raise Http404
     return render_to_response(
@@ -30,6 +34,7 @@ def module_posts(request, module_id, slug=None):
         {
             'module': module,
             'posts': posts,
+            'questions': questions,
         },
         RequestContext(request)
     )
