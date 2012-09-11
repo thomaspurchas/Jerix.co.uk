@@ -7,22 +7,28 @@
 {% include "csrf_js.html" %}
 {% endblock head %}
 
-{% block headerstack %}
-<h2 class="stack bottom">{{ question.title }}</h2>
-{% endblock headerstack %}
+{% block header %}
+<h2>{{ question.title }}</h2>
+{% endblock header %}
 
 {% block content %}
-	<div class"question">
-		{% include "q_and_a/post.html" with post=question.detail %}
-	</div>
-	{% for answer in answers %}
-		<div class="answer">
-			<h2>{{ answer.title }}</h2>
-			{% include "q_and_a/post.html" with post=answer.detail %}
-		</div>
-	{% endfor %}
-	<h3>Your Answer</h3>
-   {% include "pagedown.html" %}
+    <div class="col-2-3">
+        <div class="question">
+            {% include "q_and_a/post.html" with post=question.detail %}
+        </div>
+        {% for answer in answers %}
+        <div class="answer">
+            <h2>{{ answer.title }}</h2>
+            {% include "q_and_a/post.html" with post=answer.detail %}
+        </div>
+        {% endfor %}
+        <h3>Your Answer</h3>
+        {% include "pagedown.html" %}
+    </div>
+    <div class="col-1-3">
+       <h3>Related Questions</h3>
+    </div>
+
 {% endblock content %}
 
 {% block footer %}
