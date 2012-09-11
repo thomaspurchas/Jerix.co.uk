@@ -89,6 +89,7 @@ STATIC_ROOT = pathjoin(SITE_ROOT, 'static/')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/' if DEBUG else '//static.jerix.co.uk/'
+ADMIN_MEDIA_PREFIX = STATIC_URL
 
 STATIC_DOC_ROOT = pathjoin(SITE_ROOT, 'static/')
 
