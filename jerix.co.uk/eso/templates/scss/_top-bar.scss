@@ -1,4 +1,14 @@
-$bar-height: 40px;
+$bar-height: 35px;
+
+$jerix-colour: black;//white
+$jerix-hover-colour: white;
+
+$text-colour: #666;
+$top-colour: #efefef; //#4d4e52
+$bottom-colour: #d3d3d3; //#2c2d31
+$shadow: 0 0 5px #EEE;//0 0 5px #666
+
+@import "gradient";
 
 #bar-bg{
 	width: 100%;
@@ -6,17 +16,10 @@ $bar-height: 40px;
 	height: $bar-height;
 	position: fixed;
 	top: 0px;
-	border-top: 1px solid #313236;
-	border-bottom: 1px solid #000004;
-	box-shadow: 0 0 5px #666;
-	background: #4d4e52; /* Old browsers */
-	background: -moz-linear-gradient(top, #4d4e52 0%, #2c2d31 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4d4e52), color-stop(100%,#2c2d31)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #4d4e52 0%,#2c2d31 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #4d4e52 0%,#2c2d31 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #4d4e52 0%,#2c2d31 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #4d4e52 0%,#2c2d31 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d4e52', endColorstr='#2c2d31',GradientType=0 ); /* IE6-9 */
+	border-top: 1px solid darken($top-colour, 20%);//#313236;
+	border-bottom: 1px solid darken($bottom-colour, 20%);//#000004;
+	box-shadow: $shadow;
+	@include gradient($top-colour, $bottom-colour);
 }
 
 #top-bar-wrapper {
@@ -32,37 +35,35 @@ $bar-height: 40px;
 	position: fixed;
 	top: 0px;
 	z-index: 99;
-	color: #DDD;
+	color: $text-colour;
 }
 
-#user-links a {
-	color: #DDD;
-}
-
-#user-links a:hover {
-	color: white;
-}
+//#user-links a {
+//	color: #DDD;
+//}
+//
+//#user-links a:hover {
+//	color: white;
+//}
 
 #home-link {
 	float: left;
 	line-height: $bar-height;
 	font-weight: bold;
 	font-size: 1.5em;
-	color: white;
+	color: $jerix-colour;
 	text-shadow: 0px 1px 3px #888;
 	cursor: pointer;
 }
 
 #home-link:hover {
-	color: white;
+	color: $jerix-hover-colour;
 }
 
 #user-links {
 	float: right;
 	line-height: $bar-height;
 }
-
-#user-links ul {}
 
 #user-links ul li {
 	display: inline;

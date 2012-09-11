@@ -2,6 +2,10 @@
 
 {% block title %}{{ module.title }}{% endblock title %}
 
+{% block css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}module.css" type="text/css" charset="utf-8">
+{% endblock css %}
+
 {% block header %}
 	<div class="grid module-header">
 		<div class="col-custom module-title title">

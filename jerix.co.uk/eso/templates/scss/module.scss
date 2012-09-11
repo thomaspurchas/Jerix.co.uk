@@ -1,0 +1,22 @@
+.sidebar-title {
+	margin-bottom: 10px;
+}
+
+.module-header {
+	background: #EEE;
+	border-radius: 5px;
+	position: relative;
+	.module-title {
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+		padding-left: 20px;
+		margin-right: 10px;
+		max-width: 33.3%;
+		h1 {
+			margin-bottom: 0.5em;
+		}
+	}
+	.module-description {
+		padding: 10px;
+	}
+}

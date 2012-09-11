@@ -2,6 +2,7 @@ $blue: #27506C;
 $red: #E61515;
 $dark-gray: #CCC;
 $light-gray: #F9F9F9;
+$green: #8ECC4C;
 $centre-width: 960px;
 //$centre-width: 90%;
 
@@ -71,7 +72,7 @@ body {
 		border-bottom-right-radius: 3px;
 
 		&:hover {
-			background: #8ECC4C;
+			background: $green;
 			color: white;
 			cursor: pointer;
 			text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
@@ -81,32 +82,20 @@ body {
 	}
 }
 
+.spacer {
+	margin-bottom: 8px;
+}
+
+.small-link {
+	font-size: 85%;
+}
+
 .title {
 	background: #8ECC4C;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 	color: white;
 	padding: 10px;
 	border-radius: 5px;
-}
-
-.module-header {
-	background: #EEE;
-	border-radius: 5px;
-	position: relative;
-	.module-title {
-		border-top-left-radius: 5px;
-		border-bottom-left-radius: 5px;
-		padding-left: 20px;
-		margin-right: 10px;
-		max-width: 33.3%;
-		h1 {
-			margin-bottom: 0.5em;
-		}
-	}
-	.module-description {
-		padding: 10px;
-	}
-
 }
 
 .answers {
