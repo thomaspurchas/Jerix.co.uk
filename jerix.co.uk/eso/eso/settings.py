@@ -297,8 +297,6 @@ COMPRESS_STORAGE = STATICFILES_STORAGE
 
 # Enable offline compression
 COMPRESS_OFFLINE = True
-if DEBUG:
-    COMPRESS_OFFLINE_MANIFEST = "debug-manifest.json"
 
 if not DEBUG:
     # DEFAULT_FILE_STORAGE = 'cumulus.storage.CloudFilesStorage'
