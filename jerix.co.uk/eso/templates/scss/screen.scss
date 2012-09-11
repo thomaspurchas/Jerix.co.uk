@@ -81,6 +81,29 @@ body {
 	}
 }
 
+.module-header {
+	background: #EEE;
+	border-radius: 5px;
+	position: relative;
+	.module-title {
+		height: 100%;
+		background: #8ECC4C;
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+		padding: 10px 10px 10px 20px;
+		margin-right: 10px;
+		text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+		color: white;
+		max-width: 33.3%;
+		h2 {
+			margin: 0;
+		}
+	}
+	.module-description {
+		padding: 10px;
+	}
+}
+
 // Fix webengage widget
 
 webengagedata {

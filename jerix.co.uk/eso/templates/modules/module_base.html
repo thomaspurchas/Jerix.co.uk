@@ -3,12 +3,12 @@
 {% block title %}{{ module.title }}{% endblock title %}
 
 {% block header %}
-	<div class="grid">
-		<div class="col-1-3 module-title">
+	<div class="grid module-header">
+		<div class="col-custom module-title">
 			<h1 class="shortcode">{{ module.short_code }}</h1>
 			<h2 class="module-name">{{ module.title }}</h2>
 		</div>
-		<div class="col-2-3 module-description">
+		<div class="module-description">
 			{{ module.description }}
 		</div>
 	</div>
