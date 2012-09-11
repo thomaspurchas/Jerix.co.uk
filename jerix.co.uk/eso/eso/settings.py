@@ -78,7 +78,7 @@ MEDIA_ROOT = pathjoin(SITE_ROOT, 'media/')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'media' if DEBUG else '//media.jerix.co.uk/'
+MEDIA_URL = '/media/' if DEBUG else '//media.jerix.co.uk/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -89,7 +89,6 @@ STATIC_ROOT = pathjoin(SITE_ROOT, 'static/')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/' if DEBUG else '//static.jerix.co.uk/'
-ADMIN_MEDIA_PREFIX = STATIC_URL
 
 STATIC_DOC_ROOT = pathjoin(SITE_ROOT, 'static/')
 
@@ -106,6 +105,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -173,6 +173,7 @@ INSTALLED_APPS = (
     'storages',
     'hitcount',
     'taggit',
+    'compressor',
     #'djcelery.transport',
 
     # My Apps
@@ -289,7 +290,15 @@ PARENT_BLOBS_CONTAINER = 'ParentBlobs'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'media.jerix.co.uk'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_CUSTOM_DOMAIN = 'media.jerix.co.uk'
 STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
+COMPRESS_STORAGE = STATICFILES_STORAGE
+
+# Enable offline compression
+COMPRESS_OFFLINE = True
+if DEBUG:
+    COMPRESS_OFFLINE_MANIFEST = "debug-manifest.json"
 
 if not DEBUG:
     # DEFAULT_FILE_STORAGE = 'cumulus.storage.CloudFilesStorage'
