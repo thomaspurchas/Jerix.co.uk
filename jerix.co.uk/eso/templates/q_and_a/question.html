@@ -1,10 +1,15 @@
 {% extends "q_and_a/base.html" %}
 {% load hitcount_tags %}
+{% load compress %}
 
 {% block title %}{{ question.title }}{% endblock title %}
 
 {% block head %}
-{% include "csrf_js.html" %}
+    {{ block.super }}
+    {% include "csrf_js.html" %}
+    {% compress css %}
+        <link rel="stylesheet" href="{{ STATIC_URL }}questions.css" type="text/css" charset="utf-8">
+    {% endcompress %}
 {% endblock head %}
 
 {% block header %}
