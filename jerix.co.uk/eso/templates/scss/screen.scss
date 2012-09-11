@@ -29,19 +29,56 @@ body {
 }
 
 #header {
-	margin-bottom: 20px;
+	margin-bottom: 5px;
 }
 
 #content {
 	position: relative;
 }
 
-#top-search input {
-	width: 95%;
-	font-size: 25px;
-	position: relative;
-	top: 3px;
-	color: #230b28;
+#top-search {
+	margin: 5px auto 0;
+	width: 70%;
+	height: 30px;
+	box-sizing: content-box;
+	padding: 5px;
+	background: #E6E6E6;
+	border-radius: 5px;
+	form {
+		height: 100%;
+	}
+	input {
+		height: 100%;
+		float: left;
+		border: 1px solid #BFBFBF;
+		font-size: 100%;
+	}
+	input[type="text"] {
+		width: 70%;
+		color: #230b28;
+		border-top-left-radius: 3px;
+		border-bottom-left-radius: 3px;
+		padding: 0 10px;
+	}
+	input[type="submit"] {
+		width: 30%;
+		height: 100%;
+		color: #666;
+		font-weight: bold;
+		background: #E6E6E6;
+		font-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+		border-top-right-radius: 3px;
+		border-bottom-right-radius: 3px;
+
+		&:hover {
+			background: #8ECC4C;
+			color: white;
+			cursor: pointer;
+			text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+			border-color: #6B9939;
+			border-bottom-color: #50732B;
+		}
+	}
 }
 
 // Fix webengage widget
