@@ -21,6 +21,10 @@ class Question(ReputationMixIn, AuthoredObject):
     tags = TaggableManager()
 
     @property
+    def slug(self):
+        return slugify(self.title)
+
+    @property
     def current_vote(self):
         """docstring for vote"""
         return self.reputation.current_vote()

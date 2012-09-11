@@ -28,7 +28,7 @@ def module_q_and_a(request, module_id, slug=None):
 def question(request, question_id, slug=None):
     question = get_object_or_404(Question, pk=question_id)
 
-    if slug != slugify(question.title):
+    if slug != question.slug:
         return redirect('question',
             question_id=question_id, slug=slugify(question.title),
             permanent=False)
