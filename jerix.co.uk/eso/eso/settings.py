@@ -174,6 +174,7 @@ INSTALLED_APPS = (
     'hitcount',
     'taggit',
     'compressor',
+    'raven.contrib.django',
     #'djcelery.transport',
 
     # My Apps
