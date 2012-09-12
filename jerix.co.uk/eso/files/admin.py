@@ -1,3 +1,5 @@
+from os.path import basename
+
 from django.contrib import admin
 from django import forms
 
@@ -39,7 +41,7 @@ class DocumentAdmin(admin.ModelAdmin):
             obj.file = form.cleaned_data['file']
         obj.save()
         if obj.file_name.strip() == '':
-            obj.file_name = ':'.join(obj.file.name.split(':')[1:])
+            obj.file_name = basename(obj.file.name)
 
         if obj.title.strip() == '':
             obj.title = obj.file_name
