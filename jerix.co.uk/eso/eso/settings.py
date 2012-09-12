@@ -219,10 +219,15 @@ LOGGING = {
             'class':'logging.StreamHandler',
             'formatter': 'verbose'
         },
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.handlers.SentryHandler',
+            'formatter': 'verbose'
+        },
     },
     'loggers': {
         '': {
-            'handlers':['console'],
+            'handlers':['console', 'sentry'],
             'propagate': True,
             'level':'DEBUG',
         },
@@ -236,6 +241,16 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'newrelic': {
+            'propagate': False,
+            'handlers': ['console'],
+            'level': 'INFO'
+        }
     }
 }
 
