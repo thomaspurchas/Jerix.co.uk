@@ -7,18 +7,42 @@
 			<p>{{ post.description }}</p>
 		</div>
 	{% endif %}
-	{% for material in post.sorted_materials  %}
-		<div class="material">
-			{{ material.title }}
-			<a href={{ material.document.url }}>
-			Download</a>
-		</div>
-	{% endfor %}
-	{% if post.is_parent %}
-		{% for sub_post in post.sub_posts.all %}
-			{% with template="modules/module/post.html" %}
-				{% include template with post=sub_post only %}
-			{% endwith %}
-		{% endfor %}
+    {% if post.sorted_materials %}
+        <div class="materials">
+        <h3>Materials</h3>
+        {% for material in post.sorted_materials  %}
+            <div class="material">
+                <div class="download-links">
+                    <ul>
+                        <li>
+                            Download:
+                        </li>
+                        {% for version in material.document.versions %}
+                            <li>
+                                <a href={{ version.url }}>
+                                    {{ version.type_display }}
+                                </a>
+                            </li>
+                            {% if not forloop.last %}
+                                <li>|</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="material-title">
+                {{ material.title }}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+	{% if post.is_parent and post.sub_posts.all %}
+        <div class="sub-posts">
+            {% for sub_post in post.sub_posts.all %}
+                {% with template="modules/module/post.html" %}
+                    {% include template with post=sub_post only %}
+                {% endwith %}
+            {% endfor %}
+        </div>
 	{% endif %}
 </div>

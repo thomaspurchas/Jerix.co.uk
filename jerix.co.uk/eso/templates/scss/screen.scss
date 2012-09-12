@@ -15,7 +15,7 @@ $centre-width: 960px;
 }
 
 body {
-	background-color: white; // lighten($blue, 50%);
+	background-color: white;//#F9F9F9;//white; // lighten($blue, 50%);
 }
 
 @import "grid";
@@ -43,7 +43,7 @@ body {
 	height: 30px;
 	box-sizing: content-box;
 	padding: 5px;
-	background: #E6E6E6;
+	background: #DDD;//#E6E6E6;
 	border-radius: 5px;
 	form {
 		height: 100%;
