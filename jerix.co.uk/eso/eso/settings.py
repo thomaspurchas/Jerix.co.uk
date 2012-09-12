@@ -251,11 +251,11 @@ FILE_TYPE_MAPPINGS = {
         "type": "pdf",
         "display": "PDF",
         "priority": 99,
-        "path": "DerivedPDFs:",
+        "path": "DerivedPDFs/",
     },
     "(?i).*\.png$": {
         "type": "png",
-        "path": "DerivedPNGs:",
+        "path": "DerivedPNGs/",
     },
     "(?i).*\.docx?$": {
         "type": "word",
@@ -269,7 +269,7 @@ FILE_TYPE_MAPPINGS = {
     },
 }
 
-PARENT_BLOBS_CONTAINER = 'ParentBlobs'
+PARENT_BLOBS_LOCATION = 'ParentBlobs/'
 
 # CUMULUS = {
 #     'API_KEY': '',

@@ -62,6 +62,7 @@ def identify_and_md5(file):
     if not file_type:
         raise CannotIdentifyFileTypeError(file)
     md5_sum = generate_md5(file)
+    file.seek(0)
     return (file_type, md5_sum)
 
 def get_path(file_type):

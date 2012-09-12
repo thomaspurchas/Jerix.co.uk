@@ -20,14 +20,18 @@ class Blob(models.Model):
     upload_to_url = ''
 
     def upload_to(instance, name):
-        parts = instance.upload_to_url.split(':')
-        if len(parts) > 1:
-            path = ':'.join(parts[1:])
-            cont = parts[0]
-        else:
-            path = ''
-            cont = ''
-        return "%s:%s" % (cont, os.path.join(path, name))
+        # This is the old version that was used for rackspace cloud.
+        # As S3 supports folders, and does not have issues with a large number
+        # of files in a single bucket this stuff is no longer relevant.
+        # parts = instance.upload_to_url.split(':')
+        # if len(parts) > 1:
+        #     path = ':'.join(parts[1:])
+        #     cont = parts[0]
+        # else:
+        #     path = ''
+        #     cont = ''
+        # return "%s:%s" % (cont, os.path.join(path, name))
+        return os.path.join(upload_to_url, name)
 
     file = models.FileField(upload_to=upload_to)
 
@@ -57,12 +61,12 @@ class Blob(models.Model):
 
 class ParentBlob(Blob):
     """(File description)"""
-    upload_to_url = "%s:" % settings.PARENT_BLOBS_CONTAINER
+    upload_to_url = "%s" % settings.PARENT_BLOBS_LOCATION
     md5_sum = models.CharField(max_length=64, unique=True)
 
 class DerivedBlob(Blob):
     """(DerivedBlob description)"""
-    upload_to_url = models.CharField(max_length=100, default="UnknownDerivedBlobs:")
+    upload_to_url = models.CharField(max_length=100, default="UnknownDerivedBlobs/")
     md5_sum = models.CharField(max_length=64)
 
     class Meta:
@@ -76,7 +80,6 @@ class BaseDocument(models.Model):
         """Checks changes to the document, and how they may affect underlying blobs"""
         if not raw:
             if instance._blob.id == None:
-                print instance._blob.id
                 instance._blob.save()
                 # We need to do this or django goes nuts
                 instance._blob = instance._blob
