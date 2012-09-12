@@ -44,6 +44,10 @@ $green: #8ECC4C;
 		}
 	}
 
+	.description {
+		margin-bottom: 10px;
+	}
+
 	&:first-of-type {
 		border: 0;
 		margin: 0;
@@ -53,7 +57,7 @@ $green: #8ECC4C;
 
 .materials {
 
-	h3 {
+	h4 {
 		margin-left: $material-padding;
 		margin-top: $material-padding;
 	}
