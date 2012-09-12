@@ -32,6 +32,18 @@ $green: #8ECC4C;
 	margin-top: 25px;
 	padding-top: 15px;
 
+	> h2, h3 {
+		display: inline-block;
+		margin-bottom: 5px;
+	}
+
+	.byline {
+		a {
+			font-weight: bold;
+			color: #4F525A;
+		}
+	}
+
 	&:first-of-type {
 		border: 0;
 		margin: 0;

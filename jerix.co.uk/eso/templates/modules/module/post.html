@@ -1,7 +1,14 @@
 <div class="module post" id="{{ post.slug }}">
-	<h1>{{ post.title }}</h1>
-	<h2>{{ post.post_date }}</h2>
-	<h2>{{ post.author_full_title }}</h2>
+    {% if post.is_parent %}
+        <h2>{{ post.title }}</h2>
+    {% else %}
+        <h3>{{ post.title }}</h3>
+    {% endif %}
+    <span class="byline small-text">
+        by  <a href="{{ post.author.get_profile.absolute_url }}">
+            {{ post.author_full_name }}</a> |
+            {{ post.post_date|date:"N j g:i a" }}
+    </span>
 	{% if post.description %}
 		<div class="description">
 			<p>{{ post.description }}</p>

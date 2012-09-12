@@ -4,6 +4,7 @@ $dark-gray: #CCC;
 $light-gray: #F9F9F9;
 $green: #8ECC4C;
 $centre-width: 960px;
+$footer-height: 100px;
 //$centre-width: 90%;
 
 * {
@@ -11,7 +12,13 @@ $centre-width: 960px;
 	margin: 0;
 	font-family: sans-serif;
 	font: Verdana;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+html, body {
+	height: 100%;
 }
 
 body {
@@ -27,6 +34,9 @@ body {
 	width: $centre-width;
 	margin: 0 auto;
 	position: relative;
+	min-height: 100%;
+	margin-bottom: -$footer-height;
+	padding-bottom: $footer-height;
 }
 
 #header {
@@ -37,11 +47,24 @@ body {
 	position: relative;
 }
 
+#footer {
+	margin-top: 70px;
+	border-top: 5px solid #FF6600;
+	background: #858585;
+	color: white;
+	height: $footer-height;
+	padding-top: 10px;
+	.content {
+		width: $centre-width;
+		position: relative;
+		margin: 0 auto;
+	}
+}
+
 #top-search {
 	margin: 5px auto 0;
 	width: 70%;
-	height: 30px;
-	box-sizing: content-box;
+	height: 40px;
 	padding: 5px;
 	background: #DDD;//#E6E6E6;
 	border-radius: 5px;
@@ -90,6 +113,10 @@ body {
 	font-size: 85%;
 }
 
+.small-text {
+	font-size: 75%;
+}
+
 .title {
 	background: #8ECC4C;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
@@ -100,9 +127,15 @@ body {
 // Fix webengage widget
 
 webengagedata {
-	box-sizing: content-box;
+	display: none;
+	-webkit-box-sizing: content-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: content-box;    /* Firefox, other Gecko */
+	box-sizing: content-box;         /* Opera/IE 8+ */
+
 	* {
-		box-sizing: content-box;
+		-webkit-box-sizing: content-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: content-box;    /* Firefox, other Gecko */
+		box-sizing: content-box;         /* Opera/IE 8+ */
 	}
 	#webklipper-publisher-widget-container-content {
 		overflow: visible !important;
