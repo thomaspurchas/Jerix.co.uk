@@ -85,7 +85,12 @@ class AuthoredObject(models.Model):
     def author_full_name(self):
         """docstring for full_name"""
 
-        return u'%s %s' % (self.author.first_name, self.author.last_name)
+        name = u'%s %s' % (self.author.first_name, self.author.last_name)
+
+        if name.strip() == "":
+            name = self.author.username
+
+        return name
 
     def author_full_title(self):
         """docstring for author_full_title"""
