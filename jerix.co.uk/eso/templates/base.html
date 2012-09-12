@@ -60,9 +60,14 @@
             {% endblock content %}
         </div>
     </div>
-	<div id="footer">
-		{% block footer %}
-		{% endblock footer %}
-		{% include "feedback.html" %}
-	</div>
+    <div id="footer">
+        <div class="content grid">
+            {% block footer %}
+            <div class="col-1-8">
+                Test
+            </div>
+            {% endblock footer %}
+            {# {% include "feedback.html" %} #}
+        </div>
+    </div>
 </body>
