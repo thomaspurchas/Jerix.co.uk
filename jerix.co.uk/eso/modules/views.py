@@ -24,6 +24,9 @@ def module_posts(request, module_id, slug=None):
         posts = posts.exclude(
                         historical_period__end_date__lte=datetime.date.today())
 
+        # Prefetch materials, and documents
+        posts = posts.prefetch_related('materials__document')
+
         # Get related questions by looking up the modules `primary_tag`
         questions = Question.objects.filter(tags=module.primary_tag).distinct()
         questions = questions.order_by('asked')[:10]
