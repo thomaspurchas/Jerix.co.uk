@@ -103,6 +103,7 @@ class Post(AuthoredObject):
     post_date = models.DateTimeField(default=datetime.datetime.now)
     tags = TaggableManager(blank=True)
 
+    @property
     def sorted_materials(self):
         return self.materials.order_by('index')
 
