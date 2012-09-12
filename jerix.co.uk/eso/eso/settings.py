@@ -249,6 +249,8 @@ if DEBUG:
 FILE_TYPE_MAPPINGS = {
     "(?i).*\.pdf$": {
         "type": "pdf",
+        "display": "PDF",
+        "priority": 99,
         "path": "DerivedPDFs:",
     },
     "(?i).*\.png$": {
@@ -257,10 +259,12 @@ FILE_TYPE_MAPPINGS = {
     },
     "(?i).*\.docx?$": {
         "type": "word",
+        "display": "Doc",
         "path": None,
     },
     "(?i).*\.(pptx?|ppts?)$": {
         "type": "slide",
+        "display": "Powerpoint",
         "path": None,
     },
 }

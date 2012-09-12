@@ -9,6 +9,8 @@ from files.errors import CannotIdentifyFileTypeError, ReadOnlyFileError
 
 compiled_regexs = {}
 type_to_path = {}
+type_to_display_cache = {}
+type_to_priorty_cache = {}
 
 def _compile_regexs():
     """"""
@@ -22,7 +24,22 @@ def _generate_type_to_path():
     for _, info in settings.FILE_TYPE_MAPPINGS.items():
         type_to_path[info['type']] = info['path']
 
+def _generate_type_to_display_cache():
+    for _, info in settings.FILE_TYPE_MAPPINGS.items():
+        type_to_display_cache[info['type']] = unicode(
+                                            info.get('display', info['type']))
+
+def _generate_type_to_priorty_cache():
+    for _, info in settings.FILE_TYPE_MAPPINGS.items():
+        type_to_priorty_cache[info['type']] = int(info.get('priority', 0))
+
 # Helper funtions
+def type_to_display(type):
+    return type_to_display_cache.get(type, type)
+
+def type_to_priorty(type):
+    return type_to_priorty_cache.get(type, 0)
+
 def identify_file_type(name):
     """docstring for get_file_type"""
     name = os.path.basename(name)
@@ -63,3 +80,5 @@ class ReadOnlyFile(File):
 
 _compile_regexs()
 _generate_type_to_path()
+_generate_type_to_display_cache()
+_generate_type_to_priorty_cache()

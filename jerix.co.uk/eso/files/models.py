@@ -7,7 +7,8 @@ from django.conf import settings
 
 from accounts.models import AuthoredObject
 
-from files.helpers import identify_and_md5, generate_md5, get_path, ReadOnlyFile
+from files.helpers import (identify_and_md5, generate_md5, get_path,
+                           ReadOnlyFile, type_to_display, type_to_priorty)
 from files.errors import ReadOnlyFileError
 
 # Create your models here.
@@ -92,6 +93,14 @@ class BaseDocument(models.Model):
     def document_deleted(cls, sender, instance, **kargs):
         Blob.check_blob(instance._blob)
 
+    @property
+    def type_display(self):
+        return type_to_display(self.type)
+
+    @property
+    def type(self):
+        return self._blob.file_type
+
     def _get_file(self):
         """Return the file object"""
         file = ReadOnlyFile(self._blob.file)
@@ -122,6 +131,14 @@ class Document(BaseDocument, AuthoredObject):
         """
         return self._blob.derived_documents.filter(
                                             _blob__file_type=file_type)
+
+    @property
+    def versions(self):
+        versions = list(self._blob.derived_documents.all())
+        versions.append(self)
+        for version in versions:
+            version.priority = type_to_priorty(version.type)
+        return sorted(versions, key=lambda doc:doc.priority, reverse=True)
 
     @property
     def extracted_content(self):
@@ -169,7 +186,7 @@ class DerivedDocument(BaseDocument):
         ordering = ['derived_from', 'index']
 
     def __unicode__(self):
-        return '%s derived from: %s' % (self.blob,
+        return '%s derived from: %s' % (self._blob,
                                         self.derived_from)
 
 pre_save.connect(BaseDocument.document_saved, Document)
