@@ -31,7 +31,7 @@ class Blob(models.Model):
         #     path = ''
         #     cont = ''
         # return "%s:%s" % (cont, os.path.join(path, name))
-        return os.path.join(upload_to_url, name)
+        return os.path.join(instance.upload_to_url, name)
 
     file = models.FileField(upload_to=upload_to)
 
