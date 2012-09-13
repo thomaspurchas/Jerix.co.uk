@@ -4,6 +4,8 @@ from django.db import models
 from django.db.models.signals import post_delete, pre_save, post_save
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
 
 from accounts.models import AuthoredObject
 
@@ -39,7 +41,9 @@ class Blob(models.Model):
     def blob_saved(self, sender, instance, **kargs):
         """Make sure that blob changes dont break things"""
         if instance.md5_sum in [None, '']:
+            instance.file.seek(0)
             instance.md5_sum = generate_md5(instance.file)
+            instance.file.seek(0)
 
     @classmethod
     def check_blob(cls, blob):
@@ -109,12 +113,6 @@ class BaseDocument(models.Model):
         file = ReadOnlyFile(self._blob.file)
         return file
 
-    @property
-    def url(self):
-        """Get a public url for the file"""
-        from django.core.files.storage import default_storage
-        return default_storage.url(self.file.name)
-
     class Meta:
         abstract = True
 
@@ -140,12 +138,24 @@ class Document(BaseDocument, AuthoredObject):
         versions = list(self._blob.derived_documents.all())
         versions.append(self)
         for version in versions:
+            version.original_document = self
             version.priority = type_to_priorty(version.type)
         return sorted(versions, key=lambda doc:doc.priority, reverse=True)
 
     @property
     def extracted_content(self):
         return self.file.extracted_content
+
+    @property
+    def url(self):
+        """Get a public url for the file"""
+        filename, ext = os.path.splitext(self.file_name)
+
+        return reverse('download-original',
+                kwargs={
+                    'id': self.id,
+                    'slug': "%s%s" % (slugify(filename), ext)
+                })
 
     def _set_file(self, file):
         file_type, md5 = identify_and_md5(file)
@@ -181,6 +191,31 @@ class DerivedDocument(BaseDocument):
             blob = DerivedBlob(upload_to_url=path, md5_sum=md5,
                                 file_type=file_type, file=file)
         self._blob = blob
+
+    @property
+    def url(self):
+
+        filename = os.path.basename(self.file.name)
+
+        if hasattr(self, 'original_document'):
+            filename = os.path.splitext(self.original_document.file_name)[0]
+            orig_id = self.original_document.id
+        else:
+            filename = os.path.splitext(filename)[0]
+            orig_id = None
+
+        ext = os.path.splitext(self.derived_from.file.name)[1]
+
+        kwargs = {
+            'id': self.id,
+            'slug': '%s%s' % (slugify(filename), ext),
+        }
+
+        if orig_id:
+            kwargs['orig_id'] = orig_id
+            return reverse('download-derived-with-orig', kwargs=kwargs)
+        else:
+            return reverse('download-derived', kwargs=kwargs)
 
     file = property(BaseDocument._get_file, _set_file)
 
