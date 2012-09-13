@@ -20,6 +20,9 @@ urlpatterns = patterns('',
 
     (r'^search/', include('haystack.urls')),
 
+    # Downloads
+    (r'^download/', include('download.urls')),
+
     # Hitcount ajax url
     url(r'^analytics/', include('hitcount.urls')),
 
