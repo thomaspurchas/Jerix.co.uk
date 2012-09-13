@@ -51,6 +51,7 @@ def identify_file_type(name):
 
 def generate_md5(file):
     m = hashlib.md5()
+    file.seek(0)
     for chunk in file.chunks():
         m.update(chunk)
     return m.hexdigest()
