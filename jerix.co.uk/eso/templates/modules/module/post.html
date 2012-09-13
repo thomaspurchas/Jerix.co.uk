@@ -26,7 +26,10 @@
                         </li>
                         {% for version in material.document.versions %}
                             <li>
-                                <a href={{ version.url }}>
+                                <a href={{ version.url }}
+                                    {% if version.type == "pdf" %}
+                                    target="_blank"
+                                    {% endif %}>
                                     {{ version.type_display }}
                                 </a>
                             </li>
