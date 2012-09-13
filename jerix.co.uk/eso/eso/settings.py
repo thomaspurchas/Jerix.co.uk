@@ -186,6 +186,7 @@ INSTALLED_APPS = (
     'students',
     'reputation',
     'q_and_a',
+    'download'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -307,11 +308,15 @@ PARENT_BLOBS_LOCATION = 'ParentBlobs/'
 #     'FILTER_LIST': []
 # }
 
+from boto.s3.connection import VHostCallingFormat
+
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_DEFAULT_ACL = 'authenticated-read'
 AWS_STORAGE_BUCKET_NAME = 'media.jerix.co.uk'
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_CUSTOM_DOMAIN = 'media.jerix.co.uk'
+AWS_S3_CALLING_FORMAT = VHostCallingFormat()
 STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
 COMPRESS_STORAGE = STATICFILES_STORAGE
 

@@ -8,6 +8,7 @@ class StaticStorage(S3BotoStorage):
     def __init__(self, *args, **kwargs):
         kwargs['bucket'] = 'static.jerix.co.uk'
         kwargs['custom_domain'] = 'static.jerix.co.uk'
+        kwargs['acl'] = kwargs['bucket_acl'] = 'public-read'
         super(StaticStorage, self).__init__(*args, **kwargs)
         self.local_storage = get_storage_class(
             "compressor.storage.CompressorFileStorage")()
