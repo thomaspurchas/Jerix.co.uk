@@ -1,5 +1,6 @@
 from django.core.files.storage import get_storage_class
 from storages.backends.s3boto import S3BotoStorage
+from boto.s3.connection import SubdomainCallingFormat
 
 class StaticStorage(S3BotoStorage):
     """
@@ -9,6 +10,7 @@ class StaticStorage(S3BotoStorage):
         kwargs['bucket'] = 'static.jerix.co.uk'
         kwargs['custom_domain'] = 'static.jerix.co.uk'
         kwargs['acl'] = kwargs['bucket_acl'] = 'public-read'
+        kwargs['calling_format'] = SubdomainCallingFormat()
         super(StaticStorage, self).__init__(*args, **kwargs)
         self.local_storage = get_storage_class(
             "compressor.storage.CompressorFileStorage")()
