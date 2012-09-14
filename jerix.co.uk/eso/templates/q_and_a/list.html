@@ -1,0 +1,56 @@
+{% extends "q_and_a/base.html" %}
+{% load hitcount_tags %}
+{% load truncate_tags %}
+
+{% block title %}'{{ tag }}' Questions{% endblock title %}
+
+{% block header %}
+    <div class="grid">
+    <div class="col-3-4">
+        <h1 class="title">Questions tagged {{ tag }}</h1>
+    </div>
+    </div>
+{% endblock header %}
+
+{% block content %}
+    <div class="col-3-4">
+        {% for question in questions %}
+        <div class="module question-summary">
+			<div class="stats-tall">
+                <div class="stats-gray">
+                    <div class="votes">
+                        <span class="mini-count">
+                            {{ question.current_vote }}
+                        </span>
+                        <div class="small-text">
+                            vote{{ question.current_vote|pluralize }}
+                        </div>
+                    </div>
+                    <div class="answers">
+                        <span class="mini-count">
+                            {{ question.total_answers }}
+                        </span>
+                        <div class="small-text">
+                            answer{{ question.total_answers|pluralize }}
+                        </div>
+                    </div>
+                </div>
+				<div class="views small-text">
+                    {% get_hit_count for question as views %}
+                    {{ views }} view{{ view|pluralize }}
+                </div>
+            </div>
+			<div class="summary">
+				<h3>
+                    <a href="{{ question.get_absolute_url }}">
+                        {{ question.title }}
+                    </a>
+                </h3>
+                <div class="excerpt">
+                    {{ question.detail|truncatechars:"170"|escape }}
+                </div>
+			</div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
