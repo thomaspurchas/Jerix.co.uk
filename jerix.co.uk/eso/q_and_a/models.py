@@ -44,6 +44,9 @@ class Question(ReputationMixIn, AuthoredObject):
         return reverse('question', kwargs={'question_id': self.pk,
                         'slug':slugify(self.title)})
 
+        class Meta:
+            ordering = ['asked']
+
 class Answer(AuthoredObject, ReputationMixIn):
     """(Answer description)"""
 
@@ -56,7 +59,7 @@ class Answer(AuthoredObject, ReputationMixIn):
         return self.reputation.current_vote()
 
     def __unicode__(self):
-        return u"%s - %s" % (self.question.title, self.detail[:20])
+        return u"%s - %s..." % (self.question.title, self.detail[:50])
 
 def set_rep_to_author(sender, instance, *args, **kwargs):
     """docstring for set_rep_to_author"""
