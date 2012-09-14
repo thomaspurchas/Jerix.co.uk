@@ -7,7 +7,7 @@
     <span class="byline small-text">
         by  <a href="{{ post.author.get_profile.absolute_url }}">
             {{ post.author_full_name }}</a> |
-            {{ post.post_date|date:"N j g:i a" }}
+            {{ post.post_date|date }} at {{ post.post_date|time }}
     </span>
 	{% if post.description %}
 		<div class="description">
