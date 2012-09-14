@@ -7,9 +7,6 @@
 {% block head %}
     {{ block.super }}
     {% include "csrf_js.html" %}
-    {% compress css %}
-        <link rel="stylesheet" href="{{ STATIC_URL }}questions.css" type="text/css" charset="utf-8">
-    {% endcompress %}
 {% endblock head %}
 
 {% block header %}
@@ -37,7 +34,7 @@
                 {% endfor %}
             </div>
         {% endif %}
-        <div class="module">
+        <div class="module your-answer">
         <h3>Your Answer</h3>
             {% include "pagedown.html" %}
         </div>

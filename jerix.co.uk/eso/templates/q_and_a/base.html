@@ -1,3 +1,12 @@
 {% extends "base.html" %}
+{% load hitcount_tags %}
+{% load compress %}
 
 {% block title %}Questions{% endblock title %}
+
+{% block head %}
+    {{ block.super }}
+    {% compress css %}
+        <link rel="stylesheet" href="{{ STATIC_URL }}questions.css" type="text/css" charset="utf-8">
+    {% endcompress %}
+{% endblock head %}
