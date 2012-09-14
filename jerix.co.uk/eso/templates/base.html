@@ -4,6 +4,7 @@
 <head>
     {% block head %}
         <title>{% block title %}The New ESO{% endblock title %}</title>
+        <link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico" />
         {% compress css %}
         <link rel="stylesheet" href="{{ STATIC_URL }}screen.css" type="text/css" charset="utf-8">
         {% endcompress %}

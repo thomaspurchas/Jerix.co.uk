@@ -4,10 +4,10 @@
 {% block title %}{{ module.title }}{% endblock title %}
 
 {% block head %}
-    {{ block.super}}
     {% compress css %}
         <link rel="stylesheet" href="{{ STATIC_URL }}module.css" type="text/css" charset="utf-8">
     {% endcompress %}
+    {{ block.super}}
 {% endblock head %}
 
 {% block header %}

@@ -5,8 +5,8 @@
 {% block title %}Questions{% endblock title %}
 
 {% block head %}
-    {{ block.super }}
     {% compress css %}
         <link rel="stylesheet" href="{{ STATIC_URL }}questions.css" type="text/css" charset="utf-8">
     {% endcompress %}
+    {{ block.super }}
 {% endblock head %}
