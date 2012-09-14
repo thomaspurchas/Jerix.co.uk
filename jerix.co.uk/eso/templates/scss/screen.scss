@@ -1,8 +1,3 @@
-$blue: #27506C;
-$red: #E61515;
-$dark-gray: #CCC;
-$light-gray: #F9F9F9;
-$green: #8ECC4C;
 $centre-width: 960px;
 $footer-height: 100px;
 //$centre-width: 90%;
@@ -12,9 +7,12 @@ $footer-height: 100px;
 	margin: 0;
 	font-family: sans-serif;
 	font: Verdana;
-	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
-	box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+*, *:after, *:before {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 html, body {
@@ -28,7 +26,7 @@ body {
 @import "grid";
 @import "basic";
 @import "top-bar";
-@import "code-and-quotes";
+@import "colours";
 
 #container {
 	width: $centre-width;
@@ -45,6 +43,19 @@ body {
 
 #content {
 	position: relative;
+
+	> [class*='col-'] > .module {
+		border-top: 1px solid #666;
+		margin-top: 25px;
+		padding-top: 15px;
+		border-radius: 0;
+
+		&:first-of-type {
+			border: 0;
+			margin: 0;
+			padding: 0;
+		}
+	}
 }
 
 #footer {
@@ -123,6 +134,8 @@ body {
 	color: white;
 	padding: 10px;
 	border-radius: 5px;
+	border: 1px solid #6B9939;
+	border-bottom-color: #50732B;
 }
 // Fix webengage widget
 
