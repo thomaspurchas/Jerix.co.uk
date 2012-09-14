@@ -51,6 +51,9 @@ HITCOUNT_HITS_PER_IP_LIMIT = 0
 # system time zone.
 TIME_ZONE = 'Europe/London'
 
+DATE_FORMAT = "N j Y"
+TIME_FORMAT = "g:i a"
+
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-GB'
@@ -78,7 +81,7 @@ MEDIA_ROOT = pathjoin(SITE_ROOT, 'media/')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/media/' if DEBUG else '//media.jerix.co.uk/'
+MEDIA_URL = '//dev.jerix.co.uk' if DEBUG else '//media.jerix.co.uk/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -313,9 +316,9 @@ from boto.s3.connection import VHostCallingFormat
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_DEFAULT_ACL = 'authenticated-read'
-AWS_STORAGE_BUCKET_NAME = 'media.jerix.co.uk'
+AWS_STORAGE_BUCKET_NAME = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.uk'
 AWS_QUERYSTRING_AUTH = False
-AWS_S3_CUSTOM_DOMAIN = 'media.jerix.co.uk'
+AWS_S3_CUSTOM_DOMAIN = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.uk'
 AWS_S3_CALLING_FORMAT = VHostCallingFormat()
 STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
 COMPRESS_STORAGE = STATICFILES_STORAGE
@@ -323,9 +326,7 @@ COMPRESS_STORAGE = STATICFILES_STORAGE
 # Enable offline compression
 COMPRESS_OFFLINE = True
 
-if not DEBUG:
-    # DEFAULT_FILE_STORAGE = 'cumulus.storage.CloudFilesStorage'
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 try:
     from local_settings import *
