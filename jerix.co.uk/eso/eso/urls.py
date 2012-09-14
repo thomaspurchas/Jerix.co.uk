@@ -10,13 +10,10 @@ urlpatterns = patterns('',
     # url(r'^$', 'eso.views.home', name='home'),
     # url(r'^eso/', include('eso.foo.urls')),
 
-    url(r'^module/(?P<module_id>\d+)/(?P<slug>.+)/posts/$', 'modules.views.module_posts', name="module-posts"),
-    url(r'^module/(?P<module_id>\d+)/posts/$', 'modules.views.module_posts'),
-    url(r'^module/(?P<module_id>\d+)/(?P<slug>.+)/questions/$', 'q_and_a.views.module_q_and_a', name="module-qa"),
-    url(r'^module/(?P<module_id>\d+)/questions/$', 'q_and_a.views.module_q_and_a'),
+    url(r'^modules/(?P<module_id>\d+)/(?P<slug>.+)/posts/$', 'modules.views.module_posts', name="module-posts"),
+    url(r'^modules/(?P<module_id>\d+)/posts/$', 'modules.views.module_posts'),
 
-    url(r'^questions/question/(?P<question_id>\d+)/(?P<slug>.+)/$', 'q_and_a.views.question', name="question"),
-    url(r'^questions/question/(?P<question_id>\d+)/$', 'q_and_a.views.question'),
+    (r'^questions/', include('q_and_a.urls')),
 
     (r'^search/', include('haystack.urls')),
 
