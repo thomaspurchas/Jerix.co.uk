@@ -3,7 +3,7 @@
 pre {
 	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 	padding: 5px;
-	background-color: $dark-gray;
+	background-color: #EEE;
 	margin-bottom: 10px;
 	margin: 1.5em 10px;
 	padding: .5em 10px;
@@ -15,12 +15,12 @@ pre {
 
 code {
 	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-	background-color: $dark-gray;
+	background-color: #EEE;
 }
 
 blockquote {
 	position: relative;
-	background: $light-gray;
+	background: #EEE;
 	/*border-left:10px solid $dark-gray*/
 	margin: 1.5em 10px;
 	padding: .5em 10px;
