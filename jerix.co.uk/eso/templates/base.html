@@ -1,4 +1,5 @@
 {% load compress %}
+{% load cache %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +21,7 @@
             <div id="home-link">
                 Jerix
             </div>
+            {% cache 500 sidebar request.user.username %}
             <div id="user-links">
                 <ul>
                 {% if user.is_authenticated %}
@@ -41,6 +43,7 @@
                     </li>
                 {% endif %}
                 </ul>
+            {% endcache %}
             </div>
         </div>
 		</div>
