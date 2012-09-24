@@ -39,7 +39,7 @@ def generate_url(doc, headers):
 def original_download(request, id, slug=None):
     doc = get_object_or_404(Document, pk=id)
 
-    if path.splitext(doc.file_name)[1]:
+    if path.splitext(doc.file_name)[1] == path.splitext(doc.file.name)[1]:
         filename = doc.file_name
     else:
         filename = doc.file_name + path.splitext(doc.file.name)[1]
