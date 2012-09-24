@@ -1,6 +1,7 @@
 import os
 from os.path import join as pathjoin
 import djcelery
+from memcache import MEMCACHE
 # Django settings for eso project.
 
 DEBUG = os.environ.get('DEBUG', "true").lower() == "true"
@@ -21,6 +22,10 @@ DATABASES = {
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
+}
+
+CACHES = {
+    'default': MEMCACHE
 }
 
 import dj_database_url
@@ -152,6 +157,8 @@ PASSWORD_HASHERS = (
 
 # Set user profile model
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 INSTALLED_APPS = (
     'django.contrib.auth',
