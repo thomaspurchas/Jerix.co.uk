@@ -5,10 +5,12 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect
 from django.db.models import Q
 from django.template.defaultfilters import slugify
+from django.views.decorators.cache import cache_page
 
 from modules.models import Module
 from q_and_a.models import Question
 # Create your views here.
+@cache_page(60 * 15)
 def module_posts(request, module_id, slug=None):
     try:
         module = Module.objects.get(pk=module_id)
