@@ -22,14 +22,14 @@
 {% block content %}
     <div class="col-3-4">
         <div class="module question">
-            {% include "q_and_a/post.html" with post=question.detail %}
+            {% include "q_and_a/post.html" with post=question %}
         </div>
         {% if answers %}
             <div class="module answers">
                 <h2>Answers</h2>
                 {% for answer in answers %}
                 <div class="answer">
-                    {% include "q_and_a/post.html" with post=answer.detail %}
+                    {% include "q_and_a/post.html" with post=answer %}
                 </div>
                 {% endfor %}
             </div>

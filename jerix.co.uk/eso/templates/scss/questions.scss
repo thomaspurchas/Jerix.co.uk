@@ -4,9 +4,40 @@
 	font-size: 150%;
 }
 
+.post {
+	table-layout: fixed;
+	width: 100%;
+}
+
+.post:after {
+	clear: both;
+}
+
 .post-text {
 	@import "code-and-quotes";
 	font-size: 95%;
+}
+
+.repcell {
+	width: 50px;
+	vertical-align: top;
+}
+
+.rep-box {
+	text-align: center;
+
+	.vote-up {
+		cursor: pointer;
+	}
+
+	.vote-down {
+		cursor: pointer;
+	}
+
+	.total-votes {
+		font-size: 230%;
+		font-weight: bold;
+	}
 }
 
 .answers {

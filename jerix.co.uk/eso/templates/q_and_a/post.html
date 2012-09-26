@@ -1,4 +1,18 @@
 {% load markdown_tags %}
-<div class="post-text">
-	{{ post|markdown|pygmentize }}
-</div>
+<table class="post">
+    <tr>
+        <td class="repcell">
+            <div class="rep-box">
+                <input type="hidden" value="{{ question.pk }}">
+                <a class="vote-up">up vote</a>
+                <span class="total-votes">{{ post.current_vote }}</span>
+                <a class="vote-down">down vote</a>
+            </div>
+        </td>
+        <td class="postcell">
+            <div class="post-text">
+                {{ post.detail|markdown|pygmentize }}
+            </div>
+        </td>
+    </tr>
+</table>
