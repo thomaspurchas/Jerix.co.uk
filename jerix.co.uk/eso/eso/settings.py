@@ -24,9 +24,16 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': MEMCACHE
-}
+if not DEBUG:
+    CACHES = {
+        'default': MEMCACHE
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
 
 import dj_database_url
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost/jerix')}
