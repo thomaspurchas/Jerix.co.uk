@@ -21,7 +21,7 @@
             <div id="home-link">
                 Jerix
             </div>
-            {% cache 500 sidebar request.user.username %}
+            {% cache 500 sidebar user.username %}
             <div id="user-links">
                 <ul>
                 {% if user.is_authenticated %}

@@ -48,9 +48,10 @@
 {% endblock content %}
 
 {% block footer %}
-<script type="text/javascript">
-	$(document).ready(function() {
-		{% get_hit_count_javascript for question %}
-	});
-</script>
+    {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            {% get_hit_count_javascript for question %}
+        });
+    </script>
 {% endblock footer %}
