@@ -7,6 +7,13 @@
 {% block head %}
     {% compress css %}
         <link rel="stylesheet" href="{{ STATIC_URL }}questions.css" type="text/css" charset="utf-8">
+        <link rel="stylesheet" href="{{ STATIC_URL }}code.css" type="text/css" charset="utf-8">
     {% endcompress %}
     {{ block.super }}
 {% endblock head %}
+
+{% block footer %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}js/prettify/prettify.js"></script>
+    <script>$.ready(prettyPrint())</script>
+{% endblock footer %}
