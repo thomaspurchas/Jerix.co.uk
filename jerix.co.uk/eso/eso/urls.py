@@ -10,8 +10,8 @@ urlpatterns = patterns('',
     # url(r'^$', 'eso.views.home', name='home'),
     # url(r'^eso/', include('eso.foo.urls')),
 
-    url(r'^modules/(?P<module_id>\d+)/(?P<slug>.+)/posts/$', 'modules.views.module_posts', name="module-posts"),
-    url(r'^modules/(?P<module_id>\d+)/posts/$', 'modules.views.module_posts'),
+    url(r'^modules/(?P<module_id>\d+)/(?P<slug>.+)/?$', 'modules.views.module_posts', name="module-posts"),
+    url(r'^modules/(?P<module_id>\d+)/?$', 'modules.views.module_posts'),
 
     (r'^questions/', include('q_and_a.urls')),
 
