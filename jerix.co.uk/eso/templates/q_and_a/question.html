@@ -53,5 +53,41 @@
         $(document).ready(function() {
             {% get_hit_count_javascript for question %}
         });
+        $(".vote-up,.vote-down").click(function() {
+            var rep_box = $(this).parent()
+            var rep = $(this)
+            var clear = $(this).hasClass('voted')
+            if (rep_box.parents('.question').length) {
+                var type = 'question'
+            } else {
+                var type = 'answer'
+            }
+            if ($(this).hasClass('vote-up')) {
+                var choice = 'up'
+            } else {
+                var choice = 'down'
+            }
+            var id = rep_box.children('input').attr('value')
+
+            var vote = {
+                "type": type,
+                "vote": choice,
+                "id": id,
+                "clear": clear
+            };
+            $.post(
+                '{% url q_and_a.views.vote %}',
+                vote,
+                function(data) {
+                    rep_box.children('.total-votes').html(data['votes']);
+                    if (clear) {
+                        rep_box.children().removeClass('voted');
+                    } else {
+                        rep_box.children().removeClass('voted');
+                        rep.addClass('voted');
+                    }
+                }
+            );
+        });
     </script>
 {% endblock footer %}

@@ -33,7 +33,9 @@
 	.vote-down {
 		cursor: pointer;
 	}
-
+	.voted {
+		color: Orange;
+	}
 	.total-votes {
 		font-size: 230%;
 		font-weight: bold;

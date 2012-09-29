@@ -24,6 +24,16 @@ class EntityReputation(models.Model):
         self.up_votes.remove(UserProfile)
         self.down_votes.add(UserProfile)
 
+    def clear_vote(self, UserProfile):
+        self.up_votes.remove(UserProfile)
+        self.down_votes.remove(UserProfile)
+
+    def has_up_voted(self, UserProfile):
+        return self.up_votes.filter(pk=UserProfile.pk).exists()
+
+    def has_down_voted(self, UserProfile):
+        return self.down_votes.filter(pk=UserProfile.pk).exists()
+
     def __unicode__(self):
         return u"VoteReputation"
 
@@ -50,6 +60,15 @@ class ReputationMixIn(models.Model):
 
     def vote_down(self, User):
         self.reputation.vote_down(User.get_profile())
+
+    def clear_vote(self, User):
+        self.reputation.clear_vote(User.get_profile())
+
+    def has_up_voted(self, User):
+        return self.reputation.has_up_voted(User.get_profile())
+
+    def has_down_voted(self, User):
+        return self.reputation.has_down_voted(User.get_profile())
 
     def set_reputation_owner(self, user):
         """Set the reputation owner based on a user object"""

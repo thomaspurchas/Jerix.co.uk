@@ -3,10 +3,14 @@
     <tr>
         <td class="repcell">
             <div class="rep-box">
-                <input type="hidden" value="{{ question.pk }}">
-                <a class="vote-up">up vote</a>
+                <input type="hidden" value="{{ post.pk }}">
+                <a class="vote-up {{ post.voted_up|yesno:"voted," }}">
+                    up vote
+                </a>
                 <span class="total-votes">{{ post.current_vote }}</span>
-                <a class="vote-down">down vote</a>
+                <a class="vote-down {{ post.voted_down|yesno:"voted," }}">
+                    down vote
+                </a>
             </div>
         </td>
         <td class="postcell">

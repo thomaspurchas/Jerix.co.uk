@@ -1,16 +1,22 @@
+import json
+
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 
 from taggit.models import Tag
 
-from q_and_a.models import Question
+from q_and_a.models import Question, Answer
 from modules.models import Module
 # Create your views here.
 def question(request, question_id, slug=None):
-    question = get_object_or_404(Question, pk=question_id)
+    question = get_object_or_404(
+                                    Question.objects.select_related(),
+                                    pk=question_id
+    )
 
     if slug != question.slug:
         return redirect('question',
@@ -18,6 +24,12 @@ def question(request, question_id, slug=None):
             permanent=False)
 
     answers = question.answers.all()
+
+    question.voted_down = question.has_down_voted(request.user)
+    question.voted_up = question.has_up_voted(request.user)
+    for answer in answers:
+        answer.voted_down = answer.has_down_voted(request.user)
+        answer.voted_up = answer.has_up_voted(request.user)
 
     return render_to_response(
         'q_and_a/question.html',
@@ -62,3 +74,46 @@ def tagged(request, tag):
         },
         RequestContext(request)
     )
+
+@login_required
+def vote(request):
+    if request.method == 'POST' and request.is_ajax():
+        user = request.user
+        print request.raw_post_data
+        ob_type = request.POST.get('type')
+        pk = request.POST.get('id')
+        vote = request.POST.get('vote')
+        clear = True if request.POST.get('clear') == 'true' else False
+
+        if ob_type == 'question':
+            ob = get_object_or_404(Question, pk=pk) # Should be a 422 error
+        elif ob_type == 'answer':
+            ob = get_object_or_404(Answer, pk=pk) # Same as above
+
+        response_data = None
+        if clear:
+            print 'Clear vote'
+            ob.clear_vote(user)
+            response_data = {
+                'votes': ob.current_vote
+            }
+        else:
+            if vote == 'up':
+                ob.vote_up(user)
+                response_data = {
+                    'votes': ob.current_vote
+                }
+            elif vote == 'down':
+                ob.vote_down(user)
+                response_data = {
+                    'votes': ob.current_vote
+                }
+
+        if response_data:
+            return HttpResponse(
+                                json.dumps(response_data),
+                                mimetype="application/json",
+                                status=200
+            )
+
+    return HttpResponse(status=400)

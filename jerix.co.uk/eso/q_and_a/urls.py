@@ -6,5 +6,6 @@ urlpatterns = patterns('q_and_a.views',
 
     url(r'^(?P<question_id>\d+)/$', 'question'),
 
-    url(r'^tagged/(?P<tag>.*/?)', 'tagged')
+    url(r'^tagged/(?P<tag>.*/?)', 'tagged'),
+    url(r'^vote/', 'vote')
 )
