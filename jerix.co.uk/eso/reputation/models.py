@@ -22,7 +22,7 @@ class EntityReputation(models.Model):
 
     def vote_down(self, UserProfile):
         self.up_votes.remove(UserProfile)
-        self.vote_down.add(UserProfile)
+        self.down_votes.add(UserProfile)
 
     def __unicode__(self):
         return u"VoteReputation"
