@@ -269,7 +269,7 @@ LOGGING = {
         'newrelic': {
             'propagate': False,
             'handlers': ['console'],
-            'level': 'INFO'
+            'level': 'ERROR'
         }
     }
 }
