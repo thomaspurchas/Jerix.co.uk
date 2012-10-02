@@ -7,9 +7,7 @@
 {% block head %}
     {{ block.super }}
     {% include "csrf_js.html" %}
-    {% compress <js/css> %}
     {{ answer_form.media }}
-    {% endcompress %}
 {% endblock head %}
 
 {% block header %}
