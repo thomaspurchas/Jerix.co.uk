@@ -41,21 +41,17 @@ def pygmentize(value):
     to_return = ''
     found = 0
     for match_obj in regex.finditer(value):
-        code_class = match_obj.group(1)
+        # code_class = match_obj.group(1)
         code_string = match_obj.group(2)
-        if code_class.find('class') > -1:
-            language = re.split(r'"|\'', code_class)[1]
-            lexer = lexers.get_lexer_by_name(language)
-        else:
-            try:
-                lexer = lexers.guess_lexer(str(code_string))
-            except ValueError:
-                lexer = lexers.PythonLexer()
-        print code_string
-        print lexer
-        print lexer.analyse_text(str(code_string))
-        print lexers.PythonLexer().analyse_text(str(code_string))
-        pygmented_string = pygments.highlight(code_string, lexer, formatters.HtmlFormatter(nowrap=True))
+        #         if code_class.find('class') > -1:
+        #             language = re.split(r'"|\'', code_class)[1]
+        #             lexer = lexers.get_lexer_by_name(language)
+        #         else:
+        #             try:
+        #                 lexer = lexers.guess_lexer(str(code_string))
+        #             except ValueError:
+        #                 lexer = lexers.PythonLexer()
+        #         pygmented_string = pygments.highlight(code_string, lexer, formatters.HtmlFormatter(nowrap=True))
         to_return = (to_return + value[last_end:match_obj.start(0)] +
                     '<code class="default prettyprint">' + code_string + #pygmented_string +
                     '</code>')
