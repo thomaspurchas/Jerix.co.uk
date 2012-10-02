@@ -32,11 +32,12 @@ def question(request, question_id, slug=None):
 
     answers = question.answers.all()
 
-    question.voted_down = question.has_down_voted(request.user)
-    question.voted_up = question.has_up_voted(request.user)
-    for answer in answers:
-        answer.voted_down = answer.has_down_voted(request.user)
-        answer.voted_up = answer.has_up_voted(request.user)
+    if request.user.is_authenticated():
+        question.voted_down = question.has_down_voted(request.user)
+        question.voted_up = question.has_up_voted(request.user)
+        for answer in answers:
+            answer.voted_down = answer.has_down_voted(request.user)
+            answer.voted_up = answer.has_up_voted(request.user)
 
     answer_form = AnswerForm()
     print answer_form.media
