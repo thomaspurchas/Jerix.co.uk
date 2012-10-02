@@ -43,8 +43,11 @@
 }
 
 .answers {
+	margin-top: 25px;
+
 	h2 {
 		margin-bottom: 10px;
+		border-bottom: 1px solid #666;
 	}
 	.answer {
 		border-top: 1px solid #999;
