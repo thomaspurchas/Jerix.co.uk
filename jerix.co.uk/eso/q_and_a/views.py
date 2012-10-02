@@ -126,3 +126,9 @@ def vote(request):
             )
 
     return HttpResponse(status=400)
+
+
+@login_required
+def post_answer(request):
+    if request.method == 'POST':
+        pass
