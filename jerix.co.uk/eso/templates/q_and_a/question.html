@@ -27,7 +27,9 @@
         </div>
         {% if answers %}
             <div class="module answers">
-                <h2>Answers</h2>
+                {% with count=answers.count %}
+                <h2>{{ count }} Answer{{ count|pluralize }}</h2>
+                {% endwith %}
                 {% for answer in answers %}
                 <div class="answer">
                     {% include "q_and_a/post.html" with post=answer %}
