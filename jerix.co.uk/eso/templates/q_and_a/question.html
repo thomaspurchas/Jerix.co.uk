@@ -7,6 +7,9 @@
 {% block head %}
     {{ block.super }}
     {% include "csrf_js.html" %}
+    {% compress <js/css> %}
+    {{ answer_form.media }}
+    {% endcompress %}
 {% endblock head %}
 
 {% block header %}
@@ -36,7 +39,17 @@
         {% endif %}
         <div class="module your-answer">
         <h3>Your Answer</h3>
-            {% include "pagedown.html" %}
+            <form id="post-answer" class="post-answer"
+                method="POST" action="">
+                {% csrf_token %}
+                <div id="markdown-editor">
+                    {{ answer_form.as_p }}
+                </div>
+                <div class="form-submit">
+                    <input type="submit" class="submit-botton"
+                        value="Post Your Answer">
+                </div>
+            </form>
         </div>
     </div>
     <div class="col-1-4">

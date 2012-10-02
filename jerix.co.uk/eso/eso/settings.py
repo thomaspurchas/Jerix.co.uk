@@ -203,7 +203,8 @@ INSTALLED_APPS = (
     'students',
     'reputation',
     'q_and_a',
-    'download'
+    'download',
+    'pagedown'
 )
 
 # A sample logging configuration. The only tangible logging

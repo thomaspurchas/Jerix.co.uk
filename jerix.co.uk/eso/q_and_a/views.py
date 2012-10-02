@@ -6,11 +6,18 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
+from django import forms
 
+from pagedown.widgets import PagedownWidget
 from taggit.models import Tag
 
 from q_and_a.models import Question, Answer
 from modules.models import Module
+
+# Answer Form
+class AnswerForm(forms.Form):
+    answer = forms.CharField(widget=PagedownWidget())
+
 # Create your views here.
 def question(request, question_id, slug=None):
     question = get_object_or_404(
@@ -31,11 +38,14 @@ def question(request, question_id, slug=None):
         answer.voted_down = answer.has_down_voted(request.user)
         answer.voted_up = answer.has_up_voted(request.user)
 
+    answer_form = AnswerForm()
+    print answer_form.media
     return render_to_response(
         'q_and_a/question.html',
         {
             'question': question,
-            'answers': answers
+            'answers': answers,
+            'answer_form': answer_form
         },
         RequestContext(request)
     )
@@ -79,7 +89,6 @@ def tagged(request, tag):
 def vote(request):
     if request.method == 'POST' and request.is_ajax():
         user = request.user
-        print request.raw_post_data
         ob_type = request.POST.get('type')
         pk = request.POST.get('id')
         vote = request.POST.get('vote')
