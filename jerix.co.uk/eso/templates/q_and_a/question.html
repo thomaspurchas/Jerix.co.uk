@@ -92,13 +92,16 @@
                 '{% url q_and_a.views.vote %}',
                 vote,
                 function(data) {
-                    rep_box.children('.total-votes').html(data['votes']);
-                    if (clear) {
-                        rep_box.children().removeClass('voted');
-                    } else {
-                        rep_box.children().removeClass('voted');
-                        rep.addClass('voted');
-                    }
+                      if (!("error" in data)) {
+                            rep_box.children('.total-votes')
+                                .html(data['votes']);
+                            if (clear) {
+                                rep_box.children().removeClass('voted');
+                            } else {
+                                rep_box.children().removeClass('voted');
+                                rep.addClass('voted');
+                            }
+                      }
                 }
             );
         });

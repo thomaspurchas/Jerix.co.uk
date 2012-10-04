@@ -86,9 +86,19 @@ def tagged(request, tag):
         RequestContext(request)
     )
 
-@login_required
 def vote(request):
-    if request.method == 'POST' and request.is_ajax():
+    if not request.user.is_authenticated():
+        response_data = {
+            'error': 'Login Required',
+            'error_code': '42',
+        }
+
+        return HttpResponse(
+            json.dumps(response_data),
+            mimetype="application/json",
+            status=200
+        )
+    elif request.method == 'POST' and request.is_ajax():
         user = request.user
         ob_type = request.POST.get('type')
         pk = request.POST.get('id')
