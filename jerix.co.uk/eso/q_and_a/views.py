@@ -16,7 +16,7 @@ from modules.models import Module
 
 # Answer Form
 class AnswerForm(forms.Form):
-    answer = forms.CharField(widget=PagedownWidget())
+    answer = forms.CharField(widget=PagedownWidget(), label='')
 
 # Create your views here.
 def question(request, question_id, slug=None):
@@ -39,7 +39,7 @@ def question(request, question_id, slug=None):
             answer.voted_down = answer.has_down_voted(request.user)
             answer.voted_up = answer.has_up_voted(request.user)
 
-    answer_form = AnswerForm()
+    answer_form = AnswerForm(auto_id=False)
     print answer_form.media
     return render_to_response(
         'q_and_a/question.html',

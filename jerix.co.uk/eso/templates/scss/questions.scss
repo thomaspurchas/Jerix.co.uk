@@ -64,6 +64,30 @@
 	border-top: 1px solid #999 !important;
 	margin: 0 !important;
 	padding: 20px 0;
+
+	.form-submit {
+		text-align: center;
+	}
+
+	input {
+		padding: 3px;
+		border: 1px solid #BFBFBF;
+		font-size: 100%;
+		color: #666;
+		font-weight: bold;
+		background: #E6E6E6;
+		font-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+		border-radius: 3px;
+
+		&:hover {
+			background: $green;
+			color: white;
+			cursor: pointer;
+			text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+			border-color: #6B9939;
+			border-bottom-color: #50732B;
+		}
+	}
 }
 
 .question-summary {
