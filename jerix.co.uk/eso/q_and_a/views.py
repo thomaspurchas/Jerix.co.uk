@@ -34,7 +34,17 @@ def question(request, question_id, slug=None):
 
     # This load of SQL calculates the total vote count in SQL. Later we will be
     # able to replace this is F expressions with the next version of Django
-    answers = question.answers.all()
+    answers = question.answers.all().extra(
+        select={
+            'vote_count': '(SELECT COUNT(*) FROM reputation_entityreputation_up_votes' +
+            ' WHERE reputation_entityreputation_up_votes.entityreputation_id = ' +
+            'q_and_a_answer.reputation_id) - ' +
+
+            '(SELECT COUNT(*) FROM reputation_entityreputation_down_votes' +
+            ' WHERE reputation_entityreputation_down_votes.entityreputation_id = ' +
+            'q_and_a_answer.reputation_id)',
+        }
+    ).order_by('-vote_count')
 
     if request.user.is_authenticated():
         question.voted_down = question.has_down_voted(request.user)
