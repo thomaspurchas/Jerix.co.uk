@@ -40,7 +40,7 @@
         <div class="module your-answer">
             <h3>Your Answer</h3>
             <form id="post-answer" class="post-answer"
-                method="POST" action="">
+                method="POST" action="{% url post_answer %}">
                 {% csrf_token %}
                 <div id="markdown-editor">
                     {{ answer_form.as_p }}

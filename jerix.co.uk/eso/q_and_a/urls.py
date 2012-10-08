@@ -8,5 +8,5 @@ urlpatterns = patterns('q_and_a.views',
 
     url(r'^tagged/(?P<tag>.*/?)', 'tagged'),
     url(r'^vote/', 'vote'),
-    url(r'^post-answer/', 'post_answer')
+    url(r'^post-answer/', 'post_answer', name='post_answer')
 )

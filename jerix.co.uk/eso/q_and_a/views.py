@@ -1,5 +1,6 @@
 import json
 
+from django.db.models import F
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -17,6 +18,7 @@ from modules.models import Module
 # Answer Form
 class AnswerForm(forms.Form):
     answer = forms.CharField(widget=PagedownWidget(), label='')
+    question_id = forms.IntegerField(widget=forms.HiddenInput())
 
 # Create your views here.
 def question(request, question_id, slug=None):
@@ -30,6 +32,8 @@ def question(request, question_id, slug=None):
             question_id=question_id, slug=slugify(question.title),
             permanent=False)
 
+    # This load of SQL calculates the total vote count in SQL. Later we will be
+    # able to replace this is F expressions with the next version of Django
     answers = question.answers.all()
 
     if request.user.is_authenticated():
@@ -39,8 +43,9 @@ def question(request, question_id, slug=None):
             answer.voted_down = answer.has_down_voted(request.user)
             answer.voted_up = answer.has_up_voted(request.user)
 
-    answer_form = AnswerForm(auto_id=False)
-    print answer_form.media
+    answer_form = AnswerForm(auto_id=False,
+                                initial={'question_id': question.pk})
+
     return render_to_response(
         'q_and_a/question.html',
         {
@@ -138,8 +143,16 @@ def vote(request):
 
     return HttpResponse(status=400)
 
-
-@login_required
 def post_answer(request):
-    if request.method == 'POST':
-        pass
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            form = AnswerForm(request.POST);
+            if form.is_valid():
+                answer = Answer()
+                answer.detail = form.cleaned_data['answer']
+                answer.question = Question.objects.get(
+                                    pk=form.cleaned_data['question_id'])
+                answer.author = request.user
+                print answer
+                answer.save()
+                print answer
