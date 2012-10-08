@@ -13,13 +13,17 @@
 	clear: both;
 }
 
-.post-text {
+.post-text, .wmd-preview {
 	@import "code-and-quotes";
 	font-size: 95%;
 }
 
 .repcell {
 	width: 50px;
+	vertical-align: top;
+}
+
+.postcell {
 	vertical-align: top;
 }
 
