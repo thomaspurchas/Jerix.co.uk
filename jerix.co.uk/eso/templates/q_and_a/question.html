@@ -53,8 +53,14 @@
         </div>
     </div>
     <div class="col-1-4">
-        <div class="module">
-            <h3>Related Questions</h3>
+        <div class="module recent-questions">
+            <h3 class="sidebar-title">Related Questions</h3>
+            {% for question in related_questions %}
+                <div class="spacer">
+                    <a class="small-link" href="{% url question question.id question.slug %}">
+                    {{ question.title }}</a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 

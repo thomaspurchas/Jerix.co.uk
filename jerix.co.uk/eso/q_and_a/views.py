@@ -56,12 +56,21 @@ def question(request, question_id, slug=None):
     answer_form = AnswerForm(auto_id=False,
                                 initial={'question_id': question.pk})
 
+    _related_questions = question.tags.similar_objects()
+
+    related_questions = []
+
+    for i in _related_questions:
+        if isinstance(i, Question):
+            related_questions.append(i)
+
     return render_to_response(
         'q_and_a/question.html',
         {
             'question': question,
             'answers': answers,
-            'answer_form': answer_form
+            'answer_form': answer_form,
+            'related_questions': related_questions
         },
         RequestContext(request)
     )
