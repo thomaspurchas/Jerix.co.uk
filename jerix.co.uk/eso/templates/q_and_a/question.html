@@ -31,7 +31,7 @@
                 <h2>{{ count }} Answer{{ count|pluralize }}</h2>
                 {% endwith %}
                 {% for answer in answers %}
-                <div class="answer">
+                <div class="answer" id="{{ answer.slug }}">
                     {% include "q_and_a/post.html" with post=answer %}
                 </div>
                 {% endfor %}

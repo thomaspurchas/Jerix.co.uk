@@ -172,6 +172,8 @@ def post_answer(request):
                 answer.question = Question.objects.get(
                                     pk=form.cleaned_data['question_id'])
                 answer.author = request.user
-                print answer
                 answer.save()
-                print answer
+
+                return redirect(answer.get_absolute_url(), False)
+
+    return HttpResponse('Ahem')
