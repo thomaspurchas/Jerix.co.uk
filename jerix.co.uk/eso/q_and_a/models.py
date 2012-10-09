@@ -39,8 +39,6 @@ class Question(ReputationMixIn, AuthoredObject):
 
     def get_absolute_url(self):
         """docstring for get_absolute_url"""
-        print 'url'
-
         return reverse('question', kwargs={'question_id': self.pk,
                         'slug':slugify(self.title)})
 
@@ -58,8 +56,15 @@ class Answer(AuthoredObject, ReputationMixIn):
         """docstring for vote"""
         return self.reputation.current_vote()
 
+    @property
+    def slug(self):
+        return u'answer-%s' % self.id
+
     def __unicode__(self):
         return u"%s - %s..." % (self.question.title, self.detail[:50])
+
+    def get_absolute_url(self):
+        return self.question.get_absolute_url() + u'#%s' % self.slug
 
 def set_rep_to_author(sender, instance, *args, **kwargs):
     """docstring for set_rep_to_author"""
