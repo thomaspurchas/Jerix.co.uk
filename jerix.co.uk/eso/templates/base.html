@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     {% block head %}
-        <title>{% block title %}The New ESO{% endblock title %}</title>
+        <title>{% block title %}Jerix{% endblock title %}</title>
         <link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico" />
         {% compress css %}
         <link rel="stylesheet" href="{{ STATIC_URL }}screen.css" type="text/css" charset="utf-8">
@@ -21,7 +21,7 @@
             <div id="home-link">
                 Jerix
             </div>
-            {% cache 500 sidebar user.username %}
+            {% cache 500 user-links user.username %}
             <div id="user-links">
                 <ul>
                 {% if user.is_authenticated %}
