@@ -26,7 +26,8 @@ class StudentProfile(models.Model):
 class LecturerProfile(models.Model):
     """(LectureProfile description)"""
 
-    modules = models.ManyToManyField('modules.Module', related_name='lecturers')
+    modules = models.ManyToManyField('modules.Module', related_name='lecturers',
+                                        blank=True, null=True)
 
     class Admin:
         list_display = ('',)
