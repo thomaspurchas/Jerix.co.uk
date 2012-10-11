@@ -125,7 +125,7 @@ body {
 	border-bottom-color: #50732B;
 }
 
-.sidebar-title {
+.sidebar-title, .blob-title {
 	margin-bottom: 10px;
 }
 // Fix webengage widget
@@ -143,5 +143,15 @@ webengagedata {
 	}
 	#webklipper-publisher-widget-container-content {
 		overflow: visible !important;
+	}
+}
+
+.blob {
+	background: #DDD;
+	border-radius: 5px;
+	padding: 5px;
+
+	h3 {
+		color: darken($green, 10%);
 	}
 }
