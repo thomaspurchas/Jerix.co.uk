@@ -18,9 +18,11 @@
     <div id="container">
 		<div id="top-bar-wrapper">
         <div id="top-bar">
-            <div id="home-link">
-                Jerix
-            </div>
+            <a href="/">
+                <div id="home-link">
+                        Jerix
+                </div>
+             </a>
             {% cache 500 user-links user.username %}
             <div id="user-links">
                 <ul>
@@ -71,7 +73,6 @@
                 Test
             </div>
             {% endblock footer %}
-            {# {% include "feedback.html" %} #}
         </div>
     </div>
 </body>
