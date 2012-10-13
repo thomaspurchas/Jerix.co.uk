@@ -5,15 +5,33 @@
 {% block content %}
 <div class="col-3-4">
     <div class="grid">
-        <div class="col-1-2 blob">
-            <h3 class="blob-title">Your Modules</h3>
-            {% for module in modules %}
-            <div class="spacer">
-                <a class="small-link" href="{{ module.get_absolute_url }}">
-                {{ module.short_code }} - {{ module.title }}</a>
+        {% if modules %}
+            <div class="col-1-2">
+                <div class="blob">
+                    <h3 class="blob-title">Your Modules</h3>
+                    {% for module in modules %}
+                    <div class="spacer">
+                        <a class="small-link" href="{{ module.get_absolute_url }}">
+                        {{ module.short_code }} - {{ module.title }}</a>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            {% endfor %}
-        </div>
+        {% endif %}
+        {% if lecturers %}
+            <div class="col-1-2">
+                <div class="blob">
+                    <h3 class="blob-title">Your Modules</h3>
+                    {% for lecturer in lecturers %}
+                    <div class="spacer">
+                        <a class="small-link"
+                        href="{{ lecturer.get_absolute_url }}">
+                        {{ lecturer.full_title }}</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
 <div class="col-1-4">
