@@ -9,7 +9,7 @@ class StudentProfile(models.Model):
     year = models.ForeignKey('students.Year')
     tutor = models.ForeignKey('accounts.LecturerProfile')
 
-    modules = models.ManyToManyField('modules.Module')
+    modules = models.ManyToManyField('modules.Module', related_name='students')
 
     class Admin:
         list_display = ('',)
