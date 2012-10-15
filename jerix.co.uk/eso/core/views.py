@@ -2,7 +2,7 @@ from django.http import Http404, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 
-from accounts.models import LecturerProfile
+from accounts.models import UserProfile
 
 # Create your views here.
 
@@ -15,10 +15,8 @@ def home(request):
             student_profile = profile.student_profile
 
             modules = student_profile.modules.all()
-            lecturers = LecturerProfile.objects.filter(
-                                            modules__students=student_profile)
-            lecturers = LecturerProfile.objects.all()
-            print lecturers
+            lecturers = UserProfile.objects.filter(
+                            lecturer_profile__modules__students=student_profile)
 
     return render_to_response(
         'core/home.html',
