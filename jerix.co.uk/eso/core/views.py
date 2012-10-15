@@ -9,6 +9,7 @@ from accounts.models import UserProfile
 def home(request):
     user = request.user
     modules = []
+    context = {}
     if request.user.is_authenticated():
         profile = user.get_profile()
         if profile.is_student():
@@ -18,11 +19,13 @@ def home(request):
             lecturers = UserProfile.objects.filter(
                             lecturer_profile__modules__students=student_profile)
 
+            context.update({
+                'modules': modules,
+                'lecturers': lecturers
+            })
+
     return render_to_response(
         'core/home.html',
-        {
-            'modules': modules,
-            'lecturers': lecturers
-        },
+        context,
         RequestContext(request)
     )
