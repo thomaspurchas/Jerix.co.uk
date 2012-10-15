@@ -10,6 +10,8 @@ from boto.s3.connection import S3Connection, VHostCallingFormat
 
 from files.models import Document, DerivedDocument
 
+URL_EXPIRY = getattr(settings, 'S3_URL_EXPIRES_IN', 30)
+
 # s3conn = S3Connection(settings.AWS_ACCESS_KEY_ID,
 #                    settings.AWS_SECRET_ACCESS_KEY,
 #                    calling_format=VHostCallingFormat(),
@@ -31,7 +33,7 @@ def generate_headers(filename, doc):
 
 def generate_url(doc, headers):
     url = doc._blob.file.file.key.generate_url(
-                                                30,
+                                                URL_EXPIRY,
                                                 force_http=True,
                                                 response_headers=headers
                                                )
