@@ -1,3 +1,4 @@
+import logging
 import datetime
 
 from django.http import Http404
@@ -9,8 +10,9 @@ from django.views.decorators.cache import cache_page
 
 from modules.models import Module
 from q_and_a.models import Question
+
 # Create your views here.
-@cache_page(60 * 15)
+@cache_page(60 * 2)
 def module_posts(request, module_id, slug=None):
     try:
         module = Module.objects.get(pk=module_id)
