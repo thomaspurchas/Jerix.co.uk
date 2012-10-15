@@ -15,7 +15,9 @@ class SubPostInline(admin.TabularInline):
 
 class SubPostAdmin(admin.ModelAdmin):
     """docstring for SubPostAmdin"""
-    inlines = [MaterialInline]
+    inlines = [
+        MaterialInline,
+    ]
 
 class ParentPostAdmin(admin.ModelAdmin):
     """docstring for ParentPostAdmin"""
@@ -23,7 +25,10 @@ class ParentPostAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     list_display = ('__unicode__', 'module',)
 
-    inlines = [SubPostInline, MaterialInline]
+    inlines = [
+        SubPostInline,
+        MaterialInline,
+    ]
 
     class Media:
         js = ['js/collapsed_stacked_inlines.js']
