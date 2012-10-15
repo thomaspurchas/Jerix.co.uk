@@ -41,7 +41,7 @@
                     </li>
                 {% else %}
                     <li>
-                        <a href="." title="Login">Login</a>
+                        <a href="{% url user-login %}" title="Login">Login</a>
                     </li>
                 {% endif %}
                 </ul>
@@ -52,14 +52,18 @@
         <div id="header">
             {% block header %}
             {% endblock header %}
-            <div id="top-search">
-                <form action="/search/" method="GET">
-                    <input type="text" name="q" value=
-                        {% if query %}"{{ query }}"{% endif %}
-                        {% if module %}"{{ module.primary_tag }} "{% endif %}>
-                    <input type="submit" value="Let's Do This">
-                </form>
-            </div>
+            {% if user.is_authenticated %}
+                <div id="top-search">
+                    <form action="/search/" method="GET">
+                        <input type="text" name="q" value=
+                            {% if query %}"{{ query }}"{% endif %}
+                            {% if module %}"{{ module.primary_tag }} "{% endif %}>
+                        <input type="submit" value="Let's Do This">
+                    </form>
+                </div>
+            {% else %}
+                <span></span>
+            {% endif %}
         </div>
         <div id="content" class="grid">
             {% block content %}
