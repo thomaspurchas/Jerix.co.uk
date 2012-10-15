@@ -88,7 +88,7 @@ class AuthoredObject(models.Model):
 
         name = u'%s %s' % (self.author.first_name, self.author.last_name)
 
-        if name.strip() == "":
+        if name.strip() == u"":
             name = self.author.username
 
         return name
@@ -96,7 +96,12 @@ class AuthoredObject(models.Model):
     def author_full_title(self):
         """docstring for author_full_title"""
 
-        return self.author.get_profile().full_title()
+        name = self.author.get_profile().full_title()
+
+        if name.strip() == u"":
+            name = self.author.username
+
+        return name
 
     class Meta:
         abstract = True
