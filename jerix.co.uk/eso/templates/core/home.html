@@ -11,7 +11,8 @@
                     <h3 class="blob-title">Your Modules</h3>
                     {% for module in modules %}
                     <div class="spacer">
-                        <a class="small-link" href="{{ module.get_absolute_url }}">
+                        <a class="small-link"
+                        href="{{ module.get_absolute_url }}">
                         {{ module.short_code }} - {{ module.title }}</a>
                     </div>
                     {% endfor %}
@@ -21,7 +22,7 @@
         {% if lecturers %}
             <div class="col-1-2">
                 <div class="blob">
-                    <h3 class="blob-title">Your Modules</h3>
+                    <h3 class="blob-title">Your Lecturers</h3>
                     {% for lecturer in lecturers %}
                     <div class="spacer">
                         <a class="small-link"
