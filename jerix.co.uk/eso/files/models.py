@@ -198,13 +198,12 @@ class DerivedDocument(BaseDocument):
         filename = os.path.basename(self.file.name)
 
         if hasattr(self, 'original_document'):
+            ext = os.path.splitext(filename)[1]
             filename = os.path.splitext(self.original_document.file_name)[0]
             orig_id = self.original_document.id
         else:
-            filename = os.path.splitext(filename)[0]
+            filename, ext = os.path.splitext(filename)
             orig_id = None
-
-        ext = os.path.splitext(self.derived_from.file.name)[1]
 
         kwargs = {
             'id': self.id,
