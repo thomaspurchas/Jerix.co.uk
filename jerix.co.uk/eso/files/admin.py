@@ -35,10 +35,10 @@ class DerivedDocumentForm(forms.ModelForm):
         super(DerivedDocumentForm, self).__init__(*args, **kwargs)
 
 class ParentBlobAdmin(admin.ModelAdmin):
-    readonly_fields = ('md5_sum',)
+    readonly_fields = ('md5_sum', 'file_type', 'file')
 
 class DerivedBlobAdmin(admin.ModelAdmin):
-    readonly_fields = ('md5_sum', 'upload_to_url')
+    readonly_fields = ('md5_sum', 'upload_to_url', 'file_type', 'file')
 
 class DocumentAdmin(admin.ModelAdmin):
     form = DocumentForm
