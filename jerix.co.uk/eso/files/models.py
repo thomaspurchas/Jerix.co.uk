@@ -135,7 +135,10 @@ class Document(BaseDocument, AuthoredObject):
 
     @property
     def versions(self):
-        versions = list(self._blob.derived_documents.all())
+        versions = list(
+                    self._blob.derived_documents.all().exclude(
+                    _blob__file_type='png')
+        )
         versions.append(self)
         for version in versions:
             version.original_document = self
