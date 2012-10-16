@@ -4,6 +4,7 @@ import hashlib
 
 from django.conf import settings
 from django.core.files import File
+from django.core.exceptions import ImproperlyConfigured
 
 from files.errors import CannotIdentifyFileTypeError, ReadOnlyFileError
 
@@ -67,7 +68,11 @@ def identify_and_md5(file):
     return (file_type, md5_sum)
 
 def get_path(file_type):
-    return type_to_path[file_type]
+    path = type_to_path[file_type]
+    if path == None:
+        raise ImproperlyConfigured(
+                'Type "%s" does not have a derived path' % file_type)
+    return path
 
 class ReadOnlyFile(File):
     def write(self, *args, **kargs):
