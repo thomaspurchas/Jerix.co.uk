@@ -22,11 +22,23 @@ class DocumentForm(forms.ModelForm):
         self.fields['title'].required = False
         self.fields['file_name'].required = False
 
+class DerivedDocumentForm(forms.ModelForm):
+    class Meta:
+        model = DerivedDocument
+
+    file = forms.FileField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        new = False if kwargs.get('instance') else True
+        if not kwargs.get('initial') and not new:
+            kwargs['initial'] = {'file': kwargs['instance']._blob.file}
+        super(DerivedDocumentForm, self).__init__(*args, **kwargs)
+
 class ParentBlobAdmin(admin.ModelAdmin):
     readonly_fields = ('md5_sum',)
 
 class DerivedBlobAdmin(admin.ModelAdmin):
-    readonly_fields = ('md5_sum',)
+    readonly_fields = ('md5_sum', 'upload_to_url')
 
 class DocumentAdmin(admin.ModelAdmin):
     form = DocumentForm
@@ -48,7 +60,13 @@ class DocumentAdmin(admin.ModelAdmin):
         obj.save()
 
 class DerivedDocumentAdmin(admin.ModelAdmin):
-    pass
+    form = DerivedDocumentForm
+    exclude = ['_blob']
+
+    def save_model(self, request, obj, form, change):
+        if isinstance(form.cleaned_data['file'], UploadedFile):
+            obj.file = form.cleaned_data['file']
+        obj.save()
 
 admin.site.register(ParentBlob, ParentBlobAdmin)
 admin.site.register(DerivedBlob, DerivedBlobAdmin)
