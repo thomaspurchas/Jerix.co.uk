@@ -108,6 +108,10 @@ class BaseDocument(models.Model):
     def type(self):
         return self._blob.file_type
 
+    @property
+    def extracted_content(self):
+        return self._blob.extracted_content
+
     def _get_file(self):
         """Return the file object"""
         file = ReadOnlyFile(self._blob.file)
@@ -144,10 +148,6 @@ class Document(BaseDocument, AuthoredObject):
             version.original_document = self
             version.priority = type_to_priorty(version.type)
         return sorted(versions, key=lambda doc:doc.priority, reverse=True)
-
-    @property
-    def extracted_content(self):
-        return self.file.extracted_content
 
     @property
     def url(self):
