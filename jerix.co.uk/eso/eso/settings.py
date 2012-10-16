@@ -15,17 +15,6 @@ MANAGERS = ADMINS
 
 LOGIN_URL = 'account/login/'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'db.sqlite',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
 if not DEBUG:
     CACHES = {
         'default': MEMCACHE
@@ -308,26 +297,6 @@ FILE_TYPE_MAPPINGS = {
 
 PARENT_BLOBS_LOCATION = 'ParentBlobs/'
 
-# CUMULUS = {
-#     'API_KEY': '',
-#     'AUTH_URL': 'uk_authurl',
-#     'CNAMES': None,
-#     'CONTAINERS': {
-#         'uploads': False,
-#         PARENT_BLOBS_CONTAINER: False,
-#         'DerivedPDFs': False,
-#         'DerivedPNGs': True,
-#     },
-#     'DEFAULT_CONTAINER': 'uploads',
-#     'SERVICENET': False,
-#     'TIMEOUT': 5,
-#     'TTL': 600,
-#     'USE_SSL': False,
-#     'USERNAME': '',
-#     'STATIC_CONTAINER': None,
-#     'FILTER_LIST': []
-# }
-
 from boto.s3.connection import VHostCallingFormat
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
@@ -344,12 +313,3 @@ COMPRESS_STORAGE = STATICFILES_STORAGE
 COMPRESS_OFFLINE = True
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-
-try:
-    from local_settings import *
-    CUMULUS.update({
-        'API_KEY': CLOUDFILES_API_KEY,
-        'USERNAME': CLOUDFILES_USERNAME
-    })
-except:
-    pass
