@@ -34,11 +34,14 @@ djcelery.setup_loader()
 BROKER_URL = 'django://'
 
 # Haystack
+HAYSTACK_URL      = os.environ.get('WEBSOLR_URL', 'http://localhost:8983/solr')
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': HAYSTACK_URL,
     },
 }
+
 
 # Hitcount app
 HITCOUNT_KEEP_HIT_ACTIVE = { 'days': 2 }
