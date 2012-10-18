@@ -1,2 +1,2 @@
 {{ object.title }}
-{{ object.document.extracted_content }}
+{{ extracted }}
