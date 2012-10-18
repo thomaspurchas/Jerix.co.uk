@@ -101,7 +101,6 @@ class Post(AuthoredObject):
     description = models.TextField(blank=True)
 
     post_date = models.DateTimeField(default=datetime.datetime.now)
-    tags = TaggableManager(blank=True)
 
     @property
     def sorted_materials(self):
@@ -123,6 +122,7 @@ class ParentPost(Post, HistoryMixIn):
 
     module = models.ForeignKey(Module, related_name='posts')
     index = models.IntegerField()
+    tags = TaggableManager(blank=True)
     is_parent = True
 
     class Meta:
@@ -141,6 +141,7 @@ class SubPost(Post):
 
     parent = models.ForeignKey(ParentPost, related_name='sub_posts')
     index = models.IntegerField()
+    tags = TaggableManager(blank=True)
     is_parent = False
 
     class Meta:
