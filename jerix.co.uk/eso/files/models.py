@@ -137,6 +137,10 @@ class Document(BaseDocument, AuthoredObject):
         return self._blob.derived_documents.filter(
                                             _blob__file_type=file_type)
 
+    @propery
+    def derived_documents(self):
+        return self._blob.derived_documents.all()
+
     @property
     def versions(self):
         versions = list(
