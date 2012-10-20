@@ -7,33 +7,44 @@ from django.shortcuts import render_to_response, redirect
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 from modules.models import Module
 from q_and_a.models import Question
 
 # Create your views here.
-@cache_page(60 * 2)
 def module_posts(request, module_id, slug=None):
     try:
-        module = Module.objects.get(pk=module_id)
+        module = cache.get('module_posts_%s_module' % module_id)
+        if not module:
+            module = Module.objects.get(pk=module_id)
+            cache.set('module_posts_%s_module' % module_id, module_id, 60*10)
+
         if slug != slugify(module.title):
-            print 'redirect'
             return redirect('module-posts',
                 module_id=module_id, slug=slugify(module.title),
                 permanent=False)
-        posts = module.posts.filter(
-            Q(historical_period__start_date__lte=datetime.date.today()) |
-            Q(historical_period=None)
-        )
-        posts = posts.exclude(
+        posts = cache.get('module_posts_%s_posts' % module_id)
+        if not posts:
+            posts = module.posts.filter(
+                Q(historical_period__start_date__lte=datetime.date.today()) |
+                Q(historical_period=None)
+            )
+            posts = posts.exclude(
                         historical_period__end_date__lte=datetime.date.today())
+
+            cache.set('module_posts_%s_posts' % module_id, 60*1)
 
         # Prefetch materials, and documents
         posts = posts.prefetch_related('materials__document')
 
         # Get related questions by looking up the modules `primary_tag`
-        questions = Question.objects.filter(tags=module.primary_tag).distinct()
-        questions = questions.order_by('asked')[:10]
+        questions = cache.get('modules_posts_%s_questions' % module_id)
+        if not questions:
+            questions = Question.objects.filter(tags=module.primary_tag)
+            questions = questions.distinct().order_by('asked')[:10]
+            cache.set('module_posts_%s_posts' % module_id, questions, 60*1)
+
     except Module.DoesNotExist:
         raise Http404
     return render_to_response(
