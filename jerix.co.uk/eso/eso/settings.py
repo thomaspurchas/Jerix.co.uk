@@ -186,7 +186,7 @@ INSTALLED_APPS = (
     'taggit',
     'compressor',
     'raven.contrib.django',
-    #'djcelery.transport',
+    'kombu.transport.django',
 
     # My Apps
     'modules',
