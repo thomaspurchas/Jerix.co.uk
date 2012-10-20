@@ -37,12 +37,17 @@ class MaterialIndex(indexes.SearchIndex, indexes.Indexable):
     tags = indexes.MultiValueField(faceted=True)
 
     def prepare_tags(self, obj):
-        tags = list(obj.post.tags.all())
-
         if hasattr(obj.post, 'parentpost'):
-            tags.append(obj.post.parentpost.module.primary_tag)
-        else:
-            tags.append(obj.post.subpost.parent.module.primary_tag)
+            post = obj.post.parentpost
+            module = obj.post.parentpost.module
+        elif hasattr(obj.post, 'subpost'):
+            post = obj.post.subpost
+            module = obj.post.subpost.parent.module
+
+        tags = list(post.tags.all())
+        tags.append(module.primary_tag)
+
+        return tags
 
     def prepare_text(self, obj):
         content = get_content(obj.document, self._get_backend(None))
