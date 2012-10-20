@@ -87,7 +87,7 @@ MEDIA_ROOT = pathjoin(SITE_ROOT, 'media/')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '//dev.jerix.co.uk' if DEBUG else '//media.jerix.co.uk/'
+MEDIA_URL = '//media.dev.jerix.co.uk' if DEBUG else '//media.jerix.co.uk/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -308,8 +308,8 @@ AWS_STORAGE_BUCKET_NAME = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_CUSTOM_DOMAIN = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.uk'
 AWS_S3_CALLING_FORMAT = VHostCallingFormat()
-STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
-COMPRESS_STORAGE = STATICFILES_STORAGE
+if not DEBUG: STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
+if not DEBUG: COMPRESS_STORAGE = STATICFILES_STORAGE
 
 # Enable offline compression
 COMPRESS_OFFLINE = True
