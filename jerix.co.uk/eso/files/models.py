@@ -98,7 +98,10 @@ class BaseDocument(models.Model):
 
     @classmethod
     def document_deleted(cls, sender, instance, **kargs):
-        Blob.check_blob(instance._blob)
+        try:
+            Blob.check_blob(instance._blob)
+        except (DerivedBlob.DoesNotExist, ParentBlob.DoesNotExist):
+            pass
 
     @property
     def type_display(self):
@@ -137,7 +140,7 @@ class Document(BaseDocument, AuthoredObject):
         return self._blob.derived_documents.filter(
                                             _blob__file_type=file_type)
 
-    @propery
+    @property
     def derived_documents(self):
         return self._blob.derived_documents.all()
 
@@ -166,7 +169,6 @@ class Document(BaseDocument, AuthoredObject):
 
     def _set_file(self, file):
         file_type, md5 = identify_and_md5(file)
-        path = get_path(file_type)
         try:
             blob = ParentBlob.objects.get(md5_sum=md5)
         except ParentBlob.DoesNotExist:
@@ -193,7 +195,8 @@ class DerivedDocument(BaseDocument):
         try:
             blob = DerivedBlob.objects.get(md5_sum=md5,
                                             upload_to_url=path)
-            self._old_blob = self._blob
+            if hasattr(self, '_blob'):
+                self._old_blob = self._blob
         except DerivedBlob.DoesNotExist:
             blob = DerivedBlob(upload_to_url=path, md5_sum=md5,
                                 file_type=file_type, file=file)
@@ -247,3 +250,5 @@ pre_save.connect(Blob.blob_saved, DerivedBlob)
 
 post_delete.connect(Blob.delete_file, ParentBlob)
 post_delete.connect(Blob.delete_file, DerivedBlob)
+
+import files.convert_listeners
