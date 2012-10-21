@@ -22,6 +22,7 @@ django-celery-transactions==0.1.2
 django-storages==1.1.5
 django-tastypie==0.9.11
 eventlet==0.9.17
+gevent==0.13.8
 gunicorn==0.14.6
 httplib2==0.7.4
 kombu==2.3.2
