@@ -1,6 +1,7 @@
 from django.template import loader, Context
 
 from haystack import indexes
+from celery_haystack.indexes import CelerySearchIndex
 
 from modules.models import ParentPost, SubPost, Material
 
@@ -13,7 +14,7 @@ def get_content(doc, backend):
 
     return doc.extracted_content
 
-class PostIndex(indexes.SearchIndex):
+class PostIndex(CelerySearchIndex):
     text = indexes.CharField(document=True, use_template=True)
     author = indexes.CharField(model_attr='author__get_full_name')
 
@@ -31,7 +32,7 @@ class SubPostIndex(PostIndex, indexes.Indexable):
     def get_model(self):
         return SubPost
 
-class MaterialIndex(indexes.SearchIndex, indexes.Indexable):
+class MaterialIndex(CelerySearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     author = indexes.CharField(model_attr='author__get_full_name', faceted=True)
     tags = indexes.MultiValueField(faceted=True)

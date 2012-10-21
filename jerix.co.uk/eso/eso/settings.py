@@ -31,7 +31,7 @@ DATABASES = {'default': dj_database_url.config(default='postgres://localhost/jer
 
 # Celery
 djcelery.setup_loader()
-BROKER_URL = 'django://'
+BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'django://')
 
 # Haystack
 HAYSTACK_URL      = os.environ.get('WEBSOLR_URL', 'http://localhost:8983/solr')
@@ -187,6 +187,7 @@ INSTALLED_APPS = (
     'compressor',
     'raven.contrib.django',
     'kombu.transport.django',
+    'celery_haystack',
 
     # My Apps
     'modules',
