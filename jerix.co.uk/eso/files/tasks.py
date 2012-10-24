@@ -20,6 +20,7 @@ JOD_URL = 'http://localhost:8080/converter/service'
 
 @task(acks_late=True)
 def create_pdf(document_pk):
+    log.info('PDF Conversion start')
     doc = Document.objects.get(pk=document_pk)
     file = doc.file
 
