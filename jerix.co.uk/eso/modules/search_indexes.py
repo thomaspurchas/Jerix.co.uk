@@ -1,9 +1,11 @@
 from django.template import loader, Context
+from django.db.models import signals
 
 from haystack import indexes
 from celery_haystack.indexes import CelerySearchIndex
 
 from modules.models import ParentPost, SubPost, Material
+from files.models import DerivedDocument
 
 def get_content(doc, backend):
     if doc.extracted_content == None:
@@ -70,3 +72,18 @@ class MaterialIndex(CelerySearchIndex, indexes.Indexable):
     def index_queryset(self):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.all()
+
+    def new_derived_doc(self, instance, **kwargs):
+        mats = Material.objects.filter(
+                    document___blob__derived_documents__pk=instance.pk)
+
+        for mat in mats:
+            self.enqueue_save(mat, **kwargs)
+
+    def _setup_save(self):
+        super(MaterialIndex, self)._setup_save()
+        signals.post_save.connect(self.new_derived_doc, sender=DerivedDocument)
+
+    def _teardown_save(self):
+        super(MaterialIndex, self)._teardown_save()
+        signals.post_save.disconnect(self.new_derived_doc, sender=DerivedDocument)
