@@ -9,3 +9,4 @@ jerix.co.uk/static
 .sass-cache/
 venv/
 *.css
+.env
