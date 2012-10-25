@@ -7,4 +7,7 @@ from files.models import Document
 def convert_to_pdf(sender, instance, created, raw, **kargs):
     from files.tasks import create_pdf
     if created and not raw:
+        print 'Firing create_pdf task with %s:%s' % (instance, instance.pk)
         create_pdf.delay(instance.pk)
+    else:
+        print 'Not firing create_pdf task with %s:%s' % (instance, instance.pk)
