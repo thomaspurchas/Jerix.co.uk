@@ -8,7 +8,7 @@ from django.core.files.uploadedfile import TemporaryUploadedFile
 from celery.task import task
 from poster.streaminghttp import register_openers
 
-from files.models import Document, DerivedDocument
+from files.models import ParentBlob, DerivedDocument
 from files.helpers import type_to_priorty
 
 log = logging.getLogger(__name__)
@@ -19,17 +19,17 @@ register_openers()
 JOD_URL = 'http://localhost:8080/converter/service'
 
 @task(acks_late=True)
-def create_pdf(document_pk):
+def create_pdf(blob_pk):
     log.info('PDF Conversion start')
-    doc = Document.objects.get(pk=document_pk)
-    file = doc.file
+    blob = ParentBlob.objects.get(pk=blob_pk)
+    file = blob.file
 
-    log.info('Starting conversion of %s to PDF' % doc)
+    log.info('Starting conversion of %s to PDF' % blob)
 
     # Check for derived files of PDF type
-    if doc.type == 'pdf':
+    if blob.file_type == 'pdf':
         return False
-    elif doc.get_derived_documents_of_type('pdf'):
+    elif blob.derived_documents.filter(_blob__file_type='pdf'):
         return False
 
     file.seek(0)
@@ -77,7 +77,7 @@ def create_pdf(document_pk):
         create_pdf.retry(exc=e)
 
     derived_doc = DerivedDocument()
-    derived_doc.derived_from = doc._blob
+    derived_doc.derived_from = blob
     derived_doc.file = new_file
     derived_doc.index = type_to_priorty('pdf')
 
