@@ -1,0 +1,36 @@
+{% if item.0 == "modules" %}
+    <div class="blob">
+        <h3 class="blob-title">Your Modules</h3>
+        {% for module in item.1 %}
+        <div class="spacer">
+            <a class="small-link"
+            href="{{ module.get_absolute_url }}">
+            {{ module.short_code }} - {{ module.title }}</a>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% if item.0 == "lecturers" %}
+    <div class="blob">
+        <h3 class="blob-title">Your Lecturers</h3>
+        {% for lecturer in item.1 %}
+        <div class="spacer">
+            <a class="small-link"
+            href="{{ lecturer.get_absolute_url }}">
+            {{ lecturer.full_title }}</a>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% if item.0 == "questions" %}
+    <div class="blob">
+        <h3 class="blob-title">Recent Questions</h3>
+        {% for question in item.1 %}
+        <div class="spacer">
+            <a class="small-link"
+            href="{{ question.get_absolute_url }}">
+            {{ question.title }}</a>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
