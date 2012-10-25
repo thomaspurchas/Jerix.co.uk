@@ -20,10 +20,10 @@
         {% for material in post.sorted_materials  %}
             <div class="material">
                 <div class="download-links">
-                    <ul>
+                    <ul><!--
                         <li>
                             Download:
-                        </li>
+                        </li> -->
                         {% for version in material.document.versions %}
                             <li>
                                 <a href={{ version.url }}
