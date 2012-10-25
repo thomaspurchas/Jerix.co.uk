@@ -18,7 +18,7 @@ def module_posts(request, module_id, slug=None):
         module = cache.get('module_posts_%s_module' % module_id)
         if not module:
             module = Module.objects.get(pk=module_id)
-            cache.set('module_posts_%s_module' % module_id, module_id, 60*10)
+            cache.set('module_posts_%s_module' % module_id, module, 60*10)
 
         if slug != slugify(module.title):
             return redirect('module-posts',
@@ -33,7 +33,7 @@ def module_posts(request, module_id, slug=None):
             posts = posts.exclude(
                         historical_period__end_date__lte=datetime.date.today())
 
-            cache.set('module_posts_%s_posts' % module_id, 60*1)
+            cache.set('module_posts_%s_posts' % module_id, posts, 60*1)
 
         # Prefetch materials, and documents
         posts = posts.prefetch_related('materials__document')
