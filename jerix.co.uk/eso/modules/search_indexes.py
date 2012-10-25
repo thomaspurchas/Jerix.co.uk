@@ -1,20 +1,34 @@
+import logging
+
 from django.template import loader, Context
 from django.db.models import signals
 
 from haystack import indexes
 from celery_haystack.indexes import CelerySearchIndex
+from pysolr import SolrError
 
 from modules.models import ParentPost, SubPost, Material
 from files.models import DerivedDocument
 
+log = logging.getLogger(__name__)
+
 def get_content(doc, backend):
     if doc.extracted_content == None:
         file_obj = doc.file
-        content = backend.extract_file_contents(file_obj)
-        doc._blob.extracted_content = content
-        doc._blob.save()
+        file_obj.seek(0)
+        try:
+            content = backend.extract_file_contents(file_obj)
+            doc._blob.extracted_content = content
+            doc._blob.save()
+        except SolrError as e:
+            msg = ('Extracting content from: %s resulted in the ' +
+                     'following pysolr error:\n%s')
+            log.error( msg % (doc._blob, e))
+            content = ""
+    else:
+        content = doc.extracted_content
 
-    return doc.extracted_content
+    return content
 
 class PostIndex(CelerySearchIndex):
     text = indexes.CharField(document=True, use_template=True)
