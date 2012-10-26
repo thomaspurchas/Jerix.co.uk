@@ -14,7 +14,7 @@ urlpatterns = patterns('',
 
     (r'^questions/', include('q_and_a.urls')),
 
-    (r'^search/', include('haystack.urls')),
+    (r'^search/', include('search.urls')),
 
     # Downloads
     (r'^download/', include('files.download_urls')),
