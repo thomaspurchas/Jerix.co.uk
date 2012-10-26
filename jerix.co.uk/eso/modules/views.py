@@ -43,7 +43,7 @@ def module_posts(request, module_id, slug=None):
         if not questions:
             questions = Question.objects.filter(tags=module.primary_tag)
             questions = questions.distinct().order_by('asked')[:10]
-            cache.set('module_posts_%s_posts' % module_id, questions, 60*1)
+            cache.set('module_posts_%s_questions' % module_id, questions, 60*1)
 
     except Module.DoesNotExist:
         raise Http404
