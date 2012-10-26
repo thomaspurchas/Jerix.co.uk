@@ -179,7 +179,7 @@ class Material(AuthoredObject):
         ordering = ['index']
 
     def __unicode__(self):
-        return unicode(self.title)
+        return u"%s - %s" % (self.post.title, self.title)
 
 def primary_tag_changed(instance):
     klass = instance.__class__
