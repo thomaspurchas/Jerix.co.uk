@@ -243,7 +243,7 @@ LOGGING = {
         '': {
             'handlers':['console', 'sentry'],
             'propagate': True,
-            'level':'DEBUG',
+            'level':'DEBUG' if DEBUG else 'INFO',
         },
         'django': {
             'handlers':['console'],
