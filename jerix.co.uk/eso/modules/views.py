@@ -33,10 +33,11 @@ def module_posts(request, module_id, slug=None):
             posts = posts.exclude(
                         historical_period__end_date__lte=datetime.date.today())
 
-            cache.set('module_posts_%s_posts' % module_id, posts, 60*1)
+            # Prefetch materials, and documents
+            rel = 'materials__document___blob__derived_documents___blob'
+            posts = posts.prefetch_related(rel)
 
-        # Prefetch materials, and documents
-        posts = posts.prefetch_related('materials__document')
+            cache.set('module_posts_%s_posts' % module_id, posts, 60*0.5)
 
         # Get related questions by looking up the modules `primary_tag`
         questions = cache.get('modules_posts_%s_questions' % module_id)
