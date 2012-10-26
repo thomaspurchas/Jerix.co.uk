@@ -31,7 +31,7 @@ DATABASES = {'default': dj_database_url.config(default='postgres://localhost/jer
 
 # Celery
 djcelery.setup_loader()
-BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://app7335024_heroku.com:-RPaQESllwmLmr-PNA7Md0Rpt-tKh0b3@tiger.cloudamqp.com/app7335024_heroku.com')#'django://')
+BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://app8750632_heroku.com:EauSZ0LugIDHW90x-aUqtUcnwurBusiG@tiger.cloudamqp.com/app8750632_heroku.com')#'django://')
 
 # Haystack
 HAYSTACK_URL      = os.environ.get('HAYSTACK_URL', 'http://localhost:8983/solr') #'https://secure.websolr.com/solr/86a571d1d3f')
