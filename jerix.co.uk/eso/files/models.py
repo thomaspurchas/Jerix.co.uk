@@ -180,7 +180,7 @@ class Document(BaseDocument, AuthoredObject):
     file = property(BaseDocument._get_file, _set_file)
 
     def __unicode__(self):
-        return "%s - %s" % (self.title, self.file_name)
+        return u"%s - %s" % (self.title, self.file_name)
 
 class DerivedDocument(BaseDocument):
 
