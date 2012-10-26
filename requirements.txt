@@ -10,7 +10,7 @@ boto==2.5.2
 celery==3.0.5
 celery-haystack==0.6.2
 dj-database-url==0.2.1
-lxml==3.0alpha2
+lxml
 BeautifulSoup==3.2.1
 django-compressor==1.2
 django-appconf==0.5
