@@ -1,9 +1,13 @@
+import logging
+
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 
 from accounts.models import UserProfile
 from q_and_a.models import Question
+
+log = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -42,8 +46,8 @@ def home(request):
             col_2.append(iterator.next())
         except StopIteration:
             break
-    print col_1
-    print col_2
+    log.debug('Column 1 contains: %s' % col_1)
+    log.debug('Column 2 contains: %s' % col_2)
     context = {
         'col_1': col_1,
         'col_2': col_2
