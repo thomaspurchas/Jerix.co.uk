@@ -131,7 +131,7 @@ class ParentPost(Post, HistoryMixIn):
 
     @property
     def slug(self):
-        return u"%d-%s" % (self.id, slugify(self.title))
+        return u"%d-%s" % (self.post_ptr.id, slugify(self.title))
 
     def get_absolute_url(self):
         module_url = self.module.get_absolute_url()
@@ -154,7 +154,7 @@ class SubPost(Post):
 
     @property
     def slug(self):
-        return u"%d-%d-%s" %(self.parent.id, self.id, slugify(self.title))
+        return u"%d-%s" %(self.post_ptr.id, slugify(self.title))
 
     def get_absolute_url(self):
         module_url = self.parent.module.get_absolute_url()
