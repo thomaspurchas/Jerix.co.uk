@@ -81,6 +81,12 @@ def create_pdf(blob_pk):
     derived_doc.file = new_file
     derived_doc.index = type_to_priorty('pdf')
 
-    derived_doc.save()
+    # Do one last check before saving the blob, just incase this task got fired
+    # twice in quick succession.
+
+    if blob.derived_documents.filter(_blob__file_type='pdf'):
+            return False
+    else:
+        derived_doc.save()
 
     return True
