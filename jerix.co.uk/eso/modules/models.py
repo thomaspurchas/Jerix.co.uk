@@ -129,9 +129,13 @@ class ParentPost(Post, HistoryMixIn):
         unique_together = ('module', 'index', 'historical_period')
         ordering = ['module', 'index']
 
+    @property
+    def slug(self):
+        return u"%d-%s" % (self.id, slugify(self.title))
+
     def get_absolute_url(self):
         module_url = self.module.get_absolute_url()
-        return "%s#%d-%s" % (module_url, self.id, slugify(self.title))
+        return u"%s#" % (module_url, self.slug)
 
     def __unicode__(self):
         return u"%s - %s" % (self.module.title, self.title)
@@ -148,10 +152,13 @@ class SubPost(Post):
         unique_together = ('parent', 'index')
         ordering = ['parent', 'index']
 
+    @property
+    def slug(self):
+        return u"%d-%d-%s" %(self.parent.id, self.id, slugify(self.title))
+
     def get_absolute_url(self):
         module_url = self.parent.module.get_absolute_url()
-        return "%s#%d%d-%s" % (module_url, self.parent.id, self.id,
-                                                    slugify(self.title))
+        return u"%s#%s" % (module_url, self.slug)
 
     def __unicode__(self):
         return u"%s - %s - %s" % (
