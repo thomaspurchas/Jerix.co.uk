@@ -1,27 +1,30 @@
 {% extends "base.html" %}
 {% load cache %}
 
-{% block header %}<h1 class="title">Home</h1>{% endblock header %}
+{% block header %}
+<div class="jumbotron masthead">
+<h1>Welcome to Jerix</h1>
+</div>
+{% endblock header %}
 
 {% block content %}
-<div class="col-3-4">
-    <div class="grid">
-        {% cache 120 home_columns user.username %}
-            <div class="col-1-2">
+<div class="row-fluid">
+    {% cache 120 home_columns user.username %}
+    <div class="span9">
+        <div class="row-fluid">
+            <div class="span6">
                 {% for item in col_1 %}
                     {% include "core/col.html" with item=item only%}
                 {% endfor %}
             </div>
-            <div class="col-1-2">
+            <div class="span6">
                 {% for item in col_2 %}
                     {% include "core/col.html" with item=item only%}
                 {% endfor %}
             </div>
-        {% endcache %}
+        </div>
     </div>
-</div>
-<div class="col-1-4">
-    <span></span>
+    {% endcache %}
 </div>
 
 {% endblock content %}

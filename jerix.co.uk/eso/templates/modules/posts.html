@@ -1,0 +1,44 @@
+{% extends "modules/base.html" %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span9" id="posts">
+            {% if posts %}
+                {% for post in posts %}
+                    {% include "modules/module/post.html" with post=post only %}
+                {% endfor %}
+            {% else %}
+                <div class="module">
+                    No Posts
+                </div>
+            {% endif %}
+        </div>
+        <div class="span3">
+            <div class="well">
+                <h4>Recent Questions</h4>
+                {% if questions %}
+
+                    {% for question in questions %}
+                        <div class="spacer">
+                            <a class="small-link" href="{% url question question.id question.slug %}">
+                            {{ question.title }}</a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div id="nav-list">
+                <ul class="nav nav-pills nav-stacked">
+                    {% for post in posts %}
+                    <li>
+                        <a href="#{{ post.slug }}">{{ post.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+    $('body').scrollspy();
+    $('#nav-list').affix();
+    </script>
+{% endblock content %}
