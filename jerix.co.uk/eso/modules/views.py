@@ -49,7 +49,7 @@ def module_posts(request, module_id, slug=None):
     except Module.DoesNotExist:
         raise Http404
     return render_to_response(
-        'modules/module_posts.html',
+        'modules/posts.html',
         {
             'module': module,
             'posts': posts,
