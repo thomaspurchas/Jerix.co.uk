@@ -1,23 +1,11 @@
 {% extends "modules/base.html" %}
 
 {% block content %}
-    <div class="row-fluid">
-        <div class="span9" id="posts">
-            {% if posts %}
-                {% for post in posts %}
-                    {% include "modules/module/post.html" with post=post only %}
-                {% endfor %}
-            {% else %}
-                <div class="module">
-                    No Posts
-                </div>
-            {% endif %}
-        </div>
-        <div class="span3">
-            <div class="well">
+    <div class="row">
+        <div class="span3 pull-right">
+            <div class="well well-small hidden-phone" id="recent-questions">
                 <h4>Recent Questions</h4>
                 {% if questions %}
-
                     {% for question in questions %}
                         <div class="spacer">
                             <a class="small-link" href="{% url question question.id question.slug %}">
@@ -29,16 +17,51 @@
             <div id="nav-list">
                 <ul class="nav nav-pills nav-stacked">
                     {% for post in posts %}
-                    <li>
+                    {# <li class="dropdown"> #}
+                    {#      <a class="dropdown-toggle" #}
+                    {#      data-toggle="dropdown" #}
+                    {#      href="#{{ post.slug }}"> #}
+                    {#      Dropdown #}
+                    {#      <b class="caret"></b> #}
+                    {#      </a> #}
+                    {#      <ul class="dropdown-menu"> #}
+                    {#          <li> #}
+                    {#              <a href="#">Test</a> #}
+                    {#          </li> #}
+                    {#      </ul> #}
+                    {#  </li> #}
+                    {#   #}
+                    <li {% if forloop.first %}class="active"{% endif %}>
                         <a href="#{{ post.slug }}">{{ post.title }}</a>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
+        <div class="span9" id="posts">
+            {% if posts %}
+                {% for post in posts %}
+                    {% include "modules/module/post.html" with post=post only %}
+                {% endfor %}
+            {% else %}
+                <div class="module">
+                    No Posts
+                </div>
+            {% endif %}
+        </div>
     </div>
     <script>
-    $('body').scrollspy();
-    $('#nav-list').affix();
+    $('#nav-list').affix({offset: {top: function(){
+        var offset;
+        offset = $('#header').outerHeight() + $('#recent-questions').outerHeight();
+        navbar = $('#navbar');
+        if (navbar.css('position') != "fixed") {
+            offset += navbar.outerHeight() - 40;
+        }
+        console.log(offset)
+        return offset
+    }}});
+    var offset = $('#header').outerHeight();
+    $('body').scrollspy({offset: -offset});
     </script>
 {% endblock content %}
