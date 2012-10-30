@@ -3,7 +3,7 @@ import json
 from django.db.models import F
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.defaultfilters import slugify
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -64,15 +64,14 @@ def question(request, question_id, slug=None):
         if isinstance(i, Question):
             related_questions.append(i)
 
-    return render_to_response(
+    return render(request,
         'q_and_a/question.html',
         {
             'question': question,
             'answers': answers,
             'answer_form': answer_form,
             'related_questions': related_questions
-        },
-        RequestContext(request)
+        }
     )
 
 def tagged(request, tag):
@@ -99,15 +98,14 @@ def tagged(request, tag):
         # If page is out of range (e.g. 9999), deliver last page of results.
         questions = paginator.page(paginator.num_pages)
 
-    return render_to_response(
+    return render(request,
         'q_and_a/list.html',
         {
             'questions': questions,
             'page': page,
             'per_page': per_page,
             'tag': tag.name
-        },
-        RequestContext(request)
+        }
     )
 
 def vote(request):

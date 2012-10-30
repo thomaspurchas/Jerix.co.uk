@@ -2,7 +2,7 @@ import logging
 
 from django.http import Http404, HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 
 from accounts.models import UserProfile
 from q_and_a.models import Question
@@ -52,9 +52,9 @@ def home(request):
         'col_1': col_1,
         'col_2': col_2
     }
-
-    return render_to_response(
+    c = RequestContext(request)
+    print c
+    return render(request,
         'core/home.html',
-        context,
-        RequestContext(request)
+        context
     )

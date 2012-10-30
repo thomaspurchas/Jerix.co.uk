@@ -3,7 +3,7 @@ import datetime
 
 from django.http import Http404
 from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 from django.views.decorators.cache import cache_page
@@ -48,12 +48,11 @@ def module_posts(request, module_id, slug=None):
 
     except Module.DoesNotExist:
         raise Http404
-    return render_to_response(
+    return render(request,
         'modules/posts.html',
         {
             'module': module,
             'posts': posts,
             'questions': questions,
-        },
-        RequestContext(request)
+        }
     )
