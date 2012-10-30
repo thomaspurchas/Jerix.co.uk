@@ -13,10 +13,10 @@
 
         <form method="post" class="form-horizontal" action="{% url user-login %}">
         {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
         {{ form|crispy }}
-            <div class="form-actions">
+            <div class="controls">
                 <button type="submit" class="btn btn-large btn-success"/>Login</button>
-                <input type="hidden" name="next" value="{{ next }}" />
             </div>
         </form>
     </div>
