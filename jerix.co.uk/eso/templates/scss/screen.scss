@@ -15,6 +15,10 @@ $footer-height: 100px;
 //	box-sizing: border-box;
 //}
 
+body, html{
+	height: 100%;
+}
+
 body {
 	background-color: white;//#F9F9F9;//white; // lighten($blue, 50%);
 	padding-top: 40px;
@@ -32,11 +36,24 @@ section {
 }
 
 #search-form {
-	margin: 10px 0 0;
+	margin: 0;
 }
 
 #posts {
 	margin-top: -40px;
+}
+
+.affix {
+	top: 40px;
+}
+
+#nav-list {
+	margin-top: 20px;
+	width: 270px;
+}
+
+.row-top {
+	margin-top: 10px;
 }
 
 @import "grid";
@@ -44,11 +61,11 @@ section {
 @import "top-bar";
 @import "colours";
 
-#container {
-	width: $centre-width;
-	margin: 0 auto;
-	position: relative;
+#wrapper {
 	min-height: 100%;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
 	margin-bottom: -$footer-height;
 	padding-bottom: $footer-height;
 }
