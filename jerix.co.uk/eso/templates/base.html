@@ -58,8 +58,9 @@
                                 Login
                               <b class="caret"></b>
                             </a>
-                            <div class="dropdown-menu" style="padding:15px; padding-bottom:0px;">
-                                <form action="http://{{ request.get_host }}{% url user-login %}" method="post" accept-charset="UTF-8">
+                            <ul class="dropdown-menu" style="padding:15px;">
+                                <li>
+                                <form class="navbar-form" action="http://{{ request.get_host }}{% url user-login %}" method="post" accept-charset="UTF-8">
                                     {% csrf_token %}
                                     <div style="display:none">
                                         <input type="hidden" name="login_universal" value="true">
@@ -71,7 +72,8 @@
                                     <label class="string optional" for="user_remember_me"> Remember me</label>
                                     <input class="btn btn-success" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
                                 </form>
-                            </div>
+                                </li>
+                            </ul>
                           </li>
                         {% endif %}
                     </ul>
@@ -86,7 +88,6 @@
         {% if user.is_authenticated %}
         <div class="row-fluid row-top">
             <form id="search-form" action="/search/" method="GET" class="span12" style="text-align: center">
-                {% csrf_token %}
                 <div class="input-append">
                 <input type="text" name="q" placeholder="Search..."
                     class="span6" value=
