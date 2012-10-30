@@ -2,15 +2,19 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h1>Search</h1>
+<div class="row">
+    <div class="span3">
+        <h1>Search</h1>
 
-    <form method="get" action="." class="form-horizontal">
+        <form method="get" action="." class="">
 
-        {{ form|crispy }}
-        <div class="controls">
-            <input class="btn btn-success" type="submit" value="Search">
-        </div>
-     </form>
+            {{ form|crispy }}
+            <div class="controls">
+                <input class="btn btn-success" type="submit" value="Search">
+            </div>
+         </form>
+     </div>
+     <div class="span9">
         {% if query %}
             <h2>Results</h2>
 
@@ -22,14 +26,38 @@
                 <p>No results found.</p>
             {% endfor %}
 
-            {% if page.has_previous or page.has_next %}
-                <div>
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
-                    |
-                    {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
+            {% if page.has_other_pages %}
+                <div class="pagination">
+                  <ul>
+                    <li {% if not page.has_previous %}class="disabled"{% endif %}>
+                        {% if page.has_previous %}
+                            <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">Prev</a>
+                        {% else %}
+                            <span>Prev</span>
+                        {% endif %}
+                    </li>
+                    {% for page_r in paginator.page_range %}
+                    <li {% if page.number == page_r %}class="active"{% endif %}>
+                        {% if page.number == page_r %}
+                            <span>{{ page_r }}</span>
+                        {% else %}
+                            <a href="?q={{ query }}&amp;page={{ page_r }}">{{ page_r }}</a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                    <li {% if not page.has_next %}class="disabled"{% endif %}>
+                        {% if page.has_next %}
+                            <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">Next</a>
+                        {% else %}
+                            <span>Next</span>
+                        {% endif %}
+                    </li>
+                  </ul>
                 </div>
             {% endif %}
         {% else %}
             {# Show some example queries to run, maybe query syntax, something else? #}
         {% endif %}
+    </div>
+</div>
 {% endblock %}
