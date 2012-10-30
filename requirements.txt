@@ -16,6 +16,7 @@ django-compressor==1.2
 django-appconf==0.5
 django-celery==3.0.4
 django-celery-transactions==0.1.2
+django-crispy-forms==1.2.0
 -e git+https://github.com/toastdriven/django-haystack.git@13e5a4926992581106ed14db1f8dd58a897c9a76#egg=django_haystack-dev
 -e git+https://github.com/thomaspurchas/django-hitcount.git@6adc2dc5b410cd04123b994ae9012710bc37f796#egg=django_hitcount-dev
 -e git+https://github.com/thomaspurchas/django-taggit.git#egg=django-taggit
