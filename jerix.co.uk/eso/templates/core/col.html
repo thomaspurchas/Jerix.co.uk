@@ -1,5 +1,5 @@
 {% if item.0 == "modules" %}
-    <div class="well">
+    <div class="well well-small">
         <h3>Your Modules</h3>
         {% for module in item.1 %}
         <p>
@@ -11,7 +11,7 @@
     </div>
 {% endif %}
 {% if item.0 == "lecturers" %}
-    <div class="well">
+    <div class="well well-small">
         <h3>Your Lecturers</h3>
         {% for lecturer in item.1 %}
         <p>
@@ -23,7 +23,7 @@
     </div>
 {% endif %}
 {% if item.0 == "questions" %}
-    <div class="well">
+    <div class="well well-small">
         <h3>Recent Questions</h3>
         {% for question in item.1 %}
         <p>
