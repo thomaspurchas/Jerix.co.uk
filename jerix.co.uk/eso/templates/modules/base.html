@@ -13,9 +13,8 @@
 {% block header %}
     <div class="jumbotron subhead">
         <div class="container">
-            <h1>{{ module.short_code }}</h1>
-            <h2>{{ module.title }}</h2>
-            <p>{{ module.description }}</p>
+            <h1>{{ module.short_code }} <small> {{ module.title }}</small></h1>
+            <p class="lead">{{ module.description }}</p>
         </div>
     </div>
 {% endblock header %}
