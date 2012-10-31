@@ -52,8 +52,7 @@ def home(request):
         'col_1': col_1,
         'col_2': col_2
     }
-    c = RequestContext(request)
-    print c
+    
     return render(request,
         'core/home.html',
         context
