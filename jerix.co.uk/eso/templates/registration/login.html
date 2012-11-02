@@ -11,7 +11,7 @@
         </div>
         {% endif %}
 
-        <form method="post" class="form-horizontal" action="{% url user-login %}">
+        <form method="post" class="form-horizontal" action="{% url login %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}" />
         {{ form|crispy }}
