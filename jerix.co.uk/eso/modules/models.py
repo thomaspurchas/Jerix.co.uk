@@ -81,7 +81,7 @@ class Module(models.Model):
     short_code = models.CharField(blank=False, max_length=20)
     description = models.TextField(blank=True)
     subject = models.ForeignKey(Subject)
-    year = models.ForeignKey(AcademicYear)
+    year = models.ForeignKey(AcademicYear, related_name="modules")
     primary_tag = models.ForeignKey(Tag, related_name='+')
     tags = TaggableManager(blank=True)
 

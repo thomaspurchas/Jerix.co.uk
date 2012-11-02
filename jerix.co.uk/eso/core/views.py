@@ -7,6 +7,7 @@ from django.core.cache import cache
 
 from accounts.models import UserProfile
 from q_and_a.models import Question
+from modules.models import AcademicYear
 
 log = logging.getLogger(__name__)
 
@@ -14,14 +15,15 @@ log = logging.getLogger(__name__)
 
 def home(request):
     user = request.user
-    modules = []
-    items = {}
 
     col_1 = cache.get('home_col_1_%s' % user.username)
     col_2 = cache.get('home_col_2_%s' % user.username)
 
     if col_1 == None or col_2 == None:
         # Create values and put them in cache
+        modules = []
+        items = {}
+
         if request.user.is_authenticated():
             profile = user.get_profile()
             if profile.is_student():
@@ -34,6 +36,16 @@ def home(request):
                 items.update({
                     'modules': modules,
                     'lecturers': lecturers
+                })
+
+        else:
+            years = AcademicYear.objects.select_related().all().order_by('title')
+
+            i = 0
+            for year in years:
+                i += 1
+                items.update({
+                    'year_%d' % i: year
                 })
 
         questions = Question.objects.all().order_by('-asked')[:10]

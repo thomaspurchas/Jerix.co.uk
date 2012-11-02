@@ -1,36 +1,42 @@
+<div class="well well-small">
 {% if item.0 == "modules" %}
-    <div class="well well-small">
-        <h3>Your Modules</h3>
-        {% for module in item.1 %}
+    <h3>Your Modules</h3>
+    {% for module in item.1 %}
         <p>
             <a href="{{ module.get_absolute_url }}">
             {{ module.short_code }} - {{ module.title }}
             </a>
         </p>
-        {% endfor %}
-    </div>
+    {% endfor %}
 {% endif %}
 {% if item.0 == "lecturers" %}
-    <div class="well well-small">
-        <h3>Your Lecturers</h3>
-        {% for lecturer in item.1 %}
+    <h3>Your Lecturers</h3>
+    {% for lecturer in item.1 %}
         <p>
             <a href="{{ lecturer.get_absolute_url }}">
             {{ lecturer.full_title }}
             </a>
         </p>
-        {% endfor %}
-    </div>
+    {% endfor %}
 {% endif %}
 {% if item.0 == "questions" %}
-    <div class="well well-small">
-        <h3>Recent Questions</h3>
-        {% for question in item.1 %}
+    <h3>Recent Questions</h3>
+    {% for question in item.1 %}
         <p>
             <a href="{{ question.get_absolute_url }}">
             {{ question.title }}
             </a>
         </p>
-        {% endfor %}
-    </div>
+    {% endfor %}
 {% endif %}
+{% if item.0|slice:":4" == "year" %}
+    <h3>{{ item.1.title }}</h3>
+    {% for module in item.1.modules.all %}
+        <p>
+            <a href="{{ module.get_absolute_url }}">
+            {{ module.short_code }} - {{ module.title }}
+            </a>
+        </p>
+    {% endfor %}
+{% endif %}
+</div>
