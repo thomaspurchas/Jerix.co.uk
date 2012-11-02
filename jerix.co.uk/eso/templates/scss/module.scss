@@ -60,15 +60,8 @@ $material-bg: #CCC;
 	}
 
 	.material {
-		background: $material-bg;
-		border-radius: 5px;
-		width: 100%;
 		margin-bottom: 5px;
-		border: 1px solid #888;
-
-		&:last-of-type{
-			margin: 0;
-		}
+		padding: 5px;
 	}
 
 	.material-title {
@@ -86,6 +79,9 @@ $material-bg: #CCC;
 		position: relative;
 		top: -1px;
 		right: -1px;
+		i {
+			float: left;
+		}
 	}
 
 	.download-links ul li {
@@ -115,10 +111,6 @@ $material-bg: #CCC;
 		&:last-of-type {
 			margin: 0;
 		}
-	}
-
-	.material {
-		background: $material-bg - (white - $sub-post-bg);
 	}
 }
 //

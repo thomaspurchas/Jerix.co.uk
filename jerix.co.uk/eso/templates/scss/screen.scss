@@ -56,6 +56,12 @@ section {
 	margin-top: 10px;
 }
 
+.sub-posts {
+	section {
+		padding-top: 0;
+	}
+}
+
 @import "grid";
 @import "basic";
 @import "top-bar";
