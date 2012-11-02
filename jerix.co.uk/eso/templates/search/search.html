@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+{% block header %}
+<link rel="stylesheet" href="{{ STATIC_URL }}search.css" type="text/css" charset="utf-8">
+{{ block.super }}
+{% endblock header %}
+
 {% block content %}
 <div class="row">
     <div class="span3">
@@ -19,9 +24,15 @@
             <h1>Results</h1>
 
             {% for result in page.object_list %}
+            {% if result.object.template %}
+                {% with "search/results/"|add:result.object.template as template %}
+                    {% include template with result=result.object %}
+                {% endwith %}
+            {% else %}
                 <p>
                     <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
                 </p>
+            {% endif %}
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}

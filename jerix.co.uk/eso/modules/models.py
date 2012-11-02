@@ -177,6 +177,8 @@ class Material(AuthoredObject):
 
     document = models.ForeignKey('files.Document')
 
+    template = 'material.html'
+
     @property
     def file(self):
         return self.document.file
