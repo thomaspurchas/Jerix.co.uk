@@ -39,7 +39,7 @@ def generate_url(doc, headers):
                                                )
     return url
 
-@login_required
+@login_required(login_url='/account/login/')
 def original_download(request, id, slug=None):
     doc = get_object_or_404(Document, pk=id)
 
@@ -54,7 +54,7 @@ def original_download(request, id, slug=None):
 
     return redirect(url)
 
-@login_required
+@login_required(login_url='/account/login/')
 def derived_download(request, id, slug, orig_id=None):
     doc = get_object_or_404(DerivedDocument, pk=id)
     filename = path.basename(doc.file.name)
