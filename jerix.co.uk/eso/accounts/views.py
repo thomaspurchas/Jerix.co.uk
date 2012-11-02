@@ -17,9 +17,9 @@ class AuthForm(AuthenticationForm):
 @sensitive_post_parameters()
 @never_cache
 def login_user(request):
+    redirect = request.REQUEST.get('next')
     if request.method == "POST":
         if request.POST.get('login_universal') == "true":
-            redirect = request.POST.get('next')
             username = request.POST.get('login_username')
             password = request.POST.get('login_password')
             remember = request.POST.get('login_remember_me')
@@ -33,7 +33,6 @@ def login_user(request):
             form = AuthForm(data=data)
         else:
             form = AuthForm(data=request.POST)
-            redirect = request.GET.get('next')
 
         if form.is_valid():
             if not redirect:
@@ -61,8 +60,7 @@ def login_user(request):
 
     context = {
         'form': form,
+        'next': redirect,
     }
 
     return render(request, 'registration/login.html', context)
-
-    return HttpResponse('Getting there slowly')
