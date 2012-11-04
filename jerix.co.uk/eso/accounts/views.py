@@ -18,6 +18,14 @@ class AuthForm(AuthenticationForm):
 @never_cache
 def login_user(request):
     redirect = request.REQUEST.get('next')
+
+    if not redirect:
+        redirect = settings.LOGIN_REDIRECT_URL
+
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(redirect)
+
+
     if request.method == "POST":
         if request.POST.get('login_universal') == "true":
             username = request.POST.get('login_username')
@@ -35,8 +43,7 @@ def login_user(request):
             form = AuthForm(data=request.POST)
 
         if form.is_valid():
-            if not redirect:
-                redirect = settings.LOGIN_REDIRECT_URL
+
 
             netloc = urlparse(redirect)[1]
             # Heavier security check -- don't allow redirection to a different
