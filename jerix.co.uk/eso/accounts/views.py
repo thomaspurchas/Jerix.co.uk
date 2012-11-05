@@ -2,6 +2,7 @@ from urlparse import urlparse, urlunparse
 
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
+from django.utils.cache import patch_cache_control
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404, render
@@ -22,9 +23,14 @@ def login_user(request):
     if not redirect:
         redirect = settings.LOGIN_REDIRECT_URL
 
+    netloc = urlparse(redirect)[1]
+    # Heavier security check -- don't allow redirection to a different
+    # host.
+    if netloc and netloc != request.get_host():
+        redirect = settings.LOGIN_REDIRECT_URL
+
     if request.user.is_authenticated():
         return HttpResponseRedirect(redirect)
-
 
     if request.method == "POST":
         if request.POST.get('login_universal') == "true":
@@ -44,13 +50,6 @@ def login_user(request):
 
         if form.is_valid():
 
-
-            netloc = urlparse(redirect)[1]
-            # Heavier security check -- don't allow redirection to a different
-            # host.
-            if netloc and netloc != request.get_host():
-                redirect = settings.LOGIN_REDIRECT_URL
-
             auth_login(request, form.get_user())
 
             if request.session.test_cookie_worked():
@@ -59,7 +58,10 @@ def login_user(request):
             if not form.cleaned_data['remember_me']:
                 request.session.set_expiry(0)
 
-            return HttpResponseRedirect(redirect)
+            response =  HttpResponseRedirect(redirect)
+            # Manual cache header fiddling to help prevent caching issues.
+            patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
+            return response
     else:
         form = AuthForm(request)
 
@@ -70,4 +72,7 @@ def login_user(request):
         'next': redirect,
     }
 
-    return render(request, 'registration/login.html', context)
+    response = render(request, 'registration/login.html', context)
+    # Manual cache header fiddling to help prevent caching issues.
+    patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
+    return response
