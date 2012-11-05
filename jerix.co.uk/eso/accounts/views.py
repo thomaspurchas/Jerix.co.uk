@@ -32,6 +32,10 @@ def login_user(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect(redirect)
 
+    print 'Method:', request.method
+    print 'Redirect:', redirect
+
+
     if request.method == "POST":
         if request.POST.get('login_universal') == "true":
             username = request.POST.get('login_username')
@@ -47,12 +51,14 @@ def login_user(request):
             form = AuthForm(data=data)
         else:
             form = AuthForm(data=request.POST)
-
+        print 'form:', form
+        print 'is_valid', form.is_valid()
         if form.is_valid():
 
             auth_login(request, form.get_user())
 
             if request.session.test_cookie_worked():
+                print 'test cookie worked'
                 request.session.delete_test_cookie()
 
             if not form.cleaned_data['remember_me']:
@@ -61,6 +67,7 @@ def login_user(request):
             response =  HttpResponseRedirect(redirect)
             # Manual cache header fiddling to help prevent caching issues.
             patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
+            print 'response:', response
             return response
     else:
         form = AuthForm(request)
@@ -75,4 +82,5 @@ def login_user(request):
     response = render(request, 'registration/login.html', context)
     # Manual cache header fiddling to help prevent caching issues.
     patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
+    print 'response:', response
     return response
