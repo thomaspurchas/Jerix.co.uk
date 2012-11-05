@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 from boto.s3.connection import S3Connection, VHostCallingFormat
 
@@ -40,6 +41,7 @@ def generate_url(doc, headers):
     return url
 
 @login_required(login_url='/account/login/')
+@never_cache
 def original_download(request, id, slug=None):
     doc = get_object_or_404(Document, pk=id)
 
@@ -55,6 +57,7 @@ def original_download(request, id, slug=None):
     return redirect(url)
 
 @login_required(login_url='/account/login/')
+@never_cache
 def derived_download(request, id, slug, orig_id=None):
     doc = get_object_or_404(DerivedDocument, pk=id)
     filename = path.basename(doc.file.name)
