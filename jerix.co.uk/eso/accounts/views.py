@@ -34,7 +34,7 @@ def login_user(request):
 
     print 'Method:', request.method
     print 'Redirect:', redirect
-
+    print 'session id:', request.session.session_key
 
     if request.method == "POST":
         if request.POST.get('login_universal') == "true":
@@ -51,7 +51,6 @@ def login_user(request):
             form = AuthForm(data=data)
         else:
             form = AuthForm(data=request.POST)
-        print 'form:', form
         print 'is_valid', form.is_valid()
         if form.is_valid():
 
@@ -62,6 +61,7 @@ def login_user(request):
                 request.session.delete_test_cookie()
 
             if not form.cleaned_data['remember_me']:
+                print 'No remember_me'
                 request.session.set_expiry(0)
 
             response =  HttpResponseRedirect(redirect)
@@ -72,7 +72,7 @@ def login_user(request):
     else:
         form = AuthForm(request)
 
-    request.session.set_test_cookie()
+    #request.session.set_test_cookie()
 
     context = {
         'form': form,
@@ -82,5 +82,4 @@ def login_user(request):
     response = render(request, 'registration/login.html', context)
     # Manual cache header fiddling to help prevent caching issues.
     patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
-    print 'response:', response
     return response
