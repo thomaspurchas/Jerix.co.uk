@@ -331,5 +331,6 @@ if not DEBUG: COMPRESS_STORAGE = STATICFILES_STORAGE
 
 # Enable offline compression
 COMPRESS_OFFLINE = True
+COMPRESS_URL = STATIC_URL
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
