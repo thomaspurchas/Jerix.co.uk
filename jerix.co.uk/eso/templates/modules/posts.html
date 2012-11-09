@@ -41,7 +41,7 @@
         <div class="span9" id="posts">
             {% if posts %}
                 {% for post in posts %}
-                    {% include "modules/module/post.html" with post=post only %}
+                    {% include "modules/module/post.html" with post=post user=user %}
                 {% endfor %}
             {% else %}
                 <div class="module">
@@ -63,5 +63,6 @@
     }}});
     var offset = $('#header').outerHeight();
     $('body').scrollspy({offset: -offset});
+    $('.download-links').popover()
     </script>
 {% endblock content %}

@@ -19,26 +19,26 @@
         <h4>Materials</h4>
         {% for material in post.sorted_materials  %}
             <div class="material well well-small">
-                <div class="download-links">
-                    <i class="icon-download"></i>
-                    <ul><!--
-                        <li>
-                            Download:
-                        </li> -->
-                        {% for version in material.document.versions %}
-                            <li>
-                                <a href={{ version.url }}
-                                    {% if version.type == "pdf" %}
-                                    target="_blank"
-                                    {% endif %}>
-                                    {{ version.type_display }}
-                                </a>
-                            </li>
-                            {% if not forloop.last %}
-                                <li>|</li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
+                <div class="btn-toolbar download-links">
+                  <div class="btn-group">
+                      {% if user.is_authenticated %}
+                          {% for version in material.document.versions %}
+                              <a  href={{ version.url }}
+                                  class="btn"
+                                  {% if version.type == "pdf" %}
+                                  target="_blank"
+                                  {% endif %}>
+
+                                  {% if forloop.first %}
+                                      <i class="icon-download"></i>
+                                  {% endif %}
+                                  {{ version.type_display }}
+                              </a>
+                          {% endfor %}
+                      {% else %}
+                          <a class="btn" href={% url login %}?next={{ request.get_full_path }}><i class="icon-download"></i> Sign In</a>
+                      {% endif %}
+                    </div>
                 </div>
                 <div class="material-title">
                 {{ material.title }}
@@ -51,7 +51,7 @@
         <div class="sub-posts">
             {% for sub_post in post.sub_posts.all %}
                 {% with template="modules/module/post.html" %}
-                    {% include template with post=sub_post only %}
+                    {% include template with post=sub_post %}
                 {% endwith %}
             {% endfor %}
         </div>
