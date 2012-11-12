@@ -11,7 +11,7 @@
     </span>
 	{% if post.description %}
 		<div class="description">
-			<p>{{ post.description }}</p>
+			{{ post.description|linebreaks }}
 		</div>
 	{% endif %}
     {% if post.sorted_materials %}
