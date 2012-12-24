@@ -6,6 +6,7 @@ from memcache import MEMCACHE
 
 DEBUG = os.environ.get('DEBUG', "true").lower() == "true"
 TEMPLATE_DEBUG = os.environ.get('TEMPLATE_DEBUG', "true").lower() == "true"
+#DEBUG = False
 
 ADMINS = (
     ('Thomas Purchas', 'thomas@jerix.co.uk'),
@@ -331,7 +332,15 @@ if not DEBUG: STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
 if not DEBUG: COMPRESS_STORAGE = STATICFILES_STORAGE
 
 # Enable offline compression
+COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 COMPRESS_URL = STATIC_URL
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    #'compressor.filters.csstidy.CSSTidyFilter',
+]
+COMPRESS_PRECOMPILERS = [
+    ('text/less', 'lessc {infile} {outfile}'),
+]
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
