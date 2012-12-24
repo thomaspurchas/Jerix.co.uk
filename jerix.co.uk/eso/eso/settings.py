@@ -341,6 +341,8 @@ COMPRESS_CSS_FILTERS = [
 ]
 COMPRESS_PRECOMPILERS = [
     ('text/less', 'lessc {infile} {outfile}'),
+    ('text/x-sass', 'sass {infile} {outfile}'),
+    ('text/x-scss', 'sass --scss {infile} {outfile}'),
 ]
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
