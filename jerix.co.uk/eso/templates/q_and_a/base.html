@@ -6,8 +6,8 @@
 
 {% block head %}
     {% compress css %}
-        <link rel="stylesheet" href="{{ STATIC_URL }}questions.css" type="text/css" charset="utf-8">
-        <link rel="stylesheet" href="{{ STATIC_URL }}code.css" type="text/css" charset="utf-8">
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/questions.scss" type="text/x-scss" charset="utf-8">
+        {# <link rel="stylesheet" href="{{ STATIC_URL }}css/code.scss" type="text/x-scss" charset="utf-8"> #}
     {% endcompress %}
     {{ block.super }}
 {% endblock head %}
