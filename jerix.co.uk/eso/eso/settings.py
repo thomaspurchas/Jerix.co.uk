@@ -6,6 +6,7 @@ from memcache import MEMCACHE
 
 DEBUG = os.environ.get('DEBUG', "true").lower() == "true"
 TEMPLATE_DEBUG = os.environ.get('TEMPLATE_DEBUG', "true").lower() == "true"
+STAGING = os.environ.get('STAGING', "false").lower() == "true"
 #DEBUG = False
 
 ADMINS = (
@@ -90,6 +91,8 @@ MEDIA_ROOT = pathjoin(SITE_ROOT, 'media/')
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '//media.dev.jerix.co.uk' if DEBUG else '//media.jerix.co.uk/'
+if STAGING:
+    MEDIA_URL = '//media.dev.jerix.co.uk/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -100,6 +103,8 @@ STATIC_ROOT = pathjoin(SITE_ROOT, 'static/')
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/' if DEBUG else '//static.jerix.co.uk/'
+if STAGING:
+    STATIC_URL = '//static.dev.jerix.co.uk/'
 
 STATIC_DOC_ROOT = pathjoin(SITE_ROOT, 'static/')
 
@@ -330,6 +335,9 @@ AWS_S3_CUSTOM_DOMAIN = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.uk'
 AWS_S3_CALLING_FORMAT = VHostCallingFormat()
 if not DEBUG: STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
 if not DEBUG: COMPRESS_STORAGE = STATICFILES_STORAGE
+if STAGING:
+    AWS_STORAGE_BUCKET_NAME = 'media.dev.jerix.co.uk'
+    AWS_S3_CUSTOM_DOMAIN = 'media.dev.jerix.co.uk'
 
 # Enable offline compression
 COMPRESS_ENABLED = True
