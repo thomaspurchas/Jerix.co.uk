@@ -341,7 +341,7 @@ if STAGING:
 
 # Enable offline compression
 COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE = not (DEBUG or STAGING)
 COMPRESS_URL = STATIC_URL
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
