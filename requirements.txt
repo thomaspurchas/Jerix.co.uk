@@ -47,3 +47,4 @@ bleach==1.1.5
 pylibmc==1.2.2
 django-pylibmc-sasl==0.2.4
 Pygments==1.5
+fabric
