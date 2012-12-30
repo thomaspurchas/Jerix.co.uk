@@ -104,7 +104,7 @@ STATIC_ROOT = pathjoin(SITE_ROOT, 'static/')
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/' if DEBUG else '//static.jerix.co.uk/'
 if STAGING:
-    STATIC_URL = '//static.dev.jerix.co.uk/'
+    STATIC_URL = '//staticdev.jerix.co.uk/'
 
 STATIC_DOC_ROOT = pathjoin(SITE_ROOT, 'static/')
 
@@ -341,7 +341,7 @@ if STAGING:
 
 # Enable offline compression
 COMPRESS_ENABLED = True
-COMPRESS_OFFLINE = not (DEBUG) or STAGING
+COMPRESS_OFFLINE = (not DEBUG) or STAGING
 COMPRESS_URL = STATIC_URL
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',

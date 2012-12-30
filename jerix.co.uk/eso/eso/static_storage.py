@@ -12,8 +12,8 @@ class StaticStorage(S3BotoStorage):
         kwargs['bucket'] = 'static.jerix.co.uk'
         kwargs['custom_domain'] = 'static.jerix.co.uk'
         if settings.STAGING:
-            kwargs['bucket'] = 'static.dev.jerix.co.uk'
-            kwargs['custom_domain'] = 'static.dev.jerix.co.uk'
+            kwargs['bucket'] = 'static-dev.jerix.co.uk'
+            kwargs['custom_domain'] = 'static-dev.jerix.co.uk'
         kwargs['acl'] = kwargs['bucket_acl'] = 'public-read'
         kwargs['calling_format'] = SubdomainCallingFormat()
         super(StaticStorage, self).__init__(*args, **kwargs)
