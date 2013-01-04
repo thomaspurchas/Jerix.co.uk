@@ -7,7 +7,7 @@ def set_aws():
 
 def stage():
     local('git push heroku-staging -f')
-    local('STAGING=TRUE DEBUG=false ./manage.py compress')
+    local('STAGING=TRUE ./manage.py compress')
     local('STAGING=TRUE DEBUG=false ./manage.py collectstatic --noinput')
     local('rm -rf ../static')
     
