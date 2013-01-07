@@ -7,4 +7,5 @@ Vagrantfile
 *.scss
 *.less
 *.css
-*.js*.png
+*.js
+*.png
