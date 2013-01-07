@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
+{% load compress %}
 {% load crispy_forms_tags %}
 
 {% block header %}
-<link rel="stylesheet" href="{{ STATIC_URL }}search.css" type="text/css" charset="utf-8">
+{% compress css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/search.scss" type="text/x-scss" charset="utf-8">
+{% endcompress %}
 {{ block.super }}
 {% endblock header %}
 
