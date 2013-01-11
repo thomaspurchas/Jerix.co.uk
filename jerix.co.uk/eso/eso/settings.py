@@ -333,11 +333,14 @@ AWS_STORAGE_BUCKET_NAME = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_CUSTOM_DOMAIN = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.uk'
 AWS_S3_CALLING_FORMAT = VHostCallingFormat()
-if not DEBUG: STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
-if not DEBUG: COMPRESS_STORAGE = STATICFILES_STORAGE
+if not DEBUG:
+    STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
+    COMPRESS_STORAGE = STATICFILES_STORAGE
 if STAGING:
     AWS_STORAGE_BUCKET_NAME = 'media.dev.jerix.co.uk'
     AWS_S3_CUSTOM_DOMAIN = 'media.dev.jerix.co.uk'
+    STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
+    COMPRESS_STORAGE = STATICFILES_STORAGE
 
 # Enable offline compression
 COMPRESS_ENABLED = True
