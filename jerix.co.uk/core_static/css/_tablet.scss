@@ -4,4 +4,11 @@
             width: 60%;
         }
     }
+    
+    #footer {
+        padding: 40px 20px;
+        margin-top:   -20px; /* Offset bottom margin on .navbar */
+        margin-right: -20px;
+        margin-left:  -20px;
+    }
 }
