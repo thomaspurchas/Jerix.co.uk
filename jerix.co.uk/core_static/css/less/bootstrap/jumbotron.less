@@ -95,6 +95,8 @@
   display: none;
 }
 
+/* Tablets
+----------------------- */
 @media (max-width: 767px) {
   /* Widen masthead and social buttons to fill body padding */
   .jumbotron {
@@ -109,5 +111,22 @@
   .masthead p,
   .masthead .btn {
     font-size: 24px;
+  }
+}
+
+/* Landscape phones
+------------------------- */
+@media (max-width: 480px) {
+  /* Downsize the jumbotrons */
+  .jumbotron h1 {
+    font-size: 55px;
+  }
+  .jumbotron p,
+  .jumbotron .btn {
+    font-size: 18px;
+  }
+  .jumbotron .btn {
+    display: block;
+    margin: 0 auto;
   }
 }
