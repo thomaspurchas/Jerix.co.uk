@@ -36,7 +36,11 @@ section {
 }
 
 #search-form {
-	margin: 0
+	margin: 0;
+	
+	input {
+		width: 48.717948717948715%;
+	}
 }
 
 #posts {
@@ -100,75 +104,6 @@ section {
 	}
 }
 
-#top-search {
-	margin: 5px auto 0;
-	width: 70%;
-	height: 40px;
-	padding: 5px;
-	background: #DDD;//#E6E6E6;
-	border-radius: 5px;
-	form {
-		height: 100%;
-	}
-	input {
-		height: 100%;
-		float: left;
-		border: 1px solid #BFBFBF;
-		font-size: 100%;
-	}
-	input[type="text"] {
-		width: 70%;
-		color: #230b28;
-		border-top-left-radius: 3px;
-		border-bottom-left-radius: 3px;
-		padding: 0 10px;
-	}
-	input[type="submit"] {
-		width: 30%;
-		height: 100%;
-		color: #666;
-		font-weight: bold;
-		background: #E6E6E6;
-		font-shadow: 0 1px 0 rgba(255, 255, 255, 1);
-		border-top-right-radius: 3px;
-		border-bottom-right-radius: 3px;
-
-		&:hover {
-			background: $green;
-			color: white;
-			cursor: pointer;
-			text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-			border-color: #6B9939;
-			border-bottom-color: #50732B;
-		}
-	}
-}
-
-.spacer {
-	margin-bottom: 8px;
-}
-
-.small-link {
-	font-size: 85%;
-}
-
-.small-text {
-	font-size: 75%;
-}
-
-.title {
-	background: #8ECC4C;
-	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-	color: white;
-	padding: 10px;
-	border-radius: 5px;
-	border: 1px solid #6B9939;
-	border-bottom-color: #50732B;
-}
-
-.sidebar-title, .blob-title {
-	margin-bottom: 10px;
-}
 // Fix webengage widget
 
 webengagedata {
@@ -197,3 +132,7 @@ webengagedata {
 		color: darken($green, 10%);
 	}
 }
+
+@import "large_desktop";
+@import "tablet";
+@import "phone";

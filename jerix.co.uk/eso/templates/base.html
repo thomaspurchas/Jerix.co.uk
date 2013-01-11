@@ -93,8 +93,7 @@
         <div class="row-fluid row-top">
             <form id="search-form" action="/search/" method="GET" class="span12" style="text-align: center">
                 <div class="input-append">
-                <input type="text" name="q" placeholder="Search..."
-                    class="span6" value=
+                <input type="text" name="q" placeholder="Search..." value=
                     {% if query %}"{{ query }}"{% endif %}
                     {% if module %}"{{ module.primary_tag }} "{% endif %}>
                 <button type="submit" class="btn btn-success">Let's Do This</button>
