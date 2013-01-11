@@ -9,6 +9,7 @@ def stage():
     local('git push heroku-staging -f')
     local('STAGING=TRUE ./manage.py compress')
     local('STAGING=TRUE DEBUG=false ./manage.py collectstatic --noinput')
+    local('heroku restart --app jerix-staging')
     local('rm -rf ../static')
     
 def deploy():
@@ -16,6 +17,7 @@ def deploy():
     local('git push heroku -f')
     local('DEBUG=false ./manage.py compress')
     local('DEBUG=false ./manage.py collectstatic --noinput')
+    local('heroku restart --app jerix')
     local('rm -rf ../static')
 
     
