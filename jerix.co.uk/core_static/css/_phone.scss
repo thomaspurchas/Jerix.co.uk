@@ -1,10 +1,12 @@
 @media (max-width: 480px) {
     #search-form {
         input {
-            width: 66%;
+            width: 62.5%;
         }
         button {
-            width: 30%;
+            padding-left: 2px;
+            padding-right: 2px;
+            width: 33%;
         }
     }
 }
