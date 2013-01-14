@@ -19,29 +19,9 @@
         <h4>Materials</h4>
         {% for material in post.sorted_materials  %}
             <div class="material well well-small">
-                <div class="btn-toolbar download-links">
-                  <div class="btn-group">
-                      {% if user.is_authenticated %}
-                          {% for version in material.document.versions %}
-                              <a  href={{ version.url }}
-                                  class="btn"
-                                  {% if version.type == "pdf" %}
-                                  target="_blank"
-                                  {% endif %}>
-
-                                  {% if forloop.first %}
-                                      <i class="icon-download"></i>
-                                  {% endif %}
-                                  {{ version.type_display }}
-                              </a>
-                          {% endfor %}
-                      {% else %}
-                          <a class="btn" href={% url login %}?next={{ request.get_full_path }}><i class="icon-download"></i> Sign In</a>
-                      {% endif %}
-                    </div>
-                </div>
+                {% include "modules/module/download.html" %}
                 <div class="material-title">
-                {{ material.title }}
+                    {{ material.title }}
                 </div>
             </div>
         {% endfor %}
