@@ -5,6 +5,9 @@ def set_aws():
     local('export AWS_ACCESS_KEY_ID=AKIAITZEJLE7PSX5ALOQ')
     local('export AWS_SECRET_ACCESS_KEY=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')
 
+def push():
+    local('git push')
+
 def stage():
     local('git push heroku-staging -f')
     local('STAGING=TRUE ./manage.py compress')
