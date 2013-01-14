@@ -65,19 +65,23 @@
                             </a>
                             <ul class="dropdown-menu" style="padding:15px;">
                                 <li>
-                                <form class="navbar-form" action="http://{{ request.get_host }}{% url login %}" method="post" accept-charset="UTF-8">
+                                <form class="navbar-form form-horizontal" action="http://{{ request.get_host }}{% url login %}" method="post" accept-charset="UTF-8">
                                     {% csrf_token %}
                                     <div style="display:none">
                                         <input type="hidden" name="login_universal" value="true">
                                         <input type="hidden" name="next" value="{{ request.get_full_path }}" />
                                     </div>
-                                    <input id="user_username" style="margin-bottom: 15px;" type="text" name="login_username" size="30" placeholder="Username" />
-                                    <input id="user_password" style="margin-bottom: 15px;" type="password" name="login_password" size="30" placeholder="Password" />
+                                    <div class="control-group">
+                                        <input id="user_username" style="" type="text" name="login_username" size="30" placeholder="Username" />
+                                    </div>
+                                    <div class="control-group">
+                                        <input id="user_password" style="" type="password" name="login_password" size="30" placeholder="Password" />
+                                    </div>
                                     <label class="string optional" for="user_remember_me">
                                         <input id="user_remember_me" style="top:-3px;position:relative;" type="checkbox" name="login_remember_me" value="1" checked="checked" />
                                          Remember me
                                     </label>
-                                    <input class="btn btn-success" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
+                                    <input class="btn btn-success" style="clear: left; width: 100%;" type="submit" name="commit" value="Sign In" />
                                 </form>
                                 </li>
                             </ul>
