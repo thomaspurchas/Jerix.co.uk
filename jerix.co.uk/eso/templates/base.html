@@ -34,7 +34,7 @@
                             Jerix
                     </div>
                 </a>
-                <div class="nav-collapse">
+                <div class="nav-collapse collapse">
                     <ul class="nav pull-right">
                         {% if user.is_authenticated %}
                         {% cache 500 user-links user.username %}
@@ -73,8 +73,10 @@
                                     </div>
                                     <input id="user_username" style="margin-bottom: 15px;" type="text" name="login_username" size="30" placeholder="Username" />
                                     <input id="user_password" style="margin-bottom: 15px;" type="password" name="login_password" size="30" placeholder="Password" />
-                                    <input id="user_remember_me" style="float: left; margin-right: 10px;" type="checkbox" name="login_remember_me" value="1" checked="checked" />
-                                    <label class="string optional" for="user_remember_me"> Remember me</label>
+                                    <label class="string optional" for="user_remember_me">
+                                        <input id="user_remember_me" style="top:-3px;position:relative;" type="checkbox" name="login_remember_me" value="1" checked="checked" />
+                                         Remember me
+                                    </label>
                                     <input class="btn btn-success" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
                                 </form>
                                 </li>
