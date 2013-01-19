@@ -177,6 +177,10 @@ PASSWORD_HASHERS = (
 # Set user profile model
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
+AUTHENTICATION_BACKENDS = (
+    'accounts.auth.CaseInsensitiveModelBackend',
+)
+
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 INSTALLED_APPS = (
