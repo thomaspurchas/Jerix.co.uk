@@ -290,8 +290,13 @@ LOGGING = {
         },
         'boto': {
             'propagate': False,
-            'handers': ['console', 'sentry'],
+            'handlers': ['console', 'sentry'],
             'level': 'INFO'
+        },
+        'pysolr': {
+            'propagate': False,
+            'handers': ['console'],
+            'level': 'ERROR'
         }
     }
 }
