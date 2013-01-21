@@ -23,11 +23,11 @@ def get_content(doc, backend):
             doc.extracted_content = content
             doc.save()
         except SolrError as e:
+            content = ""
             if not doc.extraction_error:
                 msg = ('Extracting content from: %s resulted in the ' +
                          'following pysolr error:\n%s')
                 log.error( msg % (doc._blob, e))
-                content = ""
                 doc.extraction_error = True
                 doc.save()
         else:
