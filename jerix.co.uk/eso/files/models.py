@@ -18,6 +18,7 @@ class Blob(models.Model):
     """(Blob description)"""
     file_type = models.CharField(max_length=30)
     extracted_content = models.TextField(blank=True, null=True)
+    extraction_error = models.BooleanField(default=False)
 
     upload_to_url = ''
 
@@ -79,6 +80,16 @@ class DerivedBlob(Blob):
 class BaseDocument(models.Model):
     """Contains a bunch of useful functions"""
 
+    def __init__(self, *args, **kwargs):
+        super(BaseDocument, self).__init__(*args, **kwargs)
+        self.blob_modified = False
+        
+    def save(self, *args, **kwargs):
+        if self.blob_modified:
+            self._blob.save()
+            self.blob_modified = False
+        super(BaseDocument, self).save(*args, **kwargs)
+
     @classmethod
     def document_saved(cls, sender, instance, raw=False, **kargs):
         """Checks changes to the document, and how they may affect underlying blobs"""
@@ -114,6 +125,25 @@ class BaseDocument(models.Model):
     @property
     def extracted_content(self):
         return self._blob.extracted_content
+        
+    @extracted_content.setter
+    def extracted_content(self, value):
+        self._blob.extracted_content = value
+        self.blob_modified = True
+        
+    @extracted_content.deleter
+    def extracted_content(self):
+        self._blob.extracted_content = None
+        self.blob_modified = True
+        
+    @property
+    def extraction_error(self):
+        return self._blob.extraction_error
+        
+    @extraction_error.setter
+    def extraction_error(self, value):
+        self._blob.extraction_error = value
+        self.blob_modified = True
 
     def _get_file(self):
         """Return the file object"""

@@ -18,13 +18,22 @@ def get_content(doc, backend):
         file_obj.seek(0)
         try:
             content = backend.extract_file_contents(file_obj)
-            doc._blob.extracted_content = content
-            doc._blob.save()
+            # Note: This may return None if it can't connect to the search
+            # server.
+            doc.extracted_content = content
+            doc.save()
         except SolrError as e:
-            msg = ('Extracting content from: %s resulted in the ' +
-                     'following pysolr error:\n%s')
-            log.error( msg % (doc._blob, e))
-            content = ""
+            if not doc.extraction_error:
+                msg = ('Extracting content from: %s resulted in the ' +
+                         'following pysolr error:\n%s')
+                log.error( msg % (doc._blob, e))
+                content = ""
+                doc.extraction_error = True
+                doc.save()
+        else:
+            if doc.extraction_error == True:
+                doc.extraction_error = False
+                doc.save()
     else:
         content = doc.extracted_content
 
