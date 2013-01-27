@@ -78,7 +78,7 @@ class Module(models.Model):
     """Represents a course module"""
 
     title = models.CharField(blank=False, max_length=100)
-    short_code = models.CharField(blank=False, max_length=20)
+    short_code = models.CharField(blank=False, max_length=20, unique=True)
     description = models.TextField(blank=True)
     subject = models.ForeignKey(Subject)
     year = models.ForeignKey(AcademicYear, related_name="modules")
@@ -188,7 +188,7 @@ class Material(AuthoredObject):
         ordering = ['index']
 
     def __unicode__(self):
-        return u"%s - %s" % (self.post.title, self.title)
+        return u"%s - %s" % (self.post, self.title)
 
 def primary_tag_changed(instance):
     klass = instance.__class__
