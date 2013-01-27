@@ -136,14 +136,16 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-  "django.contrib.auth.context_processors.auth",
-  "django.core.context_processors.debug",
-  "django.core.context_processors.i18n",
-  "django.core.context_processors.media",
-  "django.core.context_processors.static",
-  "django.core.context_processors.tz",
-  "django.contrib.messages.context_processors.messages",
-  'django.core.context_processors.request',
+      "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    'django.core.context_processors.request',
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -179,6 +181,7 @@ AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 
 AUTHENTICATION_BACKENDS = (
     'accounts.auth.CaseInsensitiveModelBackend',
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
@@ -222,7 +225,26 @@ INSTALLED_APPS = (
     'reputation',
     'q_and_a',
     'pagedown',
+    
+    # Allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.warwick',
 )
+
+SOCIALACCOUNT_PROVIDERS = {
+    'warwick': {
+        'SCOPE': [
+            #'urn:www2.warwick.ac.uk:sitebuilder2:read:service',
+            'urn:websignon.warwick.ac.uk:sso:service',
+            #'urn:start.warwick.ac.uk:portal:service',
+            #'urn:examtimetable.warwick.ac.uk:examtimetable:service'
+        ]
+    },
+}
+
+SOCIALACCOUNT_AUTO_SIGNUP = False
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
