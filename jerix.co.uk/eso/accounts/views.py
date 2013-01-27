@@ -11,6 +11,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.conf import settings
 
+import logging
+logger = logging.getLogger(__name__)
+
 class AuthForm(AuthenticationForm):
     remember_me = forms.BooleanField(label="Remember Me", required=False, initial=True)
 
@@ -83,3 +86,91 @@ def login_user(request):
     # Manual cache header fiddling to help prevent caching issues.
     patch_cache_control(response, no_cache=True, no_store=True, must_revalidate=True)
     return response
+
+# Stuff for dealing with sign-up and module information gathering.
+from allauth.socialaccount.models import SocialToken
+from allauth.account.signals import user_signed_up
+import oauth2 as oauth
+
+import xml.etree.ElementTree as ET
+import re
+
+from accounts.models import StudentProfile, LecturerProfile
+from students.models import Year
+from modules.models import Module
+
+def create_student_profile(modules, year):
+    profile = StudentProfile()
+    db_modules = []
+    for module in modules:
+        try:
+            m = Module.objects.filter(short_code__iexact=module)[0]
+            db_modules.append(m)
+        except IndexError:
+            pass
+            
+    try:
+        y = Year.objects.filter(short_code__iexact=year)[0]
+        profile.year = y
+    except IndexError:
+        pass
+    
+    profile.save()
+    
+    profile.modules = db_modules
+        
+    return profile
+    
+
+def warwick_sign_up(sender, request, user, **kwargs):
+    url = 'https://webgroups.warwick.ac.uk/query/user/%s/groups'
+    regex = '%s-(.*)'
+    try:
+        socialtoken = SocialToken.objects.filter(account__user=user, 
+                                                 account__provider="warwick")[0]
+        socialapp = socialtoken.app
+        socialaccount = socialaccount.account
+        extra_data = dict(socialaccount.extra_data)
+    except IndexError, ValueError:
+        return
+
+    token = oauth.Token(socialtoken.token, socialtoken.token_secret)
+    consumer = oauth.Consumer(socialapp.client_id, socialapp.secret)
+    
+    client = oauth.Client(consumer, token)
+    
+    url = url % extra_data['user']
+    
+    resp, content = client.request(url)
+    
+    if resp['status'] == '200':
+        root = ET.fromstring(content)
+    else:
+        logger.warning('Did not get 200 back from webgroups for %s. Got % ' % (
+            socialaccount.user, resp))
+        return
+        
+    modules = []
+        
+    for group in root.findall('group'):
+        if group.find('type').text == "Module":
+            dep_code = group.find('department').attrib['code']
+            name = group.attrib['name']
+            
+            m = re.match(regex % dep_code, name).group(1)
+            modules.append(m)
+            
+    year = extra_data['warwickyearofstudy']
+            
+    profile = user.get_profile()
+    
+    if extra_data['student'] == 'true':
+        stu_profile = create_student_profile(modules, year)
+        profile.student_profile = stu_profile
+        
+    if extra_data['staff'] == 'true':
+        profile.lecturer_profile = LecturerProfile()
+    
+    profile.save()
+    
+user_signed_up.connect(warwick_sign_up)    
