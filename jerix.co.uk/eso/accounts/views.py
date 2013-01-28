@@ -95,6 +95,8 @@ import oauth2 as oauth
 import xml.etree.ElementTree as ET
 import re
 
+import certifi
+
 from accounts.models import StudentProfile, LecturerProfile
 from students.models import Year
 from modules.models import Module
@@ -138,6 +140,7 @@ def warwick_sign_up(sender, request, user, **kwargs):
     consumer = oauth.Consumer(socialapp.client_id, socialapp.secret)
     
     client = oauth.Client(consumer, token)
+    client.ca_cert = certifi.where()
     
     url = url % extra_data['user']
     
