@@ -125,13 +125,14 @@ def create_student_profile(modules, year):
     
 
 def warwick_sign_up(sender, request, user, **kwargs):
+    logger.debug('Getting module info for %s' % user.username)
     url = 'https://webgroups.warwick.ac.uk/query/user/%s/groups'
     regex = '%s-(.*)'
     try:
         socialtoken = SocialToken.objects.filter(account__user=user, 
                                                  account__provider="warwick")[0]
         socialapp = socialtoken.app
-        socialaccount = socialaccount.account
+        socialaccount = socialtoken.account
         extra_data = dict(socialaccount.extra_data)
     except IndexError, ValueError:
         return
@@ -140,7 +141,7 @@ def warwick_sign_up(sender, request, user, **kwargs):
     consumer = oauth.Consumer(socialapp.client_id, socialapp.secret)
     
     client = oauth.Client(consumer, token)
-    client.ca_cert = certifi.where()
+    client.ca_certs = certifi.where()
     
     url = url % extra_data['user']
     
@@ -167,6 +168,10 @@ def warwick_sign_up(sender, request, user, **kwargs):
             
     profile = user.get_profile()
     
+    logger.debug('User %s: ')
+    logger.debug('  Student: %s' % extra_data['student'])
+    logger.debug('  Staff: %s' % extra_data['staff'])
+    logger.debug('  Modules: %s' % modules)
     if extra_data['student'] == 'true':
         stu_profile = create_student_profile(modules, year)
         profile.student_profile = stu_profile
