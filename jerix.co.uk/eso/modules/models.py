@@ -84,7 +84,8 @@ class Module(models.Model):
     year = models.ForeignKey(AcademicYear, related_name="modules")
     primary_tag = models.ForeignKey(Tag, related_name='+')
     tags = TaggableManager(blank=True)
-
+    source_url = models.URLField(blank=True)
+    
     # There is a lectures manytomany relation on the lecture profile module.
 
     def get_absolute_url(self):

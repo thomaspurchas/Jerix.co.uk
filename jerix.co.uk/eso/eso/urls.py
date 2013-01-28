@@ -7,6 +7,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'core.views.home', name='home'),
+    
+    url(r'^api/', include('eso.api')),
+    
     url(r'^account/', include('accounts.urls')),
     (r'^accounts/', include('allauth.urls')),
 
