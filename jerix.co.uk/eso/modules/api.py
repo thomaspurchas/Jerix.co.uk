@@ -37,6 +37,9 @@ class YearResource(ModelResource):
         resource_name = 'year'
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        filtering = {
+                    'title': ALL,
+                }
         
 class TagResource(ModelResource):
     
@@ -45,3 +48,7 @@ class TagResource(ModelResource):
         resource_name = 'tag'
         authentication = ApiKeyAuthentication()
         authorization = DjangoAuthorization()
+        filtering = {
+                    'name': ALL,
+                    'slug': ALL,
+                }
