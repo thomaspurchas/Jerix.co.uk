@@ -28,6 +28,7 @@ class AcademicYear(models.Model):
     """(AcademicYear description)"""
 
     title = models.CharField(max_length=50)
+    short_code = models.CharField(max_length=50)
 
     def __unicode__(self):
         return unicode(self.title)
