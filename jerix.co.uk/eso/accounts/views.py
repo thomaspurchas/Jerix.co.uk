@@ -98,7 +98,7 @@ import re
 import certifi
 
 from accounts.models import StudentProfile, LecturerProfile
-from students.models import Year
+from modules.models import AcademicYear as Year
 from modules.models import Module
 
 def create_student_profile(modules, year):
