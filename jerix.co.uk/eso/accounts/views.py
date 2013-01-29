@@ -101,8 +101,9 @@ from accounts.models import StudentProfile, LecturerProfile
 from modules.models import AcademicYear as Year
 from modules.models import Module
 
-def create_student_profile(modules, year):
+def create_student_profile(user, modules, year):
     profile = StudentProfile()
+    profile.user_profile = user.get_profile()
     db_modules = []
     for module in modules:
         try:
@@ -165,20 +166,15 @@ def warwick_sign_up(sender, request, user, **kwargs):
             modules.append(m)
             
     year = extra_data['warwickyearofstudy']
-            
-    profile = user.get_profile()
-    
+
     logger.debug('User %s: ')
     logger.debug('  Student: %s' % extra_data['student'])
     logger.debug('  Staff: %s' % extra_data['staff'])
     logger.debug('  Modules: %s' % modules)
     if extra_data['student'] == 'true':
-        stu_profile = create_student_profile(modules, year)
-        profile.student_profile = stu_profile
+        create_student_profile(user, modules, year)
         
-    if extra_data['staff'] == 'true':
-        profile.lecturer_profile = LecturerProfile()
-    
-    profile.save()
+    # if extra_data['staff# '] == 'true':
+    #         LecturerProfile()
     
 user_signed_up.connect(warwick_sign_up)    
