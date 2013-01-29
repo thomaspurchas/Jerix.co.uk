@@ -6,15 +6,9 @@ class UserProfileInline(admin.StackedInline):
 
 class LecturerProfileAdmin(admin.ModelAdmin):
     filter_horizontal = ('modules',)
-    inlines = [
-        UserProfileInline,
-    ]
 
 class StudentProfileAdmin(admin.ModelAdmin):
     filter_horizontal = ('modules',)
-    inlines = [
-        UserProfileInline,
-    ]
 
 admin.site.register(UserProfile)
 admin.site.register(LecturerProfile, LecturerProfileAdmin)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, SiteProfileNotAvailable
 from django.db.models.signals import post_save
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your models here.
 class StudentProfile(models.Model):
@@ -10,17 +11,18 @@ class StudentProfile(models.Model):
     tutor = models.ForeignKey('accounts.LecturerProfile', blank=True, null=True)
 
     modules = models.ManyToManyField('modules.Module', related_name='students')
+    
+    user_profile = models.OneToOneField('accounts.UserProfile', 
+                                        related_name='student_profile',
+                                        null=False)
 
     class Admin:
         list_display = ('',)
         search_fields = ('',)
 
     def __unicode__(self):
-        try:
-            name = self.userprofile.user.username
-        except:
-            name = u"StudentProfile"
-        return name
+        name = self.user_profile.user.username
+        return '%s' % name
 
 
 class LecturerProfile(models.Model):
@@ -28,18 +30,18 @@ class LecturerProfile(models.Model):
 
     modules = models.ManyToManyField('modules.Module', related_name='lecturers',
                                         blank=True, null=True)
+                                        
+    user_profile = models.OneToOneField('accounts.UserProfile',
+                                        related_name='lecturer_profile',
+                                        null=False)
 
     class Admin:
         list_display = ('',)
         search_fields = ('',)
 
     def __unicode__(self):
-        try:
-            name = self.userprofile.user.username
-        except:
-            name = u"LecturerProfile"
-        return name
-
+        name = self.user_profile.user.username
+        return '%s' % name
 
 class UserProfile(models.Model):
     """Represents a user"""
@@ -49,9 +51,6 @@ class UserProfile(models.Model):
     title = models.CharField(blank=True, max_length=30)
     about_me = models.TextField(blank=True)
     picture = models.ImageField(upload_to="profile_pics:", null=True, blank=True)
-
-    lecturer_profile = models.OneToOneField(LecturerProfile, null=True, blank=True)
-    student_profile = models.OneToOneField(StudentProfile, null=True, blank=True)
 
     current_reputation = models.IntegerField(default=0)
 
@@ -66,10 +65,18 @@ class UserProfile(models.Model):
         return u'%s %s' % (self.title, self.full_name())
 
     def is_lecturer(self):
-        return True if self.lecturer_profile else False
+        try:
+            self.lecturer_profile
+            return True
+        except ObjectDoesNotExist:
+            return False
 
     def is_student(self):
-        return True if self.student_profile else False
+        try:
+            self.student_profile
+            return True
+        except ObjectDoesNotExist:
+            return False
 
     class Admin:
         list_display = ('',)
