@@ -22,7 +22,7 @@ def home(request):
     if col_1 == None or col_2 == None:
         # Create values and put them in cache
         modules = []
-        items = {}
+        items = []
 
         if request.user.is_authenticated():
             profile = user.get_profile()
@@ -33,31 +33,28 @@ def home(request):
                 lecturers = UserProfile.objects.filter(
                                 lecturer_profile__modules__students=student_profile)
 
-                items.update({
-                    'modules': modules,
-                    'lecturers': lecturers
-                })
+                items.append(('modules', modules))
+                items.append(('lecturers', lecturers))
 
         else:
-            years = AcademicYear.objects.select_related().all().order_by('title')
+            years = AcademicYear.objects.select_related().all().order_by(
+                                                                   'short_code')
 
+            print years
             i = 0
             for year in years:
                 i += 1
-                items.update({
-                    'year_%d' % i: year
-                })
+                items.append(('year_%d' % i, year))
 
         questions = Question.objects.all().order_by('-asked')[:10]
 
-        items.update({
-            'questions': questions,
-        })
+        items.insert(0, ('questions', questions))
+        print items
 
         col_1 = []
         col_2 = []
 
-        iterator = items.iteritems()
+        iterator = iter(items)
 
         while True:
             try:
