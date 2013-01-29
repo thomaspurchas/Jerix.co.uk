@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 class StudentProfile(models.Model):
     """(StudentProfile description)"""
 
-    year = models.ForeignKey('students.Year', blank=True, null=True)
+    year = models.ForeignKey('modules.AcademicYear', blank=True, null=True)
     tutor = models.ForeignKey('accounts.LecturerProfile', blank=True, null=True)
 
     modules = models.ManyToManyField('modules.Module', related_name='students')
