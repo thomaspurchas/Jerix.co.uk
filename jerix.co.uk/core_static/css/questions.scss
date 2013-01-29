@@ -19,7 +19,7 @@
 }
 
 .repcell {
-	width: 50px;
+	width: 64px;
 	vertical-align: top;
 }
 
@@ -29,20 +29,41 @@
 
 .rep-box {
 	text-align: center;
-
+    
+    a {
+        width: 64px;
+        height: 32px;
+        display: block;
+        text-indent: -9999em;
+    }
+    
 	.vote-up {
 		cursor: pointer;
+        background-image: url('../img/arrow-up.png');
+        &:hover {
+            background-image: url('../img/arrow-up-glowing.png');
+        }
 	}
 
 	.vote-down {
 		cursor: pointer;
+        background-image: url('../img/arrow-down.png');
+        &:hover {
+            background-image: url('../img/arrow-down-glowing.png');
+        }
 	}
-	.voted {
-		color: Orange;
+	.vote-up.voted {
+        background-image: url('../img/arrow-up-glowing.png');
 	}
+    .vote-down.voted {
+        background-image: url('../img/arrow-down-glowing.png');
+    }
 	.total-votes {
-		font-size: 230%;
+		font-size: 250%;
 		font-weight: bold;
+        width: 64px;
+        display: block;
+        margin: 5px 0;
 	}
 }
 
