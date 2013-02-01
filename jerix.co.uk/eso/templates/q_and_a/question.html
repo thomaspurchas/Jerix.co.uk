@@ -10,18 +10,14 @@
     {{ answer_form.media }}
 {% endblock head %}
 
-{% block header %}
-<div class="grid">
-    <div class="col-3-4">
-        <h1 class="title">{{ question.title }}</h1>
-    </div>
-    <div class="col-1-4">
+{% block content %}
+<div class="row">
+    <div class="span12">
+        <h1 class="page-header">{{ question.title }}</h1>
     </div>
 </div>
-{% endblock header %}
-
-{% block content %}
-    <div class="col-3-4">
+<div class="row">
+    <div class="span9">
         <div class="module question">
             {% include "q_and_a/post.html" with post=question %}
         </div>
@@ -52,18 +48,18 @@
             </form>
         </div>
     </div>
-    <div class="col-1-4">
-        <div class="module recent-questions">
-            <h3 class="sidebar-title">Related Questions</h3>
+    <div class="span3">
+        <div class="well well-small">
+            <h3>Related Questions</h3>
             {% for question in related_questions %}
-                <div class="spacer">
-                    <a class="small-link" href="{% url question question.id question.slug %}">
+                <p>
+                    <a href="{% url question question.id question.slug %}">
                     {{ question.title }}</a>
-                </div>
+                </p>
             {% endfor %}
         </div>
     </div>
-
+</div>
 {% endblock content %}
 
 {% block footer %}
