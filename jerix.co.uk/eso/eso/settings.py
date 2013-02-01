@@ -90,9 +90,9 @@ MEDIA_ROOT = pathjoin(SITE_ROOT, 'media/')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '//media.dev.jerix.co.uk' if DEBUG else '//media.jerix.co.uk/'
+MEDIA_URL = 'http://media.dev.jerix.co.uk' if DEBUG else 'http://media.jerix.co.uk/'
 if STAGING:
-    MEDIA_URL = '//media.dev.jerix.co.uk/'
+    MEDIA_URL = 'http://media.dev.jerix.co.uk/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
