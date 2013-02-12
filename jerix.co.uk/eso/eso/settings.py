@@ -33,11 +33,11 @@ DATABASES = {'default': dj_database_url.config(default='postgres://localhost/jer
 
 # Celery
 djcelery.setup_loader()
-BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://app8750632_heroku.com:EauSZ0LugIDHW90x-aUqtUcnwurBusiG@tiger.cloudamqp.com/app8750632_heroku.com')#'django://')
+BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://app8750632_heroku.com:EauSZ0LugIDHW90x-aUqtUcnwurBusiG@tiger.cloudamqp.com/app8750632_heroku.com')  # 'django://')
 BROKER_POOL_LIMIT = 1
 
 # Haystack
-HAYSTACK_URL      = os.environ.get('HAYSTACK_URL', 'http://localhost:8983/solr') #'https://secure.websolr.com/solr/86a571d1d3f')
+HAYSTACK_URL = os.environ.get('HAYSTACK_URL', 'http://localhost:8983/solr')  # 'https://secure.websolr.com/solr/86a571d1d3f')
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
@@ -47,7 +47,7 @@ HAYSTACK_CONNECTIONS = {
 
 
 # Hitcount app
-HITCOUNT_KEEP_HIT_ACTIVE = { 'days': 2 }
+HITCOUNT_KEEP_HIT_ACTIVE = {'days': 2}
 HITCOUNT_HITS_PER_IP_LIMIT = 0
 #HITCOUNT_EXCLUDE_USER_GROUP = ( 'Editor', )
 
@@ -274,8 +274,8 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console': {
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         },
         'sentry': {
@@ -286,14 +286,14 @@ LOGGING = {
     },
     'loggers': {
         '': {
-            'handlers':['console', 'sentry'],
+            'handlers': ['console', 'sentry'],
             'propagate': True,
-            'level':'DEBUG' if DEBUG else 'INFO',
+            'level': 'DEBUG' if DEBUG else 'INFO',
         },
         'django': {
-            'handlers':['console'],
+            'handlers': ['console'],
             'propagate': False,
-            'level':'INFO',
+            'level': 'INFO',
         },
         'django.request': {
             'handlers': ['mail_admins'],

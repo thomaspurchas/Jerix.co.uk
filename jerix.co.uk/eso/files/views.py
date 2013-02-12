@@ -7,8 +7,6 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
-from boto.s3.connection import S3Connection, VHostCallingFormat
-
 from files.models import Document, DerivedDocument
 
 URL_EXPIRY = getattr(settings, 'S3_URL_EXPIRES_IN', 30)
@@ -19,6 +17,7 @@ URL_EXPIRY = getattr(settings, 'S3_URL_EXPIRES_IN', 30)
 #                    debug=2
 #                    )
 # s3bucket = s3conn.get_bucket('media.jerix.co.uk')
+
 
 def generate_headers(filename, doc):
     if doc.type == "pdf":
@@ -32,6 +31,7 @@ def generate_headers(filename, doc):
 
     return headers
 
+
 def generate_url(doc, headers):
     url = doc._blob.file.file.key.generate_url(
                                                 URL_EXPIRY,
@@ -39,6 +39,7 @@ def generate_url(doc, headers):
                                                 response_headers=headers
                                                )
     return url
+
 
 @login_required(login_url='/account/login/')
 @never_cache
@@ -56,6 +57,7 @@ def original_download(request, id, slug=None):
 
     return redirect(url)
 
+
 @login_required(login_url='/account/login/')
 @never_cache
 def derived_download(request, id, slug, orig_id=None):
@@ -72,3 +74,10 @@ def derived_download(request, id, slug, orig_id=None):
     url = generate_url(doc, headers)
 
     return redirect(url)
+
+
+def resolve_file(request, file):
+
+    file.split('?', 1)
+
+    return HttpResponse(file)

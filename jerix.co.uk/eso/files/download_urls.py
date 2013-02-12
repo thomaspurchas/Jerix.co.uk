@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('files.views',
     url(r'^original/(?P<id>\d+)/(?P<slug>.*)$', 'original_download',
@@ -8,4 +8,6 @@ urlpatterns = patterns('files.views',
     url(r'^derived/(?P<id>\d+)/(?P<slug>.*)$',
                                 'derived_download', name='download-derived'),
 
+
+    url(r'^find-file/(?P<file>.*)$', 'resolve_file')
 )

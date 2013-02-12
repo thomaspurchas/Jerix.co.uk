@@ -1,18 +1,17 @@
 import datetime
 
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
-from django.db.models.signals import pre_save
 
 from taggit.managers import TaggableManager
 from taggit.models import Tag
 
-from files.models import Document
 from accounts.models import AuthoredObject
 
 # Create your models here.
+
+
 class Subject(models.Model):
     """(Subject description)"""
 
@@ -24,6 +23,7 @@ class Subject(models.Model):
     def __unicode__(self):
         return unicode(self.title)
 
+
 class AcademicYear(models.Model):
     """(AcademicYear description)"""
 
@@ -32,6 +32,7 @@ class AcademicYear(models.Model):
 
     def __unicode__(self):
         return unicode(self.title)
+
 
 class History(models.Model):
     """(History description)"""
@@ -62,7 +63,7 @@ class HistoryMixIn(models.Model):
 
     def in_range(self, today):
         return (
-            (historical_period is None) or
+            (self.historical_period is None) or
             (self.historical_period.start_date < today and
             self.historical_period.end_date > today)
         )
@@ -74,6 +75,7 @@ class HistoryMixIn(models.Model):
 
     class Meta:
         abstract = True
+
 
 class Module(models.Model):
     """Represents a course module"""
@@ -95,6 +97,7 @@ class Module(models.Model):
 
     def __unicode__(self):
         return u'%s - %s' % (self.short_code, self.title)
+
 
 class Post(AuthoredObject):
     """(BasicPost description)"""
@@ -142,6 +145,7 @@ class ParentPost(Post, HistoryMixIn):
     def __unicode__(self):
         return u"%s - %s" % (self.module.title, self.title)
 
+
 class SubPost(Post):
     """(SubPost description)"""
 
@@ -156,7 +160,7 @@ class SubPost(Post):
 
     @property
     def slug(self):
-        return u"%d-%s" %(self.post_ptr.id, slugify(self.title))
+        return u"%d-%s" % (self.post_ptr.id, slugify(self.title))
 
     def get_absolute_url(self):
         module_url = self.parent.module.get_absolute_url()
@@ -168,6 +172,7 @@ class SubPost(Post):
             self.parent.title,
             self.title
         )
+
 
 class Material(AuthoredObject):
     """Represents a lecture"""
@@ -192,6 +197,7 @@ class Material(AuthoredObject):
     def __unicode__(self):
         return u"%s - %s" % (self.post, self.title)
 
+
 def primary_tag_changed(instance):
     klass = instance.__class__
     if instance.id:
@@ -201,6 +207,7 @@ def primary_tag_changed(instance):
         return False
     else:
         return None
+
 
 def add_parent_primary_to_tags(sender, instance, raw, **kwargs):
     if raw:
@@ -223,5 +230,5 @@ def add_parent_primary_to_tags(sender, instance, raw, **kwargs):
         remove.append(old_tag)
         add.append(parents[1].primary_tag)
 
-    self.tags.remove(remove)
-    self.tags.add(add)
+    instance.tags.remove(remove)
+    instance.tags.add(add)
