@@ -21,6 +21,8 @@ def get_content(doc, backend):
             # Note: This may return None if it can't connect to the search
             # server.
             doc.extracted_content = content
+            if content == None:
+                raise SolrError('Unable to connect to server!')
             doc.save()
         except (SolrError, TypeError) as e:
             content = ""
