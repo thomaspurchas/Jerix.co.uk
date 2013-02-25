@@ -30,6 +30,11 @@ else:
 
 import dj_database_url
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost/jerix_heroku')}
+DATABASES['default']['ENGINE'] = 'eso.persistent_db'
+
+SOUTH_DATABASE_ADAPTERS = {
+    'default': 'south.db.postgresql_psycopg2',
+}
 
 # Celery
 djcelery.setup_loader()
