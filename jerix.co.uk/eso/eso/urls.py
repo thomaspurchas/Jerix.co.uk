@@ -7,10 +7,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'core.views.home', name='home'),
-    
+
     url(r'^api/', include('eso.api')),
-    
-    url(r'^account/', include('accounts.urls')),
+
     (r'^accounts/', include('allauth.urls')),
 
     url(r'^modules/(?P<module_id>\d+)/(?P<slug>.+)/?$', 'modules.views.module_posts', name="module-posts"),
