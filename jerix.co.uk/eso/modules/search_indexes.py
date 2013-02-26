@@ -21,13 +21,15 @@ def get_content(doc, backend):
             # Note: This may return None if it can't connect to the search
             # server.
             doc.extracted_content = content
+            if content == None:
+                raise SolrError('Unable to connect to server!')
             doc.save()
-        except SolrError as e:
+        except (SolrError, TypeError) as e:
             content = ""
             if not doc.extraction_error:
                 msg = ('Extracting content from: %s resulted in the ' +
                          'following pysolr error:\n%s')
-                log.error( msg % (doc._blob, e))
+                log.error(msg % (doc._blob, e))
                 doc.extraction_error = True
                 doc.save()
         else:
