@@ -111,60 +111,60 @@ def create_student_profile(user, modules, year):
             db_modules.append(m)
         except IndexError:
             pass
-            
+
     try:
         y = Year.objects.filter(short_code__iexact=year)[0]
         profile.year = y
     except IndexError:
         pass
-    
+
     profile.save()
-    
+
     profile.modules = db_modules
-        
+
     return profile
-    
+
 
 def warwick_sign_up(sender, request, user, **kwargs):
     logger.debug('Getting module info for %s' % user.username)
     url = 'https://webgroups.warwick.ac.uk/query/user/%s/groups'
     regex = '%s-(.*)'
     try:
-        socialtoken = SocialToken.objects.filter(account__user=user, 
+        socialtoken = SocialToken.objects.filter(account__user=user,
                                                  account__provider="warwick")[0]
         socialapp = socialtoken.app
         socialaccount = socialtoken.account
         extra_data = dict(socialaccount.extra_data)
-    except IndexError, ValueError:
+    except (IndexError, ValueError):
         return
 
     token = oauth.Token(socialtoken.token, socialtoken.token_secret)
     consumer = oauth.Consumer(socialapp.client_id, socialapp.secret)
-    
+
     client = oauth.Client(consumer, token)
     client.ca_certs = certifi.where()
-    
+
     url = url % extra_data['user']
-    
+
     resp, content = client.request(url)
-    
+
     if resp['status'] == '200':
         root = ET.fromstring(content)
     else:
         logger.warning('Did not get 200 back from webgroups for %s. Got % ' % (
             socialaccount.user, resp))
         return
-        
+
     modules = []
-        
+
     for group in root.findall('group'):
         if group.find('type').text == "Module":
             dep_code = group.find('department').attrib['code']
             name = group.attrib['name']
-            
+
             m = re.match(regex % dep_code, name).group(1)
             modules.append(m)
-            
+
     year = extra_data['warwickyearofstudy']
 
     logger.debug('User %s: ')
@@ -173,8 +173,8 @@ def warwick_sign_up(sender, request, user, **kwargs):
     logger.debug('  Modules: %s' % modules)
     if extra_data['student'] == 'true':
         create_student_profile(user, modules, year)
-        
+
     # if extra_data['staff# '] == 'true':
     #         LecturerProfile()
-    
-user_signed_up.connect(warwick_sign_up)    
+
+user_signed_up.connect(warwick_sign_up)
