@@ -219,6 +219,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'celery_haystack',
     'crispy_forms',
+    'bootstrap_toolkit',
 
     # My Apps
     'modules',
@@ -230,7 +231,7 @@ INSTALLED_APPS = (
     'reputation',
     'q_and_a',
     'pagedown',
-    
+
     # Allauth
     'allauth',
     'allauth.account',
