@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account %}
+{% load bootstrap_toolkit %}
+
+{% block content %}
+<div class="row-fluid row-top">
+    <div class="span6 offset3">
+
+        {% if socialaccount.providers  %}
+        <p>{% blocktrans with site.name as site_name %}Please sign in with one
+        of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
+        for a {{site_name}} account and sign in below:{% endblocktrans %}</p>
+
+        <div class="socialaccount_ballot">
+
+          <ul class="unstyled">
+            {% include "socialaccount/snippets/provider_list.html" %}
+          </ul>
+
+          <div class="login-or">{% trans 'or' %}</div>
+
+        </div>
+
+        {% include "socialaccount/snippets/login_extra.html" %}
+
+        {% endif %}
+
+        {% if form.errors %}
+        <div class="alert alert-error">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>Error!</strong> Your username and password don't match. Please try again.
+        </div>
+        {% endif %}
+
+        <form method="post" class="form-horizontal" action="{% url account_login %}#">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {{ form|as_bootstrap }}
+            <div class="controls">
+                <button type="submit" class="btn btn-large btn-success"/>Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
