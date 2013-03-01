@@ -1,4 +1,4 @@
-Django==1.4.3
+Django==1.5
 Markdown==2.2.0
 PIL==1.1.7
 South==0.7.6
@@ -23,7 +23,7 @@ git+https://github.com/thomaspurchas/django-hitcount.git
 git+https://github.com/thomaspurchas/django-taggit.git
 git+https://github.com/thomaspurchas/django-allauth.git
 django-storages==1.1.5
-django-tastypie==0.9.11
+django-tastypie==0.9.12
 eventlet==0.9.17
 gevent==0.13.8
 gunicorn==0.14.6

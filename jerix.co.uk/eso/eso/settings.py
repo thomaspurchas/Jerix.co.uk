@@ -15,6 +15,11 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+ALLOWED_HOSTS = [
+    '.jerix.co.uk',
+    'jerix.herokuapp.com',
+    'jerix-staging.herokuapp.com'
+]
 LOGIN_URL = 'account/login/'
 
 if not DEBUG:
@@ -95,7 +100,7 @@ MEDIA_ROOT = pathjoin(SITE_ROOT, 'media/')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'http://media.dev.jerix.co.uk' if DEBUG else 'http://media.jerix.co.uk/'
+MEDIA_URL = 'http://media.dev.jerix.co.uk/' if DEBUG else 'http://media.jerix.co.uk/'
 if STAGING:
     MEDIA_URL = 'http://media.dev.jerix.co.uk/'
 
