@@ -54,13 +54,13 @@
 								<li class="divider"></li>
 							{% endif %}
                             <li><a href="#"><i class="i"></i> Your Profile</a></li>
-                            <li><a href="{% url account_logout %}?next={{ request.get_full_path }}"><i class="i"></i> Log Out</a></li>
+                            <li><a href="{% url "account_logout" %}?next={{ request.get_full_path }}"><i class="i"></i> Log Out</a></li>
                           </ul>
                         </li>
                         {% endcache %}
                         {% else %}
                         <li class="dropdown" id="login-dropdown">
-                            <a href="{% url account_login %}?next={{request.path}}" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="{% url "account_login" %}?next={{request.path}}" class="dropdown-toggle" data-toggle="dropdown">
                                 Login
                               <b class="caret"></b>
                             </a>
@@ -74,19 +74,19 @@
                                     Jerix Account
                                 </li>
                                 <li>
-                                <form class="navbar-form form-horizontal" action="http://{{ request.get_host }}{% url account_login %}" method="post" accept-charset="UTF-8">
+                                <form class="navbar-form form-horizontal" action="http://{{ request.get_host }}{% url "account_login" %}" method="post" accept-charset="UTF-8">
                                     {% csrf_token %}
                                     <div style="display:none">
                                         <input type="hidden" name="login_universal" value="true">
                                         <input type="hidden" name="next" value="{{ request.get_full_path }}" />
                                     </div>
                                     <div class="control-group">
-                                        <input id="user_username" style="" type="text" name="login_username" size="30" placeholder="Username" />
+                                        <input id="user_username" style="" type="text" name="login" size="30" placeholder="Username" />
                                     </div>
                                     <div class="control-group">
-                                        <input id="user_password" style="" type="password" name="login_password" size="30" placeholder="Password" />
+                                        <input id="user_password" style="" type="password" name="password" size="30" placeholder="Password" />
                                     </div>
-                                    <label class="string optional" for="user_remember_me">
+                                    <label class="string optional" for="remember">
                                         <input id="user_remember_me" style="top:-3px;position:relative;" type="checkbox" name="login_remember_me" value="1" checked="checked" />
                                          Remember me
                                     </label>

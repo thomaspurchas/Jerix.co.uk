@@ -8,7 +8,7 @@
                 {% if questions %}
                     {% for question in questions %}
                         <div class="spacer">
-                            <a class="small-link" href="{% url question question.id question.slug %}">
+                            <a class="small-link" href="{% url 'question' question.id question.slug %}">
                             {{ question.title }}</a>
                         </div>
                     {% endfor %}

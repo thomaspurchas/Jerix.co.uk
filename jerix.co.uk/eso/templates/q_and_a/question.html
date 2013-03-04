@@ -36,7 +36,7 @@
         <div class="module your-answer">
             <h3>Your Answer</h3>
             <form id="post-answer" class="post-answer"
-                method="POST" action="{% url post_answer %}">
+                method="POST" action="{% url "post_answer" %}">
                 {% csrf_token %}
                 <div id="markdown-editor">
                     {{ answer_form.as_p }}
@@ -53,7 +53,7 @@
             <h3>Related Questions</h3>
             {% for question in related_questions %}
                 <p>
-                    <a href="{% url question question.id question.slug %}">
+                    <a href="{% url 'question' question.id question.slug %}">
                     {{ question.title }}</a>
                 </p>
             {% endfor %}
@@ -91,7 +91,7 @@
                 "clear": clear
             };
             $.post(
-                '{% url q_and_a.views.vote %}',
+                '{% url "q_and_a.views.vote" %}',
                 vote,
                 function(data) {
                       if (!("error" in data)) {

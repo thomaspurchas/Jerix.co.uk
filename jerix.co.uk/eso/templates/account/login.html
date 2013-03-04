@@ -34,7 +34,7 @@
         </div>
         {% endif %}
 
-        <form method="post" class="form-horizontal" action="{% url account_login %}#">
+        <form method="post" class="form-horizontal" action="{% url "account_login" %}#">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}" />
         {{ form|as_bootstrap }}
