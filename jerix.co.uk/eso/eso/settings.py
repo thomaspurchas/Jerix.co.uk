@@ -330,6 +330,11 @@ LOGGING = {
             'propagate': False,
             'handers': ['console'],
             'level': 'ERROR'
+        },
+        'allauth': {
+            'propagate': False,
+            'handlers': ['console', 'sentry'],
+            'level': 'DEBUG' if (STAGING or DEBUG) else 'INFO'
         }
     }
 }
