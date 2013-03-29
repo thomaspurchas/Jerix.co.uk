@@ -11,3 +11,10 @@ MEMCACHE = {
     'TIMEOUT': 500,
     'BINARY': True,
 }
+
+
+DEV_MEMCACHE = {
+    'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+    'LOCATION': '127.0.0.1:11211',
+    'TIMEOUT': 500,
+}

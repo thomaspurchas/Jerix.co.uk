@@ -1,7 +1,7 @@
 import os
 from os.path import join as pathjoin
 import djcelery
-from memcache import MEMCACHE
+from memcache import MEMCACHE, DEV_MEMCACHE
 # Django settings for eso project.
 
 DEBUG = os.environ.get('DEBUG', "true").lower() == "true"
@@ -27,10 +27,11 @@ if not DEBUG:
         'default': MEMCACHE
     }
 else:
+    del os.environ['MEMCACHE_SERVERS']
+    del os.environ['MEMCACHE_USERNAME']
+    del os.environ['MEMCACHE_PASSWORD']
     CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        }
+        'default': DEV_MEMCACHE
     }
 
 import dj_database_url
