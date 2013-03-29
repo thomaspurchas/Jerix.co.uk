@@ -52,14 +52,14 @@ class History(models.Model):
 class HistoryMixIn(models.Model):
     """(AcademicYearMixIn description)"""
 
-    def period_defualt():
+    def period_default():
         h = History.objects.all()
         if h:
             return h[0]
         else:
             return None
 
-    historical_period = models.ForeignKey(History, null=True, default=period_defualt)
+    historical_period = models.ForeignKey(History, null=True, default=period_default)
 
     def in_range(self, today):
         return (
@@ -88,7 +88,7 @@ class Module(models.Model):
     primary_tag = models.ForeignKey(Tag, related_name='+')
     tags = TaggableManager(blank=True)
     source_url = models.URLField(blank=True)
-    
+
     # There is a lectures manytomany relation on the lecture profile module.
 
     def get_absolute_url(self):
