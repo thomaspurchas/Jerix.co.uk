@@ -83,7 +83,7 @@ class BaseDocument(models.Model):
     def __init__(self, *args, **kwargs):
         super(BaseDocument, self).__init__(*args, **kwargs)
         self.blob_modified = False
-        
+
     def save(self, *args, **kwargs):
         if self.blob_modified:
             self._blob.save()
@@ -125,21 +125,21 @@ class BaseDocument(models.Model):
     @property
     def extracted_content(self):
         return self._blob.extracted_content
-        
+
     @extracted_content.setter
     def extracted_content(self, value):
         self._blob.extracted_content = value
         self.blob_modified = True
-        
+
     @extracted_content.deleter
     def extracted_content(self):
         self._blob.extracted_content = None
         self.blob_modified = True
-        
+
     @property
     def extraction_error(self):
         return self._blob.extraction_error
-        
+
     @extraction_error.setter
     def extraction_error(self, value):
         self._blob.extraction_error = value
@@ -280,5 +280,3 @@ pre_save.connect(Blob.blob_saved, DerivedBlob)
 
 post_delete.connect(Blob.delete_file, ParentBlob)
 post_delete.connect(Blob.delete_file, DerivedBlob)
-
-import files.convert_listeners
