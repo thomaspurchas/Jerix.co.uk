@@ -20,7 +20,6 @@ ALLOWED_HOSTS = [
     'jerix.herokuapp.com',
     'jerix-staging.herokuapp.com'
 ]
-LOGIN_URL = 'account/login/'
 
 if not DEBUG:
     CACHES = {
@@ -44,7 +43,7 @@ SOUTH_DATABASE_ADAPTERS = {
 
 # Celery
 djcelery.setup_loader()
-BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://app8750632_heroku.com:EauSZ0LugIDHW90x-aUqtUcnwurBusiG@tiger.cloudamqp.com/app8750632_heroku.com')  # 'django://')
+BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672/')  # 'django://')
 BROKER_POOL_LIMIT = 1
 
 # Haystack
@@ -55,6 +54,9 @@ HAYSTACK_CONNECTIONS = {
         'URL': HAYSTACK_URL,
     },
 }
+
+# Celery-Haystack
+HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 
 # Hitcount app
@@ -215,7 +217,6 @@ INSTALLED_APPS = (
     'south',
     'tastypie',
     'gunicorn',
-    'celery_haystack',
     'djcelery',
     'storages',
     'hitcount',
@@ -228,6 +229,7 @@ INSTALLED_APPS = (
     'bootstrap_toolkit',
 
     # My Apps
+    'core',
     'modules',
     'search',
     'store',
