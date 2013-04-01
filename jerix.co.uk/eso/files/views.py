@@ -34,14 +34,14 @@ def generate_headers(filename, doc):
 
 def generate_url(doc, headers):
     url = doc._blob.file.file.key.generate_url(
-                                                URL_EXPIRY,
-                                                force_http=True,
-                                                response_headers=headers
-                                               )
+        URL_EXPIRY,
+        force_http=True,
+        response_headers=headers
+    )
     return url
 
 
-@login_required(login_url='/account/login/')
+@login_required
 @never_cache
 def original_download(request, id, slug=None):
     doc = get_object_or_404(Document, pk=id)
@@ -58,7 +58,7 @@ def original_download(request, id, slug=None):
     return redirect(url)
 
 
-@login_required(login_url='/account/login/')
+@login_required
 @never_cache
 def derived_download(request, id, slug, orig_id=None):
     doc = get_object_or_404(DerivedDocument, pk=id)
