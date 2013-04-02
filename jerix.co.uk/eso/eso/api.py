@@ -4,7 +4,7 @@ from tastypie.models import create_api_key
 
 models.signals.post_save.connect(create_api_key, sender=User)
 
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from modules.api import ModuleResource, SubjectResource, YearResource, TagResource
 
 module_resource = ModuleResource()
