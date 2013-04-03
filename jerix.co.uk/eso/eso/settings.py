@@ -44,6 +44,7 @@ SOUTH_DATABASE_ADAPTERS = {
 # Celery
 djcelery.setup_loader()
 BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672/')  # 'django://')
+CELERYD_PREFETCH_MULTIPLIER = 1
 BROKER_POOL_LIMIT = 1
 CELERY_ROUTES = {
     'files.tasks.convert_pdf': {'queue': 'conversion'}
