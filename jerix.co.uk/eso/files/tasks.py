@@ -1,92 +1,235 @@
 import logging
-import mimetypes
-import urllib2
 import os
+import tempfile
+import subprocess
+import socket
+import threading
+import shutil
+import re
 
-from django.core.files.uploadedfile import TemporaryUploadedFile
+from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
 
-from celery.task import task
-from poster.streaminghttp import register_openers
+import Image
+from celery import task
 
-from files.models import ParentBlob, DerivedDocument
+from files.models import ParentBlob, DerivedDocument, Document
 from files.helpers import type_to_priorty
 
 log = logging.getLogger(__name__)
 
-# Register the streaming http handlers with urllib2
-register_openers()
+UNOCONV_CALL = 'unoconv --timeout=10 --port=%s --output="%s" "%s"'
+TIMEOUT = 60
 
-JOD_URL = 'http://localhost:8080/converter/service'
 
-@task(acks_late=True)
+def get_free_port():
+    # Note this is super fuzzy, there are funky race conditions here, but they
+    # shouldn't cause a problem most of the time
+    s = socket.socket()
+    s.bind(('', 0))
+    port = s.getsockname()[1]
+    s.close()
+    return port
+
+
+def timeout(p, port):
+    log.info('Timeout for unoconv process with port %s fired. Retcode: %s' % (port, p.poll()))
+    if p.poll() is None:
+        log.error('unoconv process with port %s taking too long to complete--terminating' % port)
+        p.terminate()
+
+class ConversionError(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+@task(acks_late=True, queue='conversion')
 def create_pdf(blob_pk):
     log.info('PDF Conversion start')
     blob = ParentBlob.objects.get(pk=blob_pk)
-    file = blob.file
+    orig_file = blob.file
 
     log.info('Starting conversion of %s to PDF' % blob)
 
     # Check for derived files of PDF type
     if blob.file_type == 'pdf':
+        log.info('%s is a PDF, no need to convert' % blob)
         return False
     elif blob.derived_documents.filter(_blob__file_type='pdf'):
+        log.info('%s has derived PDF, no need to convert' % blob)
         return False
 
-    file.seek(0)
+    tempd_loc = tempfile.mkdtemp()
+    temp_file, tempf_loc = tempfile.mkstemp(dir=tempd_loc)
 
-    # Botched file streaming
-    headers = {}
+    temp_file = os.fdopen(temp_file, "wb")
 
-    filesize = file.size
-
-    headers['Content-Type'] = mimetypes.guess_type(file.name)[0]
-    headers['Accept']= "application/pdf"
-    headers['Content-Length'] = '%s' % filesize
-
-    def yielder():
-        while True:
-            block = file.read(10240)
-            if block:
-                yield block
-            else:
-                break
+    for chunk in orig_file.chunks():
+        temp_file.write(chunk)
+    temp_file.close()
 
     try:
-        req = urllib2.Request(JOD_URL, yielder(), headers)
+        port = get_free_port()
 
-        # Get the return file
-        return_file = urllib2.urlopen(req)
+        log.info("Launching unoconv with port %s" % port)
 
-        filename = os.path.basename(file.name)
-        filename = os.path.splitext(filename)[0] + '.pdf'
+        proc = subprocess.Popen(UNOCONV_CALL % (port, tempd_loc, tempf_loc),
+                                #stderr=subprocess.PIPE,
+                                #stdout=subprocess.PIPE,
+                                shell=True)
 
-        new_file = TemporaryUploadedFile(filename, 'application/pdf', 0, None)
-        while True:
-            data = return_file.read(10240)
-            if data:
-                new_file.write(data)
-            else:
-                new_file.size = os.path.getsize(new_file.temporary_file_path())
-                break
+        # Create and start a watchdog thread
+        t = threading.Timer(TIMEOUT, timeout, [proc, port])
+        t.start()
 
-    except urllib2.HTTPError as e:
-        msg = e.msg
-        if e.fp:
-            msg += ' - %s' % e.fp.read()
-        log.error('Conversion service error: %s - %s - %s', e.hdrs, e.code, msg)
-        create_pdf.retry(exc=e)
+        stderr, stdout = None, None#proc.communicate()
+        proc.wait()
 
-    derived_doc = DerivedDocument()
-    derived_doc.derived_from = blob
-    derived_doc.file = new_file
-    derived_doc.index = type_to_priorty('pdf')
+        t.cancel()
 
-    # Do one last check before saving the blob, just incase this task got fired
-    # twice in quick succession.
+        if proc.returncode != 0:
+            error = subprocess.CalledProcessError(proc.returncode,
+                                                  UNOCONV_CALL % (
+                                                  port, tempd_loc, tempf_loc))
+            error.output = "%s %s" % (stderr, stdout)
+            raise error
+
+        log.info("unoconv (port %s) output: %s %s" % (port, stderr, stdout))
+
+    except subprocess.CalledProcessError as e:
+        log.error('unoconv (port %s) returned a non-zero exit status: %s' % (port, e.output))
+
+    os.unlink(tempf_loc)
+
+    files = os.listdir(tempd_loc)
+
+    for pdf in files:
+        if pdf.lower().endswith('.pdf'):
+            break
+    else:
+        shutil.rmtree(tempd_loc, True)
+        raise ConversionError('Unable to find PDF file')
+
+    pdf = os.path.abspath(os.path.join(tempd_loc, pdf))
+    pdf = open(pdf, 'rb')
+    filename = os.path.basename(orig_file.name)
+    filename = os.path.splitext(filename)[0] + '.pdf'
+
+    doc = DerivedDocument(derived_from=blob)
+    doc.file = UploadedFile(pdf, filename, 'application/pdf', 0, None)
+    doc.index = type_to_priorty('pdf')
+
+    # # Do one last check before saving the blob, just incase this task got fired
+    # # twice in quick succession.
 
     if blob.derived_documents.filter(_blob__file_type='pdf'):
-            return False
+        return False
     else:
-        derived_doc.save()
+        doc.save()
+
+    pdf.close()
+
+    shutil.rmtree(tempd_loc, True)
+
+    log.info("Convertion of %s complete" % blob)
+
+    return True
+
+
+@task(acks_late=True, queue='conversion')
+def create_pngs(document_pk, type='pngs'):
+    doc = Document.objects.get(pk=document_pk)
+    blob = doc._blob
+    log.info('Starting png generation of: %s', doc)
+
+    # Check to make sure that we don't already have a pngs pack
+    # Check for derived files of PDF type
+    if blob.file_type == 'png':
+        log.info('%s is a PNG, no need to convert' % blob)
+        return False
+    elif blob.derived_documents.filter(_blob__file_type='png'):
+        log.info('%s has derived PNG, no need to convert' % blob)
+        return False
+
+    # Locate a pdf file
+    if doc.type == 'pdf':
+        pdf = doc
+    else:
+        pdf = doc.get_derived_documents_of_type('pdf')
+        if pdf:
+            pdf = pdf[0]
+
+    if not pdf:
+        log.info("No PDF avaliable for %s" % blob)
+
+    # Create a temp folder
+    temp_folder = tempfile.mkdtemp()
+    log.debug('working with: %s', temp_folder)
+
+    file = tempfile.NamedTemporaryFile(dir=temp_folder, delete=False)
+
+    for data in pdf.file.chunks():
+        file.write(data)
+    file.close()
+
+    # Now call ghostscript
+    return_code = subprocess.call(["gs", "-sDEVICE=png16m",
+        "-sOutputFile=%s/slide-%s.png" % (temp_folder, '%03d'),
+        "-r600", "-dNOPAUSE", "-dBATCH", "-dMaxBitmap=1000000000",
+        "-dFirstPage=1", "-dLastPage=1",
+        "%s" % file.name])
+
+    if return_code != 0:
+        log.error('Ghostscript error')
+        # Clean up
+        shutil.rmtree(temp_folder)
+        create_pngs.retry()
+
+    # Process the generated files with PIL
+
+    # First generate a list of file in the tempdir
+    compiled_regex = re.compile('^slide-(\w+).png$')
+    scaled_images = {}
+    for file in os.listdir(temp_folder):
+        # Check using regex
+        match = re.match(compiled_regex, file)
+        if match:
+            log.debug('scaling image: %s', file)
+            order = int(match.group(1))
+
+            # Resize using PIL
+            slide = Image.open(os.path.join(temp_folder, file))
+            slide.thumbnail((1920, 1200), Image.ANTIALIAS)
+
+            new_filename = os.path.join(temp_folder, 'slide-scaled-%03d.png' % order)
+            slide.save(new_filename)
+            scaled_images[order] = new_filename
+
+    # Make sure that the order starts at 0 and has no gaps
+    new_images = {}
+    order = 0
+    sorted_keys = scaled_images.keys()
+    sorted_keys.sort()
+    for item in [scaled_images[key] for key in sorted_keys]:
+        new_images[order] = item
+        order += 1
+    scaled_images = new_images
+
+    # Now go through all the generated slides and upload
+    # Create a new derivedfile pack
+    for order, filename in scaled_images.iteritems():
+        file = open(filename, 'rb')
+
+        parts = os.path.split(filename)
+        filename = os.path.join(parts[-2], '%s_%s' % (doc.file_name, parts[-1]))
+
+        upfile = TemporaryUploadedFile(filename, 'image/png', 0, None)
+        upfile.file = file
+
+        doc = DerivedDocument(derived_from=blob)
+        doc.file = upfile
+        doc.index = type_to_priorty('png')
+
+        doc.save()
+
+    shutil.rmtree(temp_folder)
 
     return True

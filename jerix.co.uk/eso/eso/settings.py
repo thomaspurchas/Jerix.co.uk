@@ -45,6 +45,9 @@ SOUTH_DATABASE_ADAPTERS = {
 djcelery.setup_loader()
 BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672/')  # 'django://')
 BROKER_POOL_LIMIT = 1
+CELERY_ROUTES = {
+    'files.tasks.convert_pdf': {'queue': 'conversion'}
+}
 
 # Haystack
 HAYSTACK_URL = os.environ.get('HAYSTACK_URL', 'http://localhost:8983/solr')  # 'https://secure.websolr.com/solr/86a571d1d3f')
@@ -385,6 +388,7 @@ AWS_STORAGE_BUCKET_NAME = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_CUSTOM_DOMAIN = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.uk'
 AWS_S3_CALLING_FORMAT = VHostCallingFormat()
+AWS_S3_FILE_OVERWRITE = False
 if not DEBUG:
     STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
     COMPRESS_STORAGE = STATICFILES_STORAGE
