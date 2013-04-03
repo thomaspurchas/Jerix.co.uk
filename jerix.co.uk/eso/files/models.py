@@ -16,7 +16,6 @@ from files.errors import ReadOnlyFileError
 # Create your models here.
 class Blob(models.Model):
     """(Blob description)"""
-    file_type = models.CharField(max_length=30)
     extracted_content = models.TextField(blank=True, null=True)
     extraction_error = models.BooleanField(default=False)
 
@@ -79,6 +78,7 @@ class DerivedBlob(Blob):
 
 class BaseDocument(models.Model):
     """Contains a bunch of useful functions"""
+    file_type = models.CharField(max_length=30)
 
     def __init__(self, *args, **kwargs):
         super(BaseDocument, self).__init__(*args, **kwargs)
@@ -120,7 +120,7 @@ class BaseDocument(models.Model):
 
     @property
     def type(self):
-        return self._blob.file_type
+        return self.file_type
 
     @property
     def extracted_content(self):
@@ -167,8 +167,7 @@ class Document(BaseDocument, AuthoredObject):
         """
         Returns a `QuerySet` of derived documents.
         """
-        return self._blob.derived_documents.filter(
-                                            _blob__file_type=file_type)
+        return self._blob.derived_documents.filter(file_type=file_type)
 
     @property
     def derived_documents(self):
@@ -178,7 +177,7 @@ class Document(BaseDocument, AuthoredObject):
     def versions(self):
         versions = list(
                     self._blob.derived_documents.all().exclude(
-                    _blob__file_type='png')
+                    file_type='png')
         )
         versions.append(self)
         for version in versions:
@@ -198,11 +197,11 @@ class Document(BaseDocument, AuthoredObject):
                 })
 
     def _set_file(self, file):
-        file_type, md5 = identify_and_md5(file)
+        self.file_type, md5 = identify_and_md5(file)
         try:
             blob = ParentBlob.objects.get(md5_sum=md5)
         except ParentBlob.DoesNotExist:
-            blob = ParentBlob(md5_sum=md5, file_type=file_type, file=file)
+            blob = ParentBlob(md5_sum=md5, file=file)
         if self._blob_id:
             self._old_blob = self._blob
         self._blob = blob
@@ -220,16 +219,15 @@ class DerivedDocument(BaseDocument):
                                         related_name="derived_documents")
 
     def _set_file(self, file):
-        file_type, md5 = identify_and_md5(file)
-        path = get_path(file_type)
+        self.file_type, md5 = identify_and_md5(file)
+        path = get_path(self.file_type)
         try:
             blob = DerivedBlob.objects.get(md5_sum=md5,
                                             upload_to_url=path)
             if hasattr(self, '_blob'):
                 self._old_blob = self._blob
         except DerivedBlob.DoesNotExist:
-            blob = DerivedBlob(upload_to_url=path, md5_sum=md5,
-                                file_type=file_type, file=file)
+            blob = DerivedBlob(upload_to_url=path, md5_sum=md5, file=file)
         self._blob = blob
 
     @property
@@ -259,7 +257,7 @@ class DerivedDocument(BaseDocument):
     file = property(BaseDocument._get_file, _set_file)
 
     class Meta:
-        unique_together = ('index', 'derived_from')
+        unique_together = ('index', 'derived_from', 'file_type')
         ordering = ['derived_from', 'index']
 
     def __unicode__(self):

@@ -35,16 +35,15 @@ class DerivedDocumentForm(forms.ModelForm):
         super(DerivedDocumentForm, self).__init__(*args, **kwargs)
 
 class ParentBlobAdmin(admin.ModelAdmin):
-    readonly_fields = ('md5_sum', 'file_type', 'file', 'extraction_error')
+    readonly_fields = ('md5_sum', 'file', 'extraction_error')
 
 class DerivedBlobAdmin(admin.ModelAdmin):
-    readonly_fields = ('md5_sum', 'upload_to_url', 'file_type', 'file',
-                        'extraction_error')
+    readonly_fields = ('md5_sum', 'upload_to_url', 'file', 'extraction_error')
 
 class DocumentAdmin(admin.ModelAdmin):
     form = DocumentForm
     exclude = ['_blob']
-    readonly_fields = ('extraction_error', )
+    readonly_fields = ('extraction_error', 'file_type')
 
     # def add_view(self, *args, **kargs):
     #     self.exclude.append('file_name')
@@ -64,7 +63,7 @@ class DocumentAdmin(admin.ModelAdmin):
 class DerivedDocumentAdmin(admin.ModelAdmin):
     form = DerivedDocumentForm
     exclude = ['_blob']
-    readonly_fields = ('extraction_error', )
+    readonly_fields = ('extraction_error', 'file_type')
 
     def save_model(self, request, obj, form, change):
         if isinstance(form.cleaned_data['file'], UploadedFile):
