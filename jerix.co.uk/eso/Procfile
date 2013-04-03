@@ -2,4 +2,6 @@ memcached: memcached -vv
 solr: sh -c 'cd ../../../apache-solr-4.0.0/example/ && java -jar start.jar'
 rabbitmq: rabbitmq-server
 
-worker: python manage.py celery worker --loglevel=info
+worker_conversion: python manage.py celery worker -Q conversion --loglevel=info -c 2 --maxtasksperchild=4 -n conversion.localhost
+worker_celery: python manage.py celery worker -Q celery --loglevel=info -c 4 -n celery.localhost
+flower: celery flower
