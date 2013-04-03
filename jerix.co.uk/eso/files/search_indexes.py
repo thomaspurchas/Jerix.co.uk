@@ -7,7 +7,7 @@ class DocumentIndex(indexes.SearchIndex): #, indexes.Indexable):
     def get_model(self):
         return Document
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         return self.get_model().objects.all()
 
 class DerivedDocumentIndex(indexes.SearchIndex): #, indexes.Indexable):
@@ -16,5 +16,5 @@ class DerivedDocumentIndex(indexes.SearchIndex): #, indexes.Indexable):
     def get_model(self):
         return DerivedDocument
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         return self.get_model().objects.all()

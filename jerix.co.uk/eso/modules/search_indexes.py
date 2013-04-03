@@ -45,7 +45,7 @@ class PostIndex(CelerySearchIndex):
     text = indexes.CharField(document=True, use_template=True)
     author = indexes.CharField(model_attr='author__get_full_name')
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.all()
 
@@ -65,6 +65,7 @@ class MaterialIndex(CelerySearchIndex, indexes.Indexable):
     tags = indexes.MultiValueField(faceted=True)
 
     def prepare_tags(self, obj):
+        print 'HERE==============<<<<'
         if hasattr(obj.post, 'parentpost'):
             post = obj.post.parentpost
             module = obj.post.parentpost.module
@@ -94,7 +95,7 @@ class MaterialIndex(CelerySearchIndex, indexes.Indexable):
     def get_model(self):
         return Material
 
-    def index_queryset(self):
+    def index_queryset(self, using=None):
         """Used when the entire index for model is updated."""
         return self.get_model().objects.all()
 
