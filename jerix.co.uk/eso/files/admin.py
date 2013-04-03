@@ -45,6 +45,10 @@ class DocumentAdmin(admin.ModelAdmin):
     exclude = ['_blob']
     readonly_fields = ('extraction_error', 'file_type')
 
+    list_filter = ('file_type', )
+    list_display = ('__unicode__', 'file_type')
+    search_fields = ('file_name', 'title')
+
     # def add_view(self, *args, **kargs):
     #     self.exclude.append('file_name')
     #     return super(DocumentAdmin, self).add_view(*args, **kargs)
@@ -64,6 +68,9 @@ class DerivedDocumentAdmin(admin.ModelAdmin):
     form = DerivedDocumentForm
     exclude = ['_blob']
     readonly_fields = ('extraction_error', 'file_type')
+
+    list_filter = ('file_type', )
+    list_display = ('__unicode__', 'file_type')
 
     def save_model(self, request, obj, form, change):
         if isinstance(form.cleaned_data['file'], UploadedFile):
