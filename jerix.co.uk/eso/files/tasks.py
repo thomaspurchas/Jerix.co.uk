@@ -41,7 +41,7 @@ class ConversionError(Exception):
     def __init__(self, msg):
         self.msg = msg
 
-@task(acks_late=True, queue='conversion')
+@task(acks_late=True, queue='conversion', ignore_result=True)
 def create_pdf(blob_pk):
     log.info('PDF Conversion start')
     blob = ParentBlob.objects.get(pk=blob_pk)
@@ -134,7 +134,7 @@ def create_pdf(blob_pk):
     return True
 
 
-@task(acks_late=True, queue='conversion')
+@task(acks_late=True, queue='conversion', ignore_result=True)
 def create_pngs(document_pk, type='pngs'):
     doc = Document.objects.get(pk=document_pk)
     blob = doc._blob
