@@ -50,10 +50,10 @@ def create_pdf(blob_pk):
     log.info('Starting conversion of %s to PDF' % blob)
 
     # Check for derived files of PDF type
-    if blob.file_type == 'pdf':
+    if blob.documents.filter(file_type='pdf'):
         log.info('%s is a PDF, no need to convert' % blob)
         return False
-    elif blob.derived_documents.filter(_blob__file_type='pdf'):
+    elif blob.derived_documents.filter(file_type='pdf'):
         log.info('%s has derived PDF, no need to convert' % blob)
         return False
 
@@ -142,10 +142,10 @@ def create_pngs(document_pk, type='pngs'):
 
     # Check to make sure that we don't already have a pngs pack
     # Check for derived files of PDF type
-    if blob.file_type == 'png':
+    if doc.file_type == 'png':
         log.info('%s is a PNG, no need to convert' % blob)
         return False
-    elif blob.derived_documents.filter(_blob__file_type='png'):
+    elif blob.derived_documents.filter(file_type='png'):
         log.info('%s has derived PNG, no need to convert' % blob)
         return False
 
@@ -174,7 +174,7 @@ def create_pngs(document_pk, type='pngs'):
     return_code = subprocess.call(["gs", "-sDEVICE=png16m",
         "-sOutputFile=%s/slide-%s.png" % (temp_folder, '%03d'),
         "-r600", "-dNOPAUSE", "-dBATCH", "-dMaxBitmap=1000000000",
-        "-dFirstPage=1", "-dLastPage=1",
+        #"-dFirstPage=1", "-dLastPage=1",
         "%s" % file.name])
 
     if return_code != 0:
@@ -213,22 +213,33 @@ def create_pngs(document_pk, type='pngs'):
         order += 1
     scaled_images = new_images
 
+
+    # Before uploading check that there are still no other pngs up there.
+    if blob.derived_documents.filter(file_type='png'):
+        log.info('%s has derived PNG now, canceling upload' % blob)
+        return False
+
     # Now go through all the generated slides and upload
     # Create a new derivedfile pack
-    for order, filename in scaled_images.iteritems():
-        file = open(filename, 'rb')
+    try:
+        for order, filename in scaled_images.iteritems():
+            file = open(filename, 'rb')
 
-        parts = os.path.split(filename)
-        filename = os.path.join(parts[-2], '%s_%s' % (doc.file_name, parts[-1]))
+            parts = os.path.split(filename)
+            filename = os.path.join(parts[-2], '%s_%s' % (
+                doc.file_name[0:60], parts[-1]))
 
-        upfile = TemporaryUploadedFile(filename, 'image/png', 0, None)
-        upfile.file = file
+            upfile = TemporaryUploadedFile(filename, 'image/png', 0, None)
+            upfile.file = file
 
-        doc = DerivedDocument(derived_from=blob)
-        doc.file = upfile
-        doc.index = type_to_priorty('png')
+            derived_doc = DerivedDocument(derived_from=blob)
+            derived_doc.file = upfile
+            derived_doc.index = order
 
-        doc.save()
+            derived_doc.save()
+    except:
+        log.error(filename)
+        raise
 
     shutil.rmtree(temp_folder)
 
