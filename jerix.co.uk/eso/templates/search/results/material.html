@@ -1,6 +1,7 @@
 {% load cache %}
+{% load thumbnail %}
 
-{% cache 60 search_material result.pk %}
+{% cache 1 search_material result.pk %}
 <div class="media">
     <div class="media-body">
         <h4 class="media-heading">
@@ -10,6 +11,11 @@
             {{ result.post.title }}</h4>
         <div class="material well well-small">
             {{ result.title }}
+            {% thumbnail result.document.get_preview_image  "300x450" as im %}
+            <div style="margin-left:10px">
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+            </div>
+            {% endthumbnail %}
             <div class="download-links">
                 <i class="icon-download"></i>
                 <ul><!--

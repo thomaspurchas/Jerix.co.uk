@@ -231,6 +231,7 @@ INSTALLED_APPS = (
     'celery_haystack',
     'crispy_forms',
     'bootstrap_toolkit',
+    'sorl.thumbnail',
 
     # My Apps
     'core',
