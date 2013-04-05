@@ -71,6 +71,7 @@ class DerivedDocumentAdmin(admin.ModelAdmin):
 
     list_filter = ('file_type', )
     list_display = ('__unicode__', 'file_type')
+    search_fields = ('derived_from__documents__title', 'derived_from__documents__file_name')
 
     def save_model(self, request, obj, form, change):
         if isinstance(form.cleaned_data['file'], UploadedFile):
