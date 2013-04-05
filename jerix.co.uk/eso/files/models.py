@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
+from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import AuthoredObject
 
@@ -184,6 +185,15 @@ class Document(BaseDocument, AuthoredObject):
             version.original_document = self
             version.priority = type_to_priorty(version.type)
         return sorted(versions, key=lambda doc:doc.priority, reverse=True)
+
+    def get_preview_image(self):
+        try:
+            imaged = self._blob.derived_documents.get(file_type="png",index=0)
+            image = imaged.file
+            image.url = imaged.url
+        except ObjectDoesNotExist:
+            image = None
+        return image
 
     @property
     def url(self):
