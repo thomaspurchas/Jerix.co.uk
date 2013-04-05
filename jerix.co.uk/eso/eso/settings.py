@@ -46,7 +46,7 @@ djcelery.setup_loader()
 BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672/')  # 'django://')
 CELERYD_PREFETCH_MULTIPLIER = 1
 BROKER_POOL_LIMIT = 1
-CELERY_AMQP_TASK_RESULT_EXPIRES = 60
+CELERY_TASK_RESULT_EXPIRES = 60
 CELERY_ROUTES = {
     'files.tasks.convert_pdf': {'queue': 'conversion'}
 }
@@ -341,6 +341,11 @@ LOGGING = {
             'propagate': False,
             'handers': ['console'],
             'level': 'ERROR'
+        },
+        'requests': {
+            'propagate': True,
+            'handlers': ['console', 'sentry'],
+            'level': 'DEBUG' if DEBUG else 'WARNING'
         },
         'allauth': {
             'propagate': False,
