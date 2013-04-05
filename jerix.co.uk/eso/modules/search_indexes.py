@@ -65,7 +65,6 @@ class MaterialIndex(CelerySearchIndex, indexes.Indexable):
     tags = indexes.MultiValueField(faceted=True)
 
     def prepare_tags(self, obj):
-        print 'HERE==============<<<<'
         if hasattr(obj.post, 'parentpost'):
             post = obj.post.parentpost
             module = obj.post.parentpost.module
