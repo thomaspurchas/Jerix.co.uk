@@ -1,13 +1,15 @@
 # Create your views here.
+import logging
 from os import path
 
-from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
 from files.models import Document, DerivedDocument
+
+log = logging.getLogger(__name__)
 
 URL_EXPIRY = getattr(settings, 'S3_URL_EXPIRES_IN', 30)
 
@@ -20,7 +22,7 @@ URL_EXPIRY = getattr(settings, 'S3_URL_EXPIRES_IN', 30)
 
 
 def generate_headers(filename, doc):
-    if doc.type == "pdf":
+    if doc.type in ["pdf", "png"]:
         serve = "inline"
     else:
         serve = "attachment"
@@ -68,16 +70,9 @@ def derived_download(request, id, slug, orig_id=None):
         ext = path.splitext(filename)[1]
         filename = path.splitext(orig_doc.file_name)[0]
         filename += ext
-    print orig_id
+    log.debug(orig_id)
     headers = generate_headers(filename, doc)
 
     url = generate_url(doc, headers)
 
     return redirect(url)
-
-
-def resolve_file(request, file):
-
-    file.split('?', 1)
-
-    return HttpResponse(file)
