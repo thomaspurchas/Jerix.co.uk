@@ -10,6 +10,7 @@ import re
 from django.core.files.uploadedfile import UploadedFile, TemporaryUploadedFile
 
 import Image
+from sorl.thumbnail import get_thumbnail
 from celery import task
 
 from files.models import ParentBlob, DerivedDocument, Document
@@ -42,9 +43,10 @@ class ConversionError(Exception):
         self.msg = msg
 
 @task(acks_late=True, queue='conversion', ignore_result=True)
-def create_pdf(blob_pk):
+def create_pdf(doc_pk):
     log.info('PDF Conversion start')
-    blob = ParentBlob.objects.get(pk=blob_pk)
+    doc = Document.objects.get(pk=doc_pk)
+    blob = doc._blob
     orig_file = blob.file
 
     log.info('Starting conversion of %s to PDF' % blob)
@@ -120,7 +122,7 @@ def create_pdf(blob_pk):
     # # Do one last check before saving the blob, just incase this task got fired
     # # twice in quick succession.
 
-    if blob.derived_documents.filter(_blob__file_type='pdf'):
+    if blob.derived_documents.filter(file_type='pdf'):
         return False
     else:
         doc.save()
@@ -159,6 +161,7 @@ def create_pngs(document_pk, type='pngs'):
 
     if not pdf:
         log.info("No PDF avaliable for %s" % blob)
+        return
 
     # Create a temp folder
     temp_folder = tempfile.mkdtemp()
@@ -244,3 +247,11 @@ def create_pngs(document_pk, type='pngs'):
     shutil.rmtree(temp_folder)
 
     return True
+
+
+@task(acks_late=True, ignore_result=True)
+def create_thumbs(derived_doc_pk):
+    doc = DerivedDocument.objects.get(pk=derived_doc_pk)
+
+    if doc.file_type == 'png':
+        get_thumbnail(doc.file, '300x450')
