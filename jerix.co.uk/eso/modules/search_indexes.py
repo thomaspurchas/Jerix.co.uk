@@ -16,7 +16,14 @@ from files.models import DerivedDocument
 log = logging.getLogger(__name__)
 
 def get_content(doc, backend):
-    if doc.extracted_content == None:
+    try:
+        content = doc.extracted_content
+        if content is not None:
+            content = ast.literal_eval(content)
+    except SyntaxError:
+        content = None
+
+    if content is None:
         try:
             file_obj = doc.file
             file_obj.seek(0)
@@ -42,8 +49,7 @@ def get_content(doc, backend):
                     doc.save()
         except IOError:
             content = {u'contents': u''}
-    else:
-        content = ast.literal_eval(doc.extracted_content)
+
     return bleach.clean(content['contents'], strip=True)
 
 class PostIndex(CelerySearchIndex):
