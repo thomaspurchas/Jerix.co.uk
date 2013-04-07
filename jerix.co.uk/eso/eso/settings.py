@@ -47,6 +47,7 @@ BROKER_URL = os.environ.get('CLOUDAMQP_URL', 'amqp://guest:guest@localhost:5672/
 CELERYD_PREFETCH_MULTIPLIER = 1
 BROKER_POOL_LIMIT = 10
 CELERY_TASK_RESULT_EXPIRES = 60
+#CELERYD_TASK_TIME_LIMIT = 600 # 10 mins.
 CELERY_ROUTES = {
     'files.tasks.convert_pdf': {'queue': 'conversion'}
 }
@@ -397,6 +398,11 @@ AWS_QUERYSTRING_AUTH = False
 AWS_S3_CUSTOM_DOMAIN = 'media.dev.jerix.co.uk' if DEBUG else 'media.jerix.co.uk'
 AWS_S3_CALLING_FORMAT = VHostCallingFormat()
 AWS_S3_FILE_OVERWRITE = False
+AWS_S3_SECURE_URLS = False
+AWS_HEADERS = {
+    'Expires': 'Mon, 6 Apr 2015 20:00:00 GMT',
+    'Cache-Control': 'public, max-age=31556926',
+}
 if not DEBUG:
     STATICFILES_STORAGE = 'eso.static_storage.StaticStorage'
     COMPRESS_STORAGE = STATICFILES_STORAGE
