@@ -1,5 +1,10 @@
+# Database stuff
 stunnel: stunnel stunnel.conf
 pgbouncer: pgbouncer pgbouncer.ini
+
+# (Flow)er to monitor celery workers
+flower: python ../eso/manage.py celery flower  --broker=amqp://jerix_dev:jerix_dev_password@search.jerix.co.uk:5672/jerix_dev
+
+# The workers themselves
 worker_conversion: newrelic-admin run-program python ../eso/manage.py celery worker -Q conversion --loglevel=info -c 2 --maxtasksperchild=15 -n conversion.localhost
 worker_celery: newrelic-admin run-program python ../eso/manage.py celery worker -Q celery --loglevel=info -c 8 -n celery.localhost
-flower: python ../eso/manage.py celery flower  --broker=amqp://jerix_dev:jerix_dev_password@search.jerix.co.uk:5672/jerix_dev
