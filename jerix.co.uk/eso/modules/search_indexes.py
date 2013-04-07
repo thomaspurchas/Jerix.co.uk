@@ -20,7 +20,7 @@ def get_content(doc, backend):
         content = doc.extracted_content
         if content is not None:
             content = ast.literal_eval(content)
-    except SyntaxError:
+    except (SyntaxError, ValueError):
         content = None
 
     if content is None:
