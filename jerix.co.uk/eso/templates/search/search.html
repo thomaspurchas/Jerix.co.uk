@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load compress %}
 {% load crispy_forms_tags %}
+{% load bootstrap_toolkit %}
 
 {% block header %}
 {% compress css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/module.scss" type="text/x-scss" charset="utf-8">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/search.scss" type="text/x-scss" charset="utf-8">
 {% endcompress %}
 {{ block.super }}
@@ -16,7 +18,7 @@
 
         <form method="get" action="." class="">
 
-            {{ form|crispy }}
+            {{ form|as_bootstrap }}
             <div class="controls">
                 <input class="btn btn-success" type="submit" value="Search">
             </div>
@@ -29,7 +31,7 @@
             {% for result in page.object_list %}
             {% if result.object.template %}
                 {% with "search/results/"|add:result.object.template as template %}
-                    {% include template with result=result.object %}
+                    {% include template with result=result %}
                 {% endwith %}
             {% else %}
                 <p>

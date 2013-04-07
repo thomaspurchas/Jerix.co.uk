@@ -1,4 +1,5 @@
 {% load cache %}
+{% load highlight %}
 {% load thumbnail %}
 
 {% cache 1 search_material result.pk %}
@@ -6,38 +7,22 @@
     <div class="media-body">
         <h4 class="media-heading">
             {% filter force_escape %}
-                {% firstof result.post.parentpost.module.title result.post.subpost.parent.module.title %}
+                {% firstof result.object.post.parentpost.module.title result.object.post.subpost.parent.module.title %}
             {% endfilter %} -
-            {{ result.post.title }}</h4>
+            {{ result.post.title }}
+        </h4>
         <div class="material well well-small">
-            {{ result.title }}
-            {% thumbnail result.document.get_preview_image  "300x450" as im %}
+            {% include "modules/module/download.html" with material=result.object %}
+            <div class="material-title">
+                    {{ result.object.title }}
+            </div>
+            {% thumbnail result.object.document.get_preview_image  "300x450" as im %}
             <div style="margin-left:10px">
                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
             </div>
             {% endthumbnail %}
-            <div class="download-links">
-                <i class="icon-download"></i>
-                <ul><!--
-                    <li>
-                        Download:
-                    </li> -->
-                    {% for version in result.document.versions %}
-                        <li>
-                            <a href={{ version.url }}
-                                {% if version.type == "pdf" %}
-                                target="_blank"
-                                {% endif %}>
-                                {{ version.type_display }}
-                            </a>
-                        </li>
-                        {% if not forloop.last %}
-                            <li>|</li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
         </div>
     </div>
+    {% highlight result.content with query %}
 </div>
 {% endcache %}
