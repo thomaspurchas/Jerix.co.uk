@@ -36,9 +36,11 @@ class DerivedDocumentForm(forms.ModelForm):
 
 class ParentBlobAdmin(admin.ModelAdmin):
     readonly_fields = ('md5_sum', 'file', 'extraction_error')
+    list_filter = ('documents__file_type', )
 
 class DerivedBlobAdmin(admin.ModelAdmin):
     readonly_fields = ('md5_sum', 'upload_to_url', 'file', 'extraction_error')
+    list_filter = ('documents__file_type', )
 
 class DocumentAdmin(admin.ModelAdmin):
     form = DocumentForm
