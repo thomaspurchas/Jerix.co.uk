@@ -6,7 +6,7 @@
 {% block header %}
 {% compress css %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/module.scss" type="text/x-scss" charset="utf-8">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/search.scss" type="text/x-scss" charset="utf-8">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/module.scss" type="text/x-scss" charset="utf-8">
 {% endcompress %}
 {{ block.super }}
 {% endblock header %}
@@ -34,9 +34,9 @@
                     {% include template with result=result %}
                 {% endwith %}
             {% else %}
-                <p>
+                {# <p>
                     <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
-                </p>
+                </p> #}
             {% endif %}
             {% empty %}
                 <p>No results found.</p>

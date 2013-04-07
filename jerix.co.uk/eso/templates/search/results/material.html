@@ -8,21 +8,20 @@
         <h4 class="media-heading">
             {% filter force_escape %}
                 {% firstof result.object.post.parentpost.module.title result.object.post.subpost.parent.module.title %}
+                ({% firstof result.object.post.parentpost.module.short_code result.object.post.subpost.parent.module.short_code %})
             {% endfilter %} -
-            {{ result.post.title }}
+            {{ result.object.post.title }} -
+            {{ result.object.title }}
         </h4>
         <div class="material well well-small">
             {% include "modules/module/download.html" with material=result.object %}
-            <div class="material-title">
-                    {{ result.object.title }}
-            </div>
+            {% highlight result.content with query %}
             {% thumbnail result.object.document.get_preview_image  "300x450" as im %}
-            <div style="margin-left:10px">
+            <div style="margin: 10px auto; display:block; width: {{im.width}}px;">
                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
             </div>
             {% endthumbnail %}
         </div>
     </div>
-    {% highlight result.content with query %}
 </div>
 {% endcache %}
