@@ -14,7 +14,7 @@ def convert_to_pdf(sender, instance, created, raw, **kargs):
     if created and not raw:
         doc = instance.documents.all()[0]
         log.info('Firing create_pdf task with %s:%s' % (doc, doc.pk))
-        create_pdf.delay(doc.pk)
+        create_pdf.delay(doc)
 
 
 def convert_to_pngs(sender, instance, created, raw, **kargs):
@@ -31,7 +31,7 @@ def convert_to_pngs(sender, instance, created, raw, **kargs):
         elif doc.get_derived_documents_of_type(file_type='png'):
             return
         log.info('Firing create_pngs task with %s:%s' % (doc, doc.pk))
-        create_pngs.delay(doc.pk)
+        create_pngs.delay(doc)
 
 post_save.connect(convert_to_pngs, Document)
 post_save.connect(convert_to_pngs, DerivedDocument)
@@ -41,6 +41,6 @@ def create_thumbnails(sender, instance, created, raw, **kwargs):
     if created and not raw:
         doc = instance
         log.info('Firing create_thumbs task with %s:%s' % (doc, doc.pk))
-        create_thumbs.delay(doc.pk)
+        create_thumbs.delay(doc)
 
 post_save.connect(create_thumbnails, DerivedDocument)

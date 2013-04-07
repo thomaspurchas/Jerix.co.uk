@@ -43,9 +43,8 @@ class ConversionError(Exception):
         self.msg = msg
 
 @task(acks_late=True, queue='conversion', ignore_result=True)
-def create_pdf(doc_pk):
+def create_pdf(doc):
     log.info('PDF Conversion start')
-    doc = Document.objects.get(pk=doc_pk)
     blob = doc._blob
     orig_file = blob.file
 
@@ -136,9 +135,8 @@ def create_pdf(doc_pk):
     return True
 
 
-@task(acks_late=True, queue='conversion', ignore_result=True)
-def create_pngs(document_pk, type='pngs'):
-    doc = Document.objects.get(pk=document_pk)
+@task(acks_late=True, queue='conversion', ignore_result=True, time_limit=900)
+def create_pngs(doc, type='pngs'):
     blob = doc._blob
     log.info('Starting png generation of: %s', doc)
 
@@ -249,9 +247,7 @@ def create_pngs(document_pk, type='pngs'):
     return True
 
 
-@task(acks_late=True, ignore_result=True)
-def create_thumbs(derived_doc_pk):
-    doc = DerivedDocument.objects.get(pk=derived_doc_pk)
-
-    if doc.file_type == 'png':
-        get_thumbnail(doc.file, '300x450')
+@task(ignore_result=True, time_limit=20)#, rate_limit=5)
+def create_thumbs(derived_doc):
+    if derived_doc.file_type == 'png':
+        get_thumbnail(derived_doc.file, '300x450')
