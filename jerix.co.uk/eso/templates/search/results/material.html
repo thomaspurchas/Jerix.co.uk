@@ -18,7 +18,7 @@
             {% highlight result.content with query %}
             {% thumbnail result.object.document.get_preview_image  "300x450" as im %}
             <div style="margin: 10px auto; display:block; width: {{im.width}}px;">
-                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" style:"width:{{ im.width }}px; height:{{ im.height }}px;">
             </div>
             {% endthumbnail %}
         </div>
