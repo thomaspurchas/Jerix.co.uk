@@ -34,9 +34,11 @@
                     {% include template with result=result %}
                 {% endwith %}
             {% else %}
-                {# <p>
+                {% comment %}
+                <p>
                     <a href="{{ result.object.get_absolute_url }}">{{ result.object }}</a>
-                </p> #}
+                </p>
+                {% endcomment %}
             {% endif %}
             {% empty %}
                 <p>No results found.</p>
