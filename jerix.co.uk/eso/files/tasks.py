@@ -135,7 +135,7 @@ def create_pdf(doc):
     return True
 
 
-@task(acks_late=True, queue='conversion', ignore_result=True, time_limit=900)
+@task(acks_late=True, queue='conversion', ignore_result=True, time_limit=1200)
 def create_pngs(doc, type='pngs'):
     blob = doc._blob
     log.info('Starting png generation of: %s', doc)
@@ -247,7 +247,7 @@ def create_pngs(doc, type='pngs'):
     return True
 
 
-@task(ignore_result=True, time_limit=20)#, rate_limit=5)
+@task(ignore_result=True, time_limit=60)#, rate_limit=5)
 def create_thumbs(derived_doc):
     if derived_doc.file_type == 'png':
         get_thumbnail(derived_doc.file, '300x450')
