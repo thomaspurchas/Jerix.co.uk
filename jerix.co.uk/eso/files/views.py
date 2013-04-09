@@ -2,7 +2,7 @@
 import logging
 from os import path
 
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -57,7 +57,14 @@ def original_download(request, id, slug=None):
 
     url = generate_url(doc, headers)
 
-    return redirect(url)
+    if doc.type in ["pdf"]:
+        return render(request,
+                      'files/pdf.html',
+                      {
+                          'S3_URL': url,
+                      })
+    else:
+        return redirect(url)
 
 
 @login_required
@@ -75,4 +82,11 @@ def derived_download(request, id, slug, orig_id=None):
 
     url = generate_url(doc, headers)
 
-    return redirect(url)
+    if doc.type in ["pdf"]:
+        return render(request,
+                      'files/pdf.html',
+                      {
+                          'S3_URL': url,
+                      })
+    else:
+        return redirect(url)
