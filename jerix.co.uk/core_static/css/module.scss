@@ -63,6 +63,11 @@ $material-bg: #CCC;
 		margin-bottom: 5px;
 		padding: 5px;
 		position: relative;
+		.dropdown-menu {
+			left: auto;
+			right: 0;
+			min-width: 0;
+		}
 	}
 
 	.material-title {

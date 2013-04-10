@@ -1,23 +1,38 @@
 <div class="btn-toolbar download-links pull-right">
     <div class="btn-group">
-      {% if user.is_authenticated %}
-          {% for version in material.document.versions %}
-              <a  href={{ version.url }}
-                  class="btn"
-                  {% if version.type == "pdf" %}
-                  target="_blank"
-                  {% endif %}>
-
-                  {% if forloop.first %}
-                      <i class="icon-download"></i>
-                  {% endif %}
-                  {{ version.type_display }}
-              </a>
-          {% endfor %}
-      {% else %}
-          <a class="btn" href={% url "account_login" %}?next={{ request.get_full_path }}>
-              <i class="icon-download"></i> Sign In
-          </a>
-      {% endif %}
+    {% if user.is_authenticated %}
+        {% for version in material.document.versions %}
+            {% if forloop.first %}
+                <a href={{ version.url }}
+                class="btn"
+                {% if version.type == "pdf" %}
+                target="_blank"
+                {% endif %}>
+                    <i class="icon-download"></i>
+                {{ version.type_display }}
+                </a>
+                {% if not forloop.last %}
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                {% endif %}
+            {% else %}
+                        <a href={{ version.url }}
+                        {% if version.type == "pdf" %}
+                        target="_blank"
+                        {% endif %}>
+                        {{ version.type_display }}
+                        </a>
+                {% if forloop.last %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <a class="btn" href={% url "account_login" %}?next={{ request.get_full_path }}>
+          <i class="icon-download"></i> Sign In
+        </a>
+    {% endif %}
     </div>
 </div>
