@@ -4,9 +4,8 @@
 <html lang="en" style="height:100%; margin: 0; padding:0">
 <head>
     {% block head %}
-        <title>{% block title %}Jerix{% endblock title %}</title>
+        <title>Jerix - {{ filename }}</title>
         <link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% compress css %}
         <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.less" type="text/less" charset="utf-8">
         <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.less" type="text/less" charset="utf-8">
