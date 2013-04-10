@@ -50,6 +50,18 @@
             {% endif %}
         </div>
     </div>
+{% endblock content %}
+
+{% block footer %}
+    {{ block.super }}
+    <script type="text/javascript">
+    $('.material').popover({
+                    html: true,
+                    trigger: 'hover',
+                    placement: 'right',
+                    })
+    </script>
+
     <script>
     $('#nav-list').affix({offset: {top: function(){
         var offset;
@@ -65,4 +77,4 @@
     $('body').scrollspy({offset: -offset});
     $('.download-links').popover()
     </script>
-{% endblock content %}
+{% endblock footer %}

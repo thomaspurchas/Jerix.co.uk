@@ -14,19 +14,7 @@
 			{{ post.description|linebreaks }}
 		</div>
 	{% endif %}
-    {% if post.sorted_materials %}
-        <div class="materials">
-        <h4>Materials</h4>
-        {% for material in post.sorted_materials  %}
-            <div class="material well well-small">
-                {% include "modules/module/download.html" %}
-                <div class="material-title">
-                    {{ material.title }}
-                </div>
-            </div>
-        {% endfor %}
-        </div>
-    {% endif %}
+    {% include "modules/module/materials.html" %}
 	{% if post.is_parent and post.sub_posts.all %}
         <div class="sub-posts">
             {% for sub_post in post.sub_posts.all %}
