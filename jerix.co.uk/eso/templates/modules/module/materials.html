@@ -6,7 +6,10 @@
     {% for material in post.sorted_materials  %}
         {% thumbnail material.document.get_preview_image "300x450" as img %}
             <div class="material well well-small" data-title="{{ material.title }}"
-            data-content="<img src='{{ img.url }}'></img>">
+            data-content="<img src='{{ img.url }}' />">
+                {# These img tags or not visable. They are just there to cache the image. Really they should be at the bottom #}
+                {# of the page. But this is good enough for now #}
+                <img src='{{ img.url }}' style="display: none" />
         {% empty %}
             <div class="material well well-small">
         {% endthumbnail %}
