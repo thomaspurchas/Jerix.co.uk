@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.cache import cache
 
 from accounts.models import AuthoredObject
 
@@ -168,31 +169,49 @@ class Document(BaseDocument, AuthoredObject):
         """
         Returns a `QuerySet` of derived documents.
         """
-        return self._blob.derived_documents.filter(file_type=file_type)
+        docs = cache.get('document_%s_of_type_%s' % (self.id, file_type))
+        if docs is None:
+            docs = self._blob.derived_documents.filter(file_type=file_type)
+            cache.set('document_%s_of_type_%s' % (self.id, file_type), docs, 60 * 20)
+        return docs
 
     @property
     def derived_documents(self):
-        return self._blob.derived_documents.all()
+        derived = cache.get('document_%s_derived_documents' % self.id)
+        if derived is None:
+            derived = self._blob.derived_documents.all()
+            cache.set('document_%s_derived_documents' % self.id, derived, 60 * 20)
+        return derived
 
     @property
     def versions(self):
-        versions = list(
-                    self._blob.derived_documents.all().exclude(
-                    file_type='png')
-        )
-        versions.append(self)
-        for version in versions:
-            version.original_document = self
-            version.priority = type_to_priorty(version.type)
-        return sorted(versions, key=lambda doc:doc.priority, reverse=True)
+        versions = cache.get('document_%s_versions' % self.id)
+        if versions is None:
+            versions = list(
+                        self._blob.derived_documents.all().exclude(
+                        file_type='png')
+            )
+            versions.append(self)
+            for version in versions:
+                version.original_document = self
+                version.priority = type_to_priorty(version.type)
+
+            versions = sorted(versions, key=lambda doc:doc.priority, reverse=True)
+            cache.set('document_%s_versions' % self.id, versions, 60 * 20)
+        return versions
 
     def get_preview_image(self):
-        try:
-            imaged = self._blob.derived_documents.get(file_type="png",index=0)
-            image = imaged.file
-            image.url = imaged.url
-        except ObjectDoesNotExist:
-            image = None
+        image = cache.get('document_%s_preview_image' % self.id)
+        if image is None:
+            try:
+                imaged = self._blob.derived_documents.get(file_type="png",index=0)
+                image = imaged.file
+                image.url = imaged.url
+            except ObjectDoesNotExist:
+                image = 0
+            cache.set('document_%s_preview_image' % self.id, image, 60 * 30)
+
+        if image == 0: image = None
         return image
 
     @property

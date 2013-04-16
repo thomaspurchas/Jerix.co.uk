@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load compress %}
+{% load cache %}
 
 {% block title %}{{ module.title }}{% endblock title %}
 
@@ -10,18 +11,22 @@
     {{ block.super}}
 {% endblock head %}
 
-{% block header %}
-    <div class="jumbotron subhead">
-        <div class="container">
-            <div class="page-header" style="border:none; margin-bottom: 0px;">
-                <h1>{{ module.short_code }} 
-                    <small>{{ module.title }}</small>
-                </h1>
-                <p class="lead">{{ module.description }}</p>
+{% cache 120 module_header module.id %}
+
+    {% block header %}
+        <div class="jumbotron subhead">
+            <div class="container">
+                <div class="page-header" style="border:none; margin-bottom: 0px;">
+                    <h1>{{ module.short_code }}
+                        <small>{{ module.title }}</small>
+                    </h1>
+                    <p class="lead">{{ module.description }}</p>
+                </div>
             </div>
         </div>
-    </div>
-{% endblock header %}
+    {% endblock header %}
+
+{% endcache %}
 
 {% block content %}
 
