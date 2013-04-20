@@ -1,2 +1,6 @@
 {{ object.title }}
 {{ extracted }}
+{% for tag in tags %}
+{{ tag }}
+
+{% endfor %}

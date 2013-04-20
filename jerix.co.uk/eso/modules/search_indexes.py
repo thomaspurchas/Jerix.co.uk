@@ -108,7 +108,8 @@ class MaterialIndex(CelerySearchIndex, indexes.Indexable):
     def prepare_text(self, obj):
         content = self._get_longest_content(obj)
         t = loader.select_template(('search/indexes/modules/material_text.txt',))
-        return t.render(Context({'object': obj, 'extracted': content}))
+        tags = self.prepare_tags(obj)
+        return t.render(Context({'object': obj, 'extracted': content, 'tags': tags}))
 
     def get_model(self):
         return Material
