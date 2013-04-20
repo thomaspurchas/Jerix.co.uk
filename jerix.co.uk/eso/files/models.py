@@ -172,7 +172,7 @@ class Document(BaseDocument, AuthoredObject):
         docs = cache.get('document_%s_of_type_%s' % (self.id, file_type))
         if docs is None:
             docs = self._blob.derived_documents.filter(file_type=file_type)
-            cache.set('document_%s_of_type_%s' % (self.id, file_type), docs, 60 * 20)
+            #cache.set('document_%s_of_type_%s' % (self.id, file_type), docs, 60 * 20)
         return docs
 
     @property
@@ -180,7 +180,7 @@ class Document(BaseDocument, AuthoredObject):
         derived = cache.get('document_%s_derived_documents' % self.id)
         if derived is None:
             derived = self._blob.derived_documents.all()
-            cache.set('document_%s_derived_documents' % self.id, derived, 60 * 20)
+            #cache.set('document_%s_derived_documents' % self.id, derived, 60 * 20)
         return derived
 
     @property
@@ -197,7 +197,7 @@ class Document(BaseDocument, AuthoredObject):
                 version.priority = type_to_priorty(version.type)
 
             versions = sorted(versions, key=lambda doc:doc.priority, reverse=True)
-            cache.set('document_%s_versions' % self.id, versions, 60 * 20)
+            #cache.set('document_%s_versions' % self.id, versions, 60 * 20)
         return versions
 
     def get_preview_image(self):
@@ -209,7 +209,7 @@ class Document(BaseDocument, AuthoredObject):
                 image.url = imaged.url
             except ObjectDoesNotExist:
                 image = 0
-            cache.set('document_%s_preview_image' % self.id, image, 60 * 30)
+            #cache.set('document_%s_preview_image' % self.id, image, 60 * 30)
 
         if image == 0: image = None
         return image
