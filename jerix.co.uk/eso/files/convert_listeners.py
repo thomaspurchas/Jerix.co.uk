@@ -9,10 +9,10 @@ from files.tasks import create_pdf, create_pngs, create_thumbs
 log = logging.getLogger(__name__)
 
 
-@receiver(post_save, sender=ParentBlob)
+@receiver(post_save, sender=Document)
 def convert_to_pdf(sender, instance, created, raw, **kargs):
     if created and not raw:
-        doc = instance.documents.all()[0]
+        doc = instance
         log.info('Firing create_pdf task with %s:%s' % (doc, doc.pk))
         create_pdf.delay(doc)
 
