@@ -63,6 +63,7 @@ $material-bg: #CCC;
 		margin-bottom: 5px;
 		padding: 5px;
 		position: relative;
+		overflow: auto;
 		.dropdown-menu {
 			left: auto;
 			right: 0;
@@ -75,10 +76,9 @@ $material-bg: #CCC;
 	}
 
 	.download-links {
-		float: right;
-		position: absolute;
 		top: -5px;
 		right: 5px;
+		margin: 0 0 0 10px;
 		//padding: 5px 7px;
 		//		background: $green;
 		//		border-radius: 5px;
