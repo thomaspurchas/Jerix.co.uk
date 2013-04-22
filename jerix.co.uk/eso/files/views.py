@@ -62,6 +62,7 @@ def original_download(request, id, slug=None):
                       'files/pdf.html',
                       {
                           'S3_URL': url,
+                          'filename': filename
                       })
     else:
         return redirect(url)
@@ -87,6 +88,7 @@ def derived_download(request, id, slug, orig_id=None):
                       'files/pdf.html',
                       {
                           'S3_URL': url,
+                          'filename': filename
                       })
     else:
         return redirect(url)
