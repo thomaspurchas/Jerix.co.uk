@@ -19,7 +19,7 @@ from files.helpers import type_to_priorty
 log = logging.getLogger(__name__)
 
 UNOCONV_CALL = 'unoconv --timeout=10 --port=%s --output="%s" "%s"'
-TIMEOUT = 60
+TIMEOUT = 240
 
 
 def get_free_port():
