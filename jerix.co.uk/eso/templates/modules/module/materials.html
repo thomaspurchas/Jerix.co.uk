@@ -1,7 +1,7 @@
 {% load thumbnail %}
 {% load cache %}
 
-{% cache 120 post_materials post.id %}
+{% cache 120 post_materials post.id user.username %}
     {% if post.sorted_materials %}
         <div class="materials">
         <h4>Materials</h4>
