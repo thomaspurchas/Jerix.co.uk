@@ -18,6 +18,7 @@ MANAGERS = ADMINS
 ALLOWED_HOSTS = [
     '.jerix.co.uk',
     'jerix.herokuapp.com',
+    'jerix-eu.herokuapp.com',
     'jerix-staging.herokuapp.com'
 ]
 
