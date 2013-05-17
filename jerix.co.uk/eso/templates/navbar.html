@@ -33,10 +33,10 @@
                             <li class="divider"></li>
                         {% endif %}
                         <li><a href="#"><i class="i"></i> Your Profile</a></li>
+                    {% endcache %}
                         <li><a href="{% url "account_logout" %}?next={{ request.get_full_path }}"><i class="i"></i> Log Out</a></li>
                       </ul>
                     </li>
-                    {% endcache %}
                     {% else %}
                     <li class="dropdown" id="login-dropdown">
                         <a href="{% url "account_login" %}?next={{request.path}}" class="dropdown-toggle" data-toggle="dropdown">
