@@ -26,7 +26,6 @@ gunicorn==0.17.2
 httplib2==0.7.4
 librabbitmq==1.0.1
 mimeparse==0.1.3
-oauthlib==0.1.3
 poster==0.8.1
 psycopg2==2.4.5
 py-bcrypt==0.2
