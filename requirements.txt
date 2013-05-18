@@ -47,3 +47,4 @@ Pygments==1.5
 sorl-thumbnail==11.12
 fabric
 django-bootstrap-toolkit
+oauth2==1.5.211
