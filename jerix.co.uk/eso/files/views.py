@@ -56,9 +56,9 @@ def original_download(request, id, slug=None):
     else:
         filename = doc.file_name + path.splitext(doc.file.name)[1]
 
-    headers = generate_headers(filename, doc)
+    headers = generate_headers(filename)
 
-    url = generate_url(doc, headers)
+    url = generate_url(doc, headers, doc, slug)
 
     if doc.type in ["pdf"]:
         return render(request,
@@ -84,7 +84,7 @@ def derived_download(request, id, slug, orig_id=None):
     log.debug(orig_id)
     headers = generate_headers(filename, doc)
 
-    url = generate_url(doc, headers)
+    url = generate_url(doc, headers, slug, orig_id)
 
     if doc.type in ["pdf"]:
         return render(request,
