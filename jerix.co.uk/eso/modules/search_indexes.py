@@ -23,7 +23,7 @@ def get_content(doc, backend):
     except (SyntaxError, ValueError):
         content = None
 
-    if content is None:
+    if content is None and doc.extraction_error is False:
         try:
             file_obj = doc.file
             file_obj.seek(0)
@@ -49,6 +49,9 @@ def get_content(doc, backend):
                     doc.save()
         except IOError:
             content = {u'contents': u''}
+
+    elif doc.extraction_error is True:
+        content = {u'contents': u''}
 
     return bleach.clean(content['contents'], strip=True)
 
