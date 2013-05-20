@@ -1,3 +1,4 @@
+certifi
 Django==1.5.1
 Markdown==2.2.0
 PIL==1.1.7
@@ -14,7 +15,7 @@ BeautifulSoup==3.2.1
 django-compressor==1.2
 django-celery==3.0.17
 django-crispy-forms==1.2.0
--e git+https://github.com/toastdriven/django-haystack.git@f349b5eebbf6763bb2bde074e6ebd06b6ceeb3f4#egg=django_haystack-dev
+django-haystack==2.0.0
 git+https://github.com/thomaspurchas/django-hitcount.git
 git+https://github.com/thomaspurchas/django-taggit.git
 git+https://github.com/thomaspurchas/django-allauth.git
@@ -34,14 +35,13 @@ pysolr==3.0.4
 python-dateutil==1.5
 python-digest==1.7
 pytz==2012d
-requests==0.12.1
+requests==1.2.0
 rsa==3.1.1
 slumber==0.4.2
 wsgiref==0.1.2
 newrelic
 raven==3.2.1
 bleach==1.1.5
-pylibmc==1.2.2
 django-pylibmc-sasl==0.2.4
 Pygments==1.5
 sorl-thumbnail==11.12
