@@ -49,7 +49,7 @@ def home(request):
         questions = Question.objects.all().order_by('-asked')[:10]
 
         items.insert(0, ('questions', questions))
-        print items
+        log.debug(items)
 
         col_1 = []
         col_2 = []
