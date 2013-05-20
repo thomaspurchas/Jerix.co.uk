@@ -34,12 +34,15 @@ def generate_headers(filename, doc):
     return headers
 
 
-def generate_url(doc, headers):
+def generate_url(doc, headers, slug='', orig_id=''):
     url = doc._blob.file.file.key.generate_url(
         URL_EXPIRY,
         force_http=True,
         response_headers=headers
     )
+
+    # Now botch on some useful bits for later
+    url += u'&id=%s&orig_id=%s&slug="%s"' % (doc.id, orig_id, slug)
     return url
 
 
