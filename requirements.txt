@@ -48,3 +48,4 @@ sorl-thumbnail==11.12
 fabric
 django-bootstrap-toolkit
 oauth2==1.5.211
+html5lib==0.95
