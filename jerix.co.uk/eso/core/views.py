@@ -36,15 +36,14 @@ def home(request):
                 items.append(('modules', modules))
                 items.append(('lecturers', lecturers))
 
-        else:
-            years = AcademicYear.objects.select_related().all().order_by(
-                                                                   'short_code')
+        # else:
+        years = AcademicYear.objects.select_related().all().order_by(
+                                                               'short_code')
 
-            print years
-            i = 0
-            for year in years:
-                i += 1
-                items.append(('year_%d' % i, year))
+        i = 0
+        for year in years:
+            i += 1
+            items.append(('year_%d' % i, year))
 
         questions = Question.objects.all().order_by('-asked')[:10]
 
