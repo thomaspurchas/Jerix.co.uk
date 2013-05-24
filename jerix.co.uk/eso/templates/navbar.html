@@ -48,29 +48,6 @@
                                 Sign in with:
                             </li>
                             {% include "account/provider_list.html" %}
-                            <li class="divider"></li>
-                            <li class="nav-header">
-                                Jerix Account
-                            </li>
-                            <li>
-                            <form class="navbar-form form-horizontal" action="http://{{ request.get_host }}{% url "account_login" %}" method="post" accept-charset="UTF-8">
-                                {% csrf_token %}
-                                <div style="display:none">
-                                    <input type="hidden" name="login_universal" value="true">
-                                    <input type="hidden" name="next" value="{{ request.get_full_path }}" />
-                                </div>
-                                <div class="control-group">
-                                    <input id="user_username" style="" type="text" name="login" size="30" placeholder="Username" />
-                                </div>
-                                <div class="control-group">
-                                    <input id="user_password" style="" type="password" name="password" size="30" placeholder="Password" />
-                                </div>
-                                <label class="string optional" for="remember">
-                                    <input id="user_remember_me" style="top:-3px;position:relative;" type="checkbox" name="login_remember_me" value="1" checked="checked" />
-                                     Remember me
-                                </label>
-                                <input class="btn btn-success" style="clear: left; width: 100%;" type="submit" name="commit" value="Sign In" />
-                            </form>
                             </li>
                         </ul>
                       </li>
