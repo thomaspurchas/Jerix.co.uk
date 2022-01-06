@@ -7,7 +7,7 @@ amqplib==1.0.2
 anyjson==0.3.3
 argparse==1.2.1
 boto==2.5.2
-celery==3.0.17
+celery==5.2.2
 celery-haystack==0.7.2
 dj-database-url==0.2.1
 lxml
